@@ -8,4 +8,7 @@ sealed class FlashLightEvent extends Equatable {
 }
 
 class TurnOnFlashLight extends FlashLightEvent {}
+
 class TurnOffFlashLight extends FlashLightEvent {}
+
+class ClearFlashLightError extends FlashLightEvent {}

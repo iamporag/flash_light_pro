@@ -5,10 +5,15 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    DevicePreview(
-      enabled: !kDebugMode,
-      builder: (context) => const FlashLightPro(),
-    )
+    kDebugMode
+        ? DevicePreview(
+            enabled: true,
+            devices: [
+              ...Devices.android.all,
+              ...Devices.ios.all,
+            ],
+            builder: (context) => const FlashLightPro(),
+          )
+        : const FlashLightPro(),
   );
 }
-
