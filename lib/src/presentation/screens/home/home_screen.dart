@@ -115,78 +115,7 @@ class HomeScreen extends StatelessWidget {
                       );
                 },
               ),
-<<<<<<< HEAD
             ),
-=======
-              Bg(),
-              Align(
-                alignment: Alignment.center,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 50.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade900.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(8.0)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            state.isFlashOn
-                                ? "Flash Light On"
-                                : "Flash Light Off",
-                            style: TextStyle(
-                              color: state.isFlashOn ? Colors.red : Colors.grey,
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Transform.rotate(
-                        angle: -3.14 / 2,
-                        child: Transform.scale(
-                          scale: 2.0,
-                          child: Switch(
-                            activeThumbColor: Colors.amber,
-                            activeTrackColor: Color(0xFF0D1441),
-                            trackOutlineColor:
-                                WidgetStatePropertyAll(Colors.grey.shade500),
-                            // thumbColor: WidgetStatePropertyAll(
-                            //   Colors.grey.shade500,
-                            // ),
-                            // trackColor: WidgetStatePropertyAll(
-                            //   Colors.grey.shade900,
-                            // ),
-                            // trackOutlineColor: WidgetStatePropertyAll(
-                            //   Colors.grey.shade500,
-                            // ),
-                            value: state.isFlashOn,
-                            onChanged: (value) {
-                              if (state.isFlashOn) {
-                                context
-                                    .read<FlashLightBloc>()
-                                    .add(TurnOffFlashLight());
-                              } else {
-                                context
-                                    .read<FlashLightBloc>()
-                                    .add(TurnOnFlashLight());
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
->>>>>>> 36c12e2 (--)
           ),
         ],
       ),
