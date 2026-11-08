@@ -1,0 +1,393 @@
+{
+  "@@locale": "en",
+  "appName": "Flash Light Pro",
+  "appTagline": "Premium lighting toolkit",
+  "offlineFooter": "The flashlight works offline. Ads and purchases need a connection.",
+  "screenFallbackFooter": "Screen flash fallback is active — the display is the light source.",
+  "modeTorch": "Torch",
+  "modeScreen": "Screen",
+  "modeSos": "SOS",
+  "modeStrobe": "Strobe",
+  "modeMorse": "Morse",
+  "modeFlashlight": "Flashlight",
+  "modeScreenLight": "Screen light",
+  "modeSosSignal": "SOS signal",
+  "modeMorsePlayback": "Morse playback",
+  "statusTorchOn": "Flash Light On",
+  "statusScreenOn": "Screen Light On",
+  "statusSosActive": "SOS Signal Active",
+  "statusStrobeOn": "Strobe On",
+  "statusMorsePaused": "Morse Paused",
+  "statusSendingMorse": "Sending Morse",
+  "statusChecking": "Checking flashlight...",
+  "statusTorchOff": "Flash Light Off",
+  "statusTorchUnavailable": "Flashlight not available",
+  "statusScreenOff": "Screen Light Off",
+  "statusSosReady": "SOS Ready",
+  "statusSosNeedsTorch": "SOS needs a flashlight",
+  "statusStrobeReady": "Strobe Ready",
+  "statusStrobeNeedsTorch": "Strobe needs a flashlight",
+  "statusMorseReady": "Morse Ready",
+  "subtitleAutoOff": "Auto-off in {countdown}. Tap the timer to change or cancel it.",
+  "@subtitleAutoOff": {
+    "placeholders": {
+      "countdown": {
+        "type": "String"
+      }
+    }
+  },
+  "subtitleMorsePaused": "Playback is paused. Resume or stop below.",
+  "subtitleTapStop": "Tap the power button to stop.",
+  "subtitleCheckingHardware": "Checking this device’s hardware.",
+  "subtitleTorchReady": "Tap to turn the flashlight on or off.",
+  "subtitleTorchUnavailable": "Use Screen Light instead — it needs no torch hardware.",
+  "subtitleScreenReady": "Tap to open a full-screen light.",
+  "subtitleSosReady": "Standard ... --- ... distress signal.",
+  "subtitleStrobeReady": "Adjustable flash speed with a safety warning.",
+  "subtitleMorseReady": "Tap Play to send your message as light.",
+  "hintStop": "Double tap to stop the light",
+  "hintTorchOn": "Double tap to turn the flashlight on",
+  "hintScreen": "Double tap to open screen light",
+  "hintSos": "Double tap to start the SOS signal",
+  "hintStrobe": "Double tap to start the strobe",
+  "hintMorse": "Double tap to play the Morse message",
+  "announcementOn": "{mode} on",
+  "@announcementOn": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "announcementOff": "{mode} off",
+  "@announcementOff": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "timerCountdown": "Auto-off in {countdown}",
+  "@timerCountdown": {
+    "placeholders": {
+      "countdown": {
+        "type": "String"
+      }
+    }
+  },
+  "timerOff": "Auto-off off",
+  "timerPreset": "Auto-off {minutes} min",
+  "@timerPreset": {
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "timerSheetTitle": "Auto-off timer",
+  "timerSheetSubtitle": "Turns off the active light automatically.",
+  "timerTurningOff": "Turning off in {countdown}",
+  "@timerTurningOff": {
+    "placeholders": {
+      "countdown": {
+        "type": "String"
+      }
+    }
+  },
+  "timerPresetChip": "{minutes} min",
+  "@timerPresetChip": {
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "timerCustomLabel": "Custom minutes",
+  "timerSet": "Set",
+  "timerCancel": "Cancel timer",
+  "timerClose": "Close",
+  "timerCustomError": "Enter a whole number between 1 and {max}.",
+  "@timerCustomError": {
+    "placeholders": {
+      "max": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "timerButton": "Auto-off timer",
+  "flashlight": "Flashlight",
+  "rearCameraTorch": "Rear camera torch",
+  "noUsableTorch": "No usable torch detected",
+  "torchStrength": "Torch strength",
+  "torchStrengthUnsupported": "Torch strength is not supported on this device.",
+  "screenLightWorksWithoutTorch": "Screen Light works even without torch hardware.",
+  "screenLight": "Screen Light",
+  "screenPanelSubtitle": "Full-screen light with adjustable color",
+  "color": "Color",
+  "brightness": "Brightness",
+  "brightnessRestored": "Your original screen brightness returns when you exit.",
+  "sosSignal": "SOS signal",
+  "sosSubtitle": "Standard international distress pattern",
+  "sosTransmitting": "Transmitting continuously. Turn it off when help arrives.",
+  "sosPlaysOnTorch": "Plays on the flashlight until you stop it.",
+  "sosNeedsTorch": "SOS needs a working flashlight on this device.",
+  "strobe": "Strobe",
+  "strobeSubtitle": "Adjustable flash speed",
+  "flashSpeed": "Flash speed",
+  "speedHz": "{value} Hz",
+  "@speedHz": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "photosensitivityWarning": "Photosensitivity warning: flashing light can trigger seizures. Stop immediately if you feel unwell and keep the light away from your eyes.",
+  "morseTitle": "Morse code",
+  "morseSubtitle": "Send A-Z and 0-9 as light signals",
+  "message": "Message",
+  "morseHint": "SOS HELLO 123",
+  "clearMessage": "Clear message",
+  "morsePreviewPlaceholder": "Your Morse preview appears here.",
+  "morseUnsupported": "Unsupported: {characters} — use A-Z and 0-9.",
+  "@morseUnsupported": {
+    "placeholders": {
+      "characters": {
+        "type": "String"
+      }
+    }
+  },
+  "morsePlaysOnTorch": "Plays on the flashlight.",
+  "morseScreenFallback": "No flashlight detected — the screen will flash instead.",
+  "pause": "Pause",
+  "resume": "Resume",
+  "stop": "Stop",
+  "playMorse": "Play Morse",
+  "typeMessage": "Type a message to send in Morse code.",
+  "unsupportedCharacters": "Unsupported characters: {characters}. Use A-Z and 0-9.",
+  "@unsupportedCharacters": {
+    "placeholders": {
+      "characters": {
+        "type": "String"
+      }
+    }
+  },
+  "strobeNeedsTorchMessage": "Strobe needs a working flashlight on this device.",
+  "lightingError": "Lighting Error",
+  "dismiss": "Dismiss",
+  "retry": "Retry",
+  "errorUnavailable": "The flashlight is not available on this device.",
+  "errorCameraInUse": "The camera is in use by another app. Close it and try again.",
+  "errorEnable": "Could not turn on the flashlight. Please try again.",
+  "errorDisable": "Could not turn off the flashlight. Please try again.",
+  "errorCheck": "Could not check the flashlight. Please try again.",
+  "errorPlatform": "Flashlight control is not supported on this platform.",
+  "errorUnexpected": "Something went wrong while controlling the light.",
+  "exitScreenLight": "Exit screen light",
+  "hideCustomColor": "Hide custom color",
+  "customColor": "Custom color",
+  "turnOffLight": "Turn off light",
+  "hue": "Hue",
+  "saturation": "Saturation",
+  "openSettings": "Open settings",
+  "settings": "Settings",
+  "settingsSubtitle": "Language, feedback, and behavior",
+  "language": "Language",
+  "languageEnglish": "English",
+  "languageBengali": "বাংলা",
+  "appearanceSection": "Appearance",
+  "motionSection": "Motion",
+  "haptics": "Haptic feedback",
+  "hapticsSubtitle": "Vibrate when you use the power controls.",
+  "shakeToToggle": "Shake to toggle",
+  "shakeSubtitleOn": "Shake your phone to turn the flashlight on or off, even when the app is in the background.",
+  "shakeSubtitleOff": "Off. Turn on to shake the flashlight on or off, even in the background.",
+  "shakeSensitivity": "Shake sensitivity",
+  "sensitivityLow": "Low",
+  "sensitivityMedium": "Medium",
+  "sensitivityHigh": "High",
+  "shakeMonitoringActive": "Background monitoring is on. A persistent notification keeps shake working after you leave the app.",
+  "shakeMonitoringInactive": "Background monitoring is not running. Shake works only while the app is open.",
+  "shakeNotificationsOff": "Notifications are off, so the required monitoring notification is hidden. Monitoring still runs and appears in Android's active apps list.",
+  "shakeBackgroundUnsupported": "This device does not support background shake monitoring. Shake works while the app is open.",
+  "keepScreenAwake": "Keep screen awake",
+  "keepScreenAwakeSubtitle": "Prevent the screen from sleeping while a light is active.",
+  "backgroundSection": "Background",
+  "keepFlashlightOnBackground": "Keep Flashlight On in Background",
+  "keepFlashlightOnBackgroundSubtitle": "Leaves the steady flashlight on when you switch apps or lock the screen. Android shows a notification with a Stop action. Hardware, battery, or system limits can still turn it off.",
+  "keepFlashlightOnBackgroundUnsupported": "Not available on iOS. The system turns the flashlight off when Flash Light Pro is suspended.",
+  "backgroundNotificationsOff": "Notifications are off. The flashlight stays on, but the Stop button is only available in the app.",
+  "reduceAnimations": "Reduce animations",
+  "reduceAnimationsSubtitle": "Use shorter transitions and calmer motion.",
+  "defaultMode": "Default mode",
+  "defaultModeSubtitle": "The mode selected when the app opens.",
+  "aboutSection": "About",
+  "appInfo": "App information",
+  "versionLabel": "Version {version}",
+  "@versionLabel": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "privacyPolicy": "Privacy policy",
+  "openSourceLicenses": "Open-source licenses",
+  "permissionsTitle": "Permissions and device notes",
+  "permissionsBody": "The app uses the camera torch, screen brightness, haptics, and — only when Shake to toggle is on — the motion sensor. On Android, background shake monitoring runs in a foreground service with a persistent notification. The app does not request internet, location, camera images, microphone, or contacts.",
+  "volumeButtonsTitle": "Volume buttons",
+  "volumeButtonsBody": "Android and iOS reserve the volume buttons for system audio and accessibility. Flash Light Pro does not intercept them, because that would require accessibility or root access, which this app does not request.",
+  "iosLimitationsTitle": "iOS integration",
+  "iosLimitationsBody": "On iOS, the Shake to toggle and Shortcuts actions work while the app or the system intent is running. iOS does not offer Android-style Quick Settings tiles or home screen widgets for unrestricted background flashlight control. iOS also suspends app execution and releases the torch when the app leaves the foreground, so there is no background flashlight mode.",
+  "madeOffline": "The flashlight works offline. Ads need a connection.",
+  "privacyPolicyTitle": "Privacy policy",
+  "privacyIntro": "Flash Light Pro works on your device. The flashlight itself needs no account and no network. The free version shows ads from Google AdMob, and an optional one-time purchase removes them.",
+  "privacyLocalTitle": "Data stored on your device",
+  "privacyLocalBody": "Preferences such as language, default mode, brightness, and shake sensitivity are stored locally by the operating system. Ad frequency limits, your ad consent choice, and Remove ads purchase status are cached locally too. The Android Quick Settings tile and home screen widget also store the last torch state locally so they can show the correct state.",
+  "privacyHardwareTitle": "Hardware access",
+  "privacyHardwareBody": "The app uses the camera flash (torch) and screen brightness. It reads the accelerometer only while Shake to toggle is enabled: in the foreground, and on Android through a foreground service with a persistent notification when you leave the app. It does not capture camera images, microphone audio, location, contacts, or photos.",
+  "privacyAdsTitle": "Advertising",
+  "privacyAdsBody": "The free version may show banner, native, interstitial, and app-open ads from Google AdMob. Ads are requested only after the consent required in your region, and never while a light is active or an update is required. You can review your choices with Privacy options in Settings. The Remove ads purchase stops all ads on this account.",
+  "privacyBillingTitle": "Remove ads purchase",
+  "privacyBillingBody": "Remove ads is a one-time, non-consumable purchase handled by Google Play or the App Store. The app never receives your payment details. The entitlement is cached on your device and confirmed with the store, and you can restore it at any time from Settings.",
+  "privacyNoAnalyticsTitle": "No analytics or crash uploads",
+  "privacyNoAnalyticsBody": "The app includes no analytics SDK and no remote crash reporting. Google AdMob may collect device and ad-interaction data under Google's own privacy terms. The flashlight, SOS, strobe, Morse, and screen light keep working without a connection.",
+  "privacyPolicyFooter": "This policy applies to Flash Light Pro version 0.1.0. On iOS the app requests motion access, and only when Shake to toggle is enabled. On Android 13 and later it asks for notification permission so the background flashlight and shake services can show their controls. Ads and purchases are provided by Google AdMob and the platform store under their own privacy terms.",
+  "close": "Close",
+  "updateRequiredTitle": "Update Required",
+  "updateRequiredBody": "A newer version of Flash Light Pro is required to keep the app working safely. Please update to continue.",
+  "updateRecommendedTitle": "Update Recommended",
+  "updateRecommendedBody": "This update is recommended for the best experience. You can update now or keep using the current version.",
+  "updateAvailableTitle": "New Update Available",
+  "updateAvailableBody": "A newer version of Flash Light Pro is available with improvements and fixes.",
+  "updateInstalledVersion": "Installed: {version}",
+  "@updateInstalledVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateAvailableBuild": "Available build: {build}",
+  "@updateAvailableBuild": {
+    "placeholders": {
+      "build": {
+        "type": "int"
+      }
+    }
+  },
+  "updateVersionUnknown": "Latest version on Google Play",
+  "updateNow": "Update Now",
+  "updateLater": "Later",
+  "updateOpenStore": "Open Play Store",
+  "updateTryAgain": "Try again",
+  "updateDownloadingTitle": "Downloading update...",
+  "updateDownloadingBody": "You can keep using the flashlight while the update downloads.",
+  "updateReadyTitle": "Update ready",
+  "updateReadyBody": "The update has been downloaded. Install it now to finish.",
+  "updateInstallNow": "Install Update",
+  "updateInstallingTitle": "Installing update...",
+  "updateInstallingBody": "Google Play is installing the update. The app may restart.",
+  "updateInstalledBody": "The update is installed. Restart the app if it does not reopen automatically.",
+  "updateErrorTitle": "Update couldn't start",
+  "updateErrorBody": "Google Play could not start the update. Check your connection and try again.",
+  "updateStoreError": "Couldn't open the store. Try again later.",
+  "updateCanceled": "The update was canceled.",
+  "updateReadySnack": "Update ready to install.",
+  "updateHide": "Hide",
+  "updateContinueAnyway": "Continue without updating",
+  "updateCachedNotice": "This update was verified earlier. Reconnect to confirm it.",
+  "settingsUpdates": "App updates",
+  "settingsUpdateCheck": "Check for updates",
+  "settingsUpdateChecking": "Checking for updates...",
+  "settingsUpToDate": "You're using the latest version",
+  "settingsUpdateAvailable": "Update available (build {build})",
+  "@settingsUpdateAvailable": {
+    "placeholders": {
+      "build": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsUpdateDownloading": "Downloading update...",
+  "settingsUpdateReady": "Update ready to install",
+  "settingsUpdateInstalling": "Installing update...",
+  "settingsUpdateInstalled": "Update installed",
+  "settingsUpdateInstall": "Install",
+  "settingsUpdateAction": "Update",
+  "settingsUpdateCheckAction": "Check",
+  "settingsUpdateFailed": "Couldn't check for updates",
+  "settingsUpdateStoreManaged": "Updates are handled by your app store",
+  "removeAdsTitle": "Remove ads",
+  "removeAdsBody": "One-time purchase. Removes banner, interstitial, and app-open ads. The flashlight stays free.",
+  "removeAdsPrice": "Remove ads · {price}",
+  "@removeAdsPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "removeAdsOwned": "Ads are removed for this purchase. Thank you!",
+  "removeAdsLoading": "Loading store price...",
+  "removeAdsPurchasing": "Waiting for the store to confirm...",
+  "removeAdsPending": "The store is still confirming this purchase.",
+  "removeAdsRestoring": "Checking previous purchases...",
+  "removeAdsUnavailable": "The store is unavailable right now. Every flashlight feature still works.",
+  "removeAdsPurchaseFailed": "The purchase could not be completed. Nothing was charged.",
+  "removeAdsRestoreFailed": "Couldn't check previous purchases. Try again later.",
+  "removeAdsNoPurchase": "No previous purchase was found on this account.",
+  "removeAdsProductNotFound": "The store does not list the Remove Ads product yet.",
+  "removeAdsRestore": "Restore purchases",
+  "removeAdsRetry": "Try again",
+  "adLabel": "Ad",
+  "monetizationStatusTitle": "Purchase and ad status",
+  "adsStatusLabel": "Ads",
+  "adsStatusAvailable": "Available",
+  "adsStatusDisabled": "Disabled",
+  "adsStatusWaitingConsent": "Waiting for consent",
+  "adsStatusConfigurationMissing": "Configuration missing",
+  "adsStatusStarting": "Starting",
+  "removeAdsStatusLabel": "Remove ads",
+  "removeAdsStatusNotPurchased": "Not purchased",
+  "removeAdsStatusOwned": "Lifetime ad-free",
+  "removeAdsStatusStoreUnavailable": "Store unavailable",
+  "purchaseStatusLabel": "Purchase",
+  "purchaseStatusAvailable": "Available",
+  "purchaseStatusPending": "Pending",
+  "purchaseStatusFailed": "Failed",
+  "purchaseStatusUnavailable": "Unavailable",
+  "privacyOptions": "Privacy options",
+  "privacyOptionsBody": "Review your ad consent choices.",
+  "openPrivacyOptions": "Open privacy options",
+  "batterySection": "Background reliability",
+  "batteryOptimizationTitle": "Battery optimization",
+  "batteryStatusOptimized": "Optimized by Android",
+  "batteryStatusUnrestricted": "Unrestricted",
+  "batteryOptimizationBody": "Android may pause background apps to save power, which can stop the flashlight or shake toggle after the screen locks. Exempting Flash Light Pro helps, but Doze, force-stop, and device-maker restrictions can still stop background work.",
+  "batteryAllowButton": "Allow background operation",
+  "batteryOpenSettings": "Battery settings",
+  "batteryRequestDenied": "Battery optimization was not changed. You can allow it in system settings.",
+  "batteryChecking": "Checking battery status...",
+  "premiumBadgeUpgrade": "SPECIAL UPGRADE",
+  "premiumTitle": "Go Ad-Free",
+  "premiumDescription": "Enjoy Flash Light Pro without interruptions. One payment, lifetime access.",
+  "premiumBenefitsTitle": "Everything included",
+  "premiumBenefitNoBanners": "No banner ads",
+  "premiumBenefitNoNative": "No native ads",
+  "premiumBenefitNoInterstitials": "No interstitial ads",
+  "premiumBenefitNoAppOpen": "No app open ads",
+  "premiumBenefitUninterrupted": "Uninterrupted flashlight experience",
+  "premiumBenefitLifetime": "Lifetime access with one payment",
+  "premiumOneTimePayment": "ONE-TIME PAYMENT",
+  "premiumLifetimeAccess": "LIFETIME ACCESS",
+  "premiumCta": "Remove Ads Forever",
+  "premiumOneTimeNote": "One-time purchase. No recurring charges.",
+  "premiumOwnedBadge": "LIFETIME UNLOCKED",
+  "premiumOwnedTitle": "You're Ad-Free!",
+  "premiumOwnedDescription": "Thank you for supporting Flash Light Pro. Enjoy your lifetime ad-free experience.",
+  "premiumStorePriceLabel": "Store price"
+}

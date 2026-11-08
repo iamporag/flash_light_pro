@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ফ্ল্যাশ লাইট প্রো</string>
+
+    <string name="tile_label">টর্চলাইট</string>
+    <string name="tile_label_unavailable">টর্চলাইট উপলব্ধ নয়</string>
+    <string name="tile_state_on">চালু</string>
+    <string name="tile_state_off">বন্ধ</string>
+
+    <string name="widget_description">টর্চলাইট। চালু বা বন্ধ করতে ট্যাপ করুন।</string>
+    <string name="widget_on">টর্চলাইট চালু</string>
+    <string name="widget_off">টর্চলাইট বন্ধ</string>
+    <string name="widget_unavailable">উপলব্ধ নয়</string>
+
+    <string name="torch_camera_in_use">ক্যামেরা অন্য একটি অ্যাপে ব্যবহার হচ্ছে।</string>
+    <string name="torch_unavailable">ফ্ল্যাশলাইট উপলব্ধ নয়।</string>
+    <string name="torch_toggle_failed">ফ্ল্যাশলাইট পরিবর্তন করা যায়নি।</string>
+
+    <string name="notification_channel_name">ফ্ল্যাশলাইট নিয়ন্ত্রণ</string>
+    <string name="notification_channel_description">অ্যাপ ছেড়ে গেলেও ফ্ল্যাশলাইট চালু থাকলে নিয়ন্ত্রণ দেখানো হয়।</string>
+    <string name="notification_torch_running">ফ্ল্যাশলাইট চালু আছে</string>
+    <string name="notification_torch_off">ফ্ল্যাশলাইট বন্ধ আছে</string>
+    <string name="notification_unavailable">ফ্ল্যাশলাইট উপলব্ধ নয়</string>
+    <string name="notification_stop">বন্ধ করুন</string>
+    <string name="background_start_failed">ফ্ল্যাশলাইট চালু আছে, তবে ব্যাকগ্রাউন্ড মোড চালু করা যায়নি।</string>
+
+    <string name="notification_status_active">সক্রিয়</string>
+    <string name="notification_status_inactive">নিষ্ক্রিয়</string>
+    <string name="notification_mode_background">ব্যাকগ্রাউন্ড নিয়ন্ত্রণ</string>
+    <string name="notification_mode_shake">ঝাঁকুনি মনিটরিং</string>
+    <string name="notification_background_on">ব্যাকগ্রাউন্ডে চালু। অ্যাপ ছেড়ে গেলেও চালু থাকে।</string>
+    <string name="notification_background_off">ব্যাকগ্রাউন্ড নিয়ন্ত্রণ প্রস্তুত।</string>
+    <string name="notification_shake_on_subtitle">ঝাঁকিয়ে টগল · ব্যাকগ্রাউন্ডে মনিটরিং সক্রিয় থাকে।</string>
+    <string name="notification_shake_off_subtitle">ঝাঁকিয়ে টগল · ব্যাকগ্রাউন্ডে মনিটরিং চলছে।</string>
+    <string name="notification_turn_on">চালু করুন</string>
+    <string name="notification_turn_on_description">ফ্ল্যাশলাইট চালু করুন</string>
+    <string name="notification_turn_off">বন্ধ করুন</string>
+    <string name="notification_turn_off_description">ফ্ল্যাশলাইট বন্ধ করুন</string>
+    <string name="notification_icon_description">ফ্ল্যাশলাইট</string>
+    <string name="notification_open_controls">নিয়ন্ত্রণ খুলুন</string>
+    <string name="notification_stop_background">থামান</string>
+    <string name="notification_stop_background_description">ফ্ল্যাশলাইট বন্ধ করে ব্যাকগ্রাউন্ড সার্ভিস থামান</string>
+
+    <string name="tile_state_description_on">ফ্ল্যাশলাইট চালু আছে</string>
+    <string name="tile_state_description_off">ফ্ল্যাশলাইট বন্ধ আছে</string>
+    <string name="tile_state_description_unavailable">ফ্ল্যাশলাইট উপলব্ধ নয়</string>
+
+    <string name="shake_channel_name">ঝাঁকুনি মনিটরিং</string>
+    <string name="shake_channel_description">ফোন ঝাঁকিয়ে ফ্ল্যাশলাইট চালু বা বন্ধ করার সুবিধা সক্রিয় রাখে।</string>
+    <string name="notification_shake_ready">ঝাঁকুনি প্রস্তুত</string>
+
+    <!-- Unified notification control panel. -->
+    <string name="notification_control_flashlight">ফ্ল্যাশলাইট</string>
+    <string name="notification_control_shake">ঝাঁকুনি</string>
+    <string name="notification_control_sos">এসওএস</string>
+    <string name="notification_control_strobe">স্ট্রোব</string>
+    <string name="notification_control_shake_description">ঝাঁকুনি দিয়ে টগল চালু বা বন্ধ করুন</string>
+    <string name="notification_control_sos_description">এসওএস সংকেত শুরু বা বন্ধ করুন</string>
+    <string name="notification_control_strobe_description">স্ট্রোব শুরু বা বন্ধ করুন</string>
+    <string name="notification_on">চালু</string>
+    <string name="notification_off">বন্ধ</string>
+    <string name="notification_status_paused">বিরত</string>
+    <string name="notification_mode_sos">এসওএস সংকেত</string>
+    <string name="notification_mode_strobe">স্ট্রোব</string>
+    <string name="notification_sos_active">এসওএস সংকেত সক্রিয়</string>
+    <string name="notification_strobe_active">স্ট্রোব সক্রিয়</string>
+    <string name="notification_pattern_paused">প্যাটার্ন বিরত</string>
+    <string name="notification_sos_subtitle">বন্ধ না করা পর্যন্ত এসওএস চলবে।</string>
+    <string name="notification_strobe_subtitle">বন্ধ না করা পর্যন্ত স্ট্রোব চলবে।</string>
+
+    <string name="tile_state_sos">এসওএস সক্রিয়</string>
+    <string name="tile_state_strobe">স্ট্রোব সক্রিয়</string>
+    <string name="tile_state_description_sos">এসওএস সংকেত সক্রিয় আছে</string>
+    <string name="tile_state_description_strobe">স্ট্রোব সক্রিয় আছে</string>
+</resources>

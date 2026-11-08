@@ -1,5 +1,3 @@
-// ignore_for_file: unused_element
-
 import 'package:flash_light_pro/src/utils/assets_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,7 +17,7 @@ class Sun extends StatelessWidget {
     }
 
     double getProportionateScreenWidth(double inputWidth) {
-      double? screenWidth = MediaQuery.of(context).size.height;
+      double screenWidth = MediaQuery.of(context).size.width;
       // 414 is the layout width that designer use or you can say iPhone 11  width
       return (inputWidth / 414.0) * screenWidth;
     }
@@ -28,11 +26,8 @@ class Sun extends StatelessWidget {
       duration: duration,
       curve: Curves.easeInOut,
       left: getProportionateScreenWidth(28),
-      bottom: getProportionateScreenWidth(!isFullSun ? -80 : 230),
-      child: SvgPicture.asset(
-        AssetsManager.MOON_ICON,
-        width: 300,
-      ),
+      bottom: getProportionateScreenHeight(!isFullSun ? -80 : 230),
+      child: SvgPicture.asset(AssetsManager.moonIcon, width: 300),
     );
   }
 }

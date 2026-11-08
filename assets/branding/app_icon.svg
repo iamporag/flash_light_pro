@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="36%" r="82%">
+      <stop offset="0" stop-color="#263A7A"/>
+      <stop offset="0.52" stop-color="#101C4C"/>
+      <stop offset="1" stop-color="#070D28"/>
+    </radialGradient>
+    <linearGradient id="beam" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#FFD36E" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#FFD36E" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#FFD36E" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beamCore" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#FFF4C9" stop-opacity="0.7"/>
+      <stop offset="0.6" stop-color="#FFE7A3" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#FFE7A3" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F9FBFF"/>
+      <stop offset="0.38" stop-color="#DCE5F5"/>
+      <stop offset="0.64" stop-color="#A6B4CC"/>
+      <stop offset="1" stop-color="#74839E"/>
+    </linearGradient>
+    <linearGradient id="head" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F2F6FF"/>
+      <stop offset="0.5" stop-color="#C2CEE3"/>
+      <stop offset="1" stop-color="#8492AE"/>
+    </linearGradient>
+    <radialGradient id="lens" cx="50%" cy="40%" r="62%">
+      <stop offset="0" stop-color="#FFFBE8"/>
+      <stop offset="0.42" stop-color="#FFDE8A"/>
+      <stop offset="1" stop-color="#ECA22B"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#FFD36E" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#FFD36E" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <path d="M430 330 L594 330 L792 40 L232 40 Z" fill="url(#beam)"/>
+  <path d="M472 330 L552 330 L628 40 L396 40 Z" fill="url(#beamCore)"/>
+
+  <ellipse cx="512" cy="338" rx="200" ry="112" fill="url(#glow)" filter="url(#soft)"/>
+
+  <rect x="414" y="446" width="196" height="404" rx="46" fill="url(#body)"/>
+  <g stroke="#7B8AA5" stroke-opacity="0.55" stroke-width="10" stroke-linecap="round">
+    <line x1="450" y1="590" x2="574" y2="590"/>
+    <line x1="450" y1="636" x2="574" y2="636"/>
+    <line x1="450" y1="682" x2="574" y2="682"/>
+    <line x1="450" y1="728" x2="574" y2="728"/>
+  </g>
+  <rect x="440" y="474" width="16" height="336" rx="8" fill="#FFFFFF" opacity="0.3"/>
+
+  <rect x="404" y="424" width="216" height="42" rx="21" fill="#2A3554"/>
+  <rect x="404" y="430" width="216" height="10" rx="5" fill="#65759B" opacity="0.65"/>
+
+  <path d="M368 300 Q368 284 384 284 H640 Q656 284 656 300 L614 432 Q608 448 590 448 H434 Q416 448 410 432 Z" fill="url(#head)"/>
+  <path d="M390 306 Q390 296 401 296 H623 Q634 296 634 306 L602 420 Q598 430 588 430 H436 Q426 430 422 420 Z" fill="#FFFFFF" opacity="0.12"/>
+
+  <ellipse cx="512" cy="306" rx="124" ry="40" fill="#E9A431"/>
+  <ellipse cx="512" cy="302" rx="112" ry="33" fill="url(#lens)"/>
+  <ellipse cx="512" cy="296" rx="68" ry="17" fill="#FFFDF1" opacity="0.9"/>
+</svg>

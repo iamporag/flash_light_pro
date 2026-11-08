@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "flash_light_pro" "\0"
+            VALUE "CompanyName", "iamporag" "\0"
+            VALUE "FileDescription", "Flash Light Pro" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "flash_light_pro" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 iamporag. All rights reserved." "\0"
             VALUE "OriginalFilename", "flash_light_pro.exe" "\0"
-            VALUE "ProductName", "flash_light_pro" "\0"
+            VALUE "ProductName", "Flash Light Pro" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

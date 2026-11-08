@@ -1,11 +1,11 @@
 {
-    "name": "flash_light_pro",
-    "short_name": "flash_light_pro",
+    "name": "Flash Light Pro",
+    "short_name": "Flash Light Pro",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0D1441",
+    "theme_color": "#0D1441",
+    "description": "Flash Light Pro is a clean, private utility app.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

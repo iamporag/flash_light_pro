@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Flash Light Pro</string>
+
+    <string name="tile_label">Flashlight</string>
+    <string name="tile_label_unavailable">Flashlight unavailable</string>
+    <string name="tile_state_on">On</string>
+    <string name="tile_state_off">Off</string>
+
+    <string name="widget_description">Flashlight. Tap to turn on or off.</string>
+    <string name="widget_on">Flashlight on</string>
+    <string name="widget_off">Flashlight off</string>
+    <string name="widget_unavailable">Unavailable</string>
+
+    <string name="torch_camera_in_use">The camera is in use by another app.</string>
+    <string name="torch_unavailable">Flashlight is not available.</string>
+    <string name="torch_toggle_failed">Could not change the flashlight.</string>
+
+    <string name="notification_channel_name">Flashlight controls</string>
+    <string name="notification_channel_description">Ongoing controls while the flashlight stays on after you leave the app.</string>
+    <string name="notification_torch_running">Flashlight is ON</string>
+    <string name="notification_torch_off">Flashlight is OFF</string>
+    <string name="notification_unavailable">Flashlight is unavailable</string>
+    <string name="notification_stop">Turn OFF</string>
+    <string name="background_start_failed">Flashlight is on, but background mode could not start.</string>
+
+    <string name="notification_status_active">ACTIVE</string>
+    <string name="notification_status_inactive">INACTIVE</string>
+    <string name="notification_mode_background">Background controls</string>
+    <string name="notification_mode_shake">Shake monitoring</string>
+    <string name="notification_background_on">On in the background. Stays on when you leave the app.</string>
+    <string name="notification_background_off">Background controls are ready.</string>
+    <string name="notification_shake_on_subtitle">Shake to toggle · monitoring stays active in the background.</string>
+    <string name="notification_shake_off_subtitle">Shake to toggle · monitoring runs in the background.</string>
+    <string name="notification_turn_on">Turn on</string>
+    <string name="notification_turn_on_description">Turn the flashlight on</string>
+    <string name="notification_turn_off">Turn off</string>
+    <string name="notification_turn_off_description">Turn the flashlight off</string>
+    <string name="notification_icon_description">Flashlight</string>
+    <string name="notification_open_controls">Open controls</string>
+    <string name="notification_stop_background">Stop</string>
+    <string name="notification_stop_background_description">Turn the flashlight off and stop the background service</string>
+
+    <string name="tile_state_description_on">Flashlight is on</string>
+    <string name="tile_state_description_off">Flashlight is off</string>
+    <string name="tile_state_description_unavailable">Flashlight is not available</string>
+
+    <string name="shake_channel_name">Shake monitoring</string>
+    <string name="shake_channel_description">Keeps the flashlight ready to toggle when you shake your phone.</string>
+    <string name="notification_shake_ready">Shake is ready</string>
+
+    <!-- Unified notification control panel. -->
+    <string name="notification_control_flashlight">Flashlight</string>
+    <string name="notification_control_shake">Shake</string>
+    <string name="notification_control_sos">SOS</string>
+    <string name="notification_control_strobe">Strobe</string>
+    <string name="notification_control_shake_description">Turn shake to toggle on or off</string>
+    <string name="notification_control_sos_description">Start or stop the SOS signal</string>
+    <string name="notification_control_strobe_description">Start or stop the strobe</string>
+    <string name="notification_on">ON</string>
+    <string name="notification_off">OFF</string>
+    <string name="notification_status_paused">PAUSED</string>
+    <string name="notification_mode_sos">SOS signal</string>
+    <string name="notification_mode_strobe">Strobe</string>
+    <string name="notification_sos_active">SOS signal active</string>
+    <string name="notification_strobe_active">Strobe active</string>
+    <string name="notification_pattern_paused">Pattern paused</string>
+    <string name="notification_sos_subtitle">SOS plays until you stop it.</string>
+    <string name="notification_strobe_subtitle">Strobe plays until you stop it.</string>
+
+    <string name="tile_state_sos">SOS active</string>
+    <string name="tile_state_strobe">Strobe active</string>
+    <string name="tile_state_description_sos">SOS signal is active</string>
+    <string name="tile_state_description_strobe">Strobe is active</string>
+</resources>

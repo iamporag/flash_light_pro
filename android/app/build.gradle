@@ -1,44 +1,92 @@
 plugins {
     id "com.android.application"
-    id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    // The Flutter Gradle Plugin must be applied after the Android plugin.
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+// AdMob requires a valid App ID in the merged manifest. The default below is
+// Google's official test App ID so local builds keep working. Production builds
+// must supply the real App ID with -PadmobAppId=... or ADMOB_APP_ID.
+def admobAppId = project.findProperty("admobAppId") ?: System.getenv("ADMOB_APP_ID")
+def hasAdmobAppId = admobAppId != null && !admobAppId.isEmpty()
+if (!hasAdmobAppId) {
+    admobAppId = "ca-app-pub-3940256099942544~3347511713"
+    logger.warn(
+        "AdMob App ID is not configured. Debug builds use Google's test App ID " +
+        "and release builds ship without one, so ads stay disabled. " +
+        "Pass -PadmobAppId=ca-app-pub-XXXX~YYYY (or set ADMOB_APP_ID) " +
+        "before publishing."
+    )
+}
+
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withInputStream { stream ->
+        keystoreProperties.load(stream)
+    }
+}
+
 android {
-    namespace = "com.example.flash_light_pro"
-    compileSdkVersion 36
+    namespace = "io.github.iamporag.flashlightpro"
+    compileSdk 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = '1.8'
+    kotlin {
+        compilerOptions {
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+        }
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.flash_light_pro"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdkVersion = flutter.minSdkVersion
-        targetSdk = 35
+        applicationId = "io.github.iamporag.flashlightpro"
+        minSdk 24
+        targetSdk 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // Appends so the Flutter plugin's applicationName placeholder survives.
+        manifestPlaceholders.admobAppId = admobAppId
+    }
+
+    signingConfigs {
+        if (keystorePropertiesFile.exists()) {
+            release {
+                keyAlias = keystoreProperties["keyAlias"]
+                keyPassword = keystoreProperties["keyPassword"]
+                storeFile = file(keystoreProperties["storeFile"])
+                storePassword = keystoreProperties["storePassword"]
+            }
+        }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            // Test App IDs must never reach a production manifest. Without a
+            // configured ID the SDK is never initialized because release ad
+            // unit IDs are also empty.
+            manifestPlaceholders.admobAppId = hasAdmobAppId ? admobAppId : ""
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.release
+            } else {
+                logger.warn(
+                    "Release signing is not configured. " +
+                    "Copy android/key.properties.example to android/key.properties " +
+                    "and provide your upload keystore before publishing."
+                )
+            }
         }
     }
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    testImplementation "junit:junit:4.13.2"
 }

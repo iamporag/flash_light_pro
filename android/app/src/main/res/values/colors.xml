@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launch_background">#0D1441</color>
+    <color name="ic_launcher_background">#0D1441</color>
+
+    <!-- Notification palette. Matches the Flutter app theme so the control
+         surface reads as part of Flash Light Pro in both system themes. -->
+    <color name="notification_background">#0A0F1E</color>
+    <color name="notification_surface">#161D31</color>
+    <color name="notification_surface_high">#1C2740</color>
+    <color name="notification_accent">#6FD3FF</color>
+    <color name="notification_accent_strong">#4C8DFF</color>
+    <color name="notification_torch">#FFC94D</color>
+    <color name="notification_text_primary">#F4F6FF</color>
+    <color name="notification_text_muted">#9BA5C2</color>
+    <color name="notification_chip_active_text">#9FD0FF</color>
+    <color name="notification_chip_inactive_text">#9BA5C2</color>
+    <color name="notification_danger">#FF8A8A</color>
+    <color name="notification_button_text">#08122A</color>
+    <color name="notification_control_on_text">#08122A</color>
+    <color name="notification_control_off_text">#9BA5C2</color>
+</resources>
