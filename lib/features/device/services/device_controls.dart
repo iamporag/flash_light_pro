@@ -35,7 +35,7 @@ class MethodChannelDeviceControls implements DeviceControls {
   const MethodChannelDeviceControls();
 
   static const MethodChannel _channel = MethodChannel(
-    'io.github.iamporag.flashlightpro/device_controls',
+    'com.claudysoft.flashlightpro/device_controls',
   );
 
   @override

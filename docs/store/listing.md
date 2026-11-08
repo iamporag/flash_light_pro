@@ -8,8 +8,8 @@ Replace every `TODO` before submitting.
 | Field | Value |
 | --- | --- |
 | App name | Flash Light Pro |
-| Android application ID | `io.github.iamporag.flashlightpro` |
-| iOS bundle ID | `io.github.iamporag.flashlightpro` |
+| Android application ID | `com.claudysoft.flashlightpro` |
+| iOS bundle ID | `com.claudysoft.flashlightpro` |
 | Version | `0.1.0` (build 1) |
 | Category | Utilities |
 | Price | Free |

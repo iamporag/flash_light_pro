@@ -6,7 +6,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   const channel = MethodChannel(
-    'io.github.iamporag.flashlightpro/device_controls',
+    'com.claudysoft.flashlightpro/device_controls',
   );
   final messenger =
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;

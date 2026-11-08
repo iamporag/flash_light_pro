@@ -38,7 +38,7 @@ class MethodChannelBatteryOptimizationService
   const MethodChannelBatteryOptimizationService();
 
   static const MethodChannel _channel = MethodChannel(
-    'io.github.iamporag.flashlightpro/device_controls',
+    'com.claudysoft.flashlightpro/device_controls',
   );
 
   static bool get _supported =>

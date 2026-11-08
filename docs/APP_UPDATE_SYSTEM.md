@@ -218,7 +218,7 @@ is suppressed while a mandatory update is active or the Play update flow runs.
 
 | Field | Default | Meaning |
 | --- | --- | --- |
-| `playStoreId` | `io.github.iamporag.flashlightpro` (or `--dart-define=PLAY_STORE_ID=…`) | Play listing id; must match `applicationId` |
+| `playStoreId` | `com.claudysoft.flashlightpro` (or `--dart-define=PLAY_STORE_ID=…`) | Play listing id; must match `applicationId` |
 | `appStoreId` | empty (or `--dart-define=APP_STORE_ID=…`) | Numeric App Store id; no iOS link when empty |
 | `minimumSupportedVersion` | `0.1.0` | Locally compiled emergency minimum |
 | `mandatoryPriority` | `5` | Play priority that makes an update mandatory |

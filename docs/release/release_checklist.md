@@ -2,8 +2,8 @@
 
 ## Identity and build settings
 
-- Android application ID: `io.github.iamporag.flashlightpro`
-- iOS bundle ID: `io.github.iamporag.flashlightpro`
+- Android application ID: `com.claudysoft.flashlightpro`
+- iOS bundle ID: `com.claudysoft.flashlightpro`
 - Version: `0.1.0+1` in `pubspec.yaml`
 - Android: `compileSdk 36`, `targetSdk 36`, `minSdk 24`
 - iOS deployment target: 15.0 (App Intents are gated to iOS 16+)

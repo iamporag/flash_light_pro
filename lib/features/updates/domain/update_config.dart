@@ -23,7 +23,7 @@ class UpdateConfig {
   /// Actual Android application id from `android/app/build.gradle`.
   static const String defaultPlayStoreId = String.fromEnvironment(
     'PLAY_STORE_ID',
-    defaultValue: 'io.github.iamporag.flashlightpro',
+    defaultValue: 'com.claudysoft.flashlightpro',
   );
 
   /// Only used when a real numeric App Store id is supplied at build time.

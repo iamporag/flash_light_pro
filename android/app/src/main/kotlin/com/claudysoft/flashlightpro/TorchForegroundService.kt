@@ -1,4 +1,4 @@
-package io.github.iamporag.flashlightpro
+package com.claudysoft.flashlightpro
 
 import android.Manifest
 import android.app.Notification
@@ -406,29 +406,29 @@ class TorchForegroundService : Service(),
         private const val EXTRA_ENABLED = "enabled"
 
         const val ACTION_START =
-            "io.github.iamporag.flashlightpro.action.START_TORCH_SERVICE"
+            "com.claudysoft.flashlightpro.action.START_TORCH_SERVICE"
         const val ACTION_STOP =
-            "io.github.iamporag.flashlightpro.action.STOP_TORCH_SERVICE"
+            "com.claudysoft.flashlightpro.action.STOP_TORCH_SERVICE"
         const val ACTION_TOGGLE_TORCH =
-            "io.github.iamporag.flashlightpro.action.TOGGLE_TORCH"
+            "com.claudysoft.flashlightpro.action.TOGGLE_TORCH"
         const val ACTION_SET_TORCH =
-            "io.github.iamporag.flashlightpro.action.SET_TORCH"
+            "com.claudysoft.flashlightpro.action.SET_TORCH"
         const val ACTION_TOGGLE_SHAKE =
-            "io.github.iamporag.flashlightpro.action.TOGGLE_SHAKE"
+            "com.claudysoft.flashlightpro.action.TOGGLE_SHAKE"
         const val ACTION_START_SOS =
-            "io.github.iamporag.flashlightpro.action.START_SOS"
+            "com.claudysoft.flashlightpro.action.START_SOS"
         const val ACTION_START_STROBE =
-            "io.github.iamporag.flashlightpro.action.START_STROBE"
+            "com.claudysoft.flashlightpro.action.START_STROBE"
         const val ACTION_STOP_MODE =
-            "io.github.iamporag.flashlightpro.action.STOP_MODE"
+            "com.claudysoft.flashlightpro.action.STOP_MODE"
         const val ACTION_PAUSE_MODE =
-            "io.github.iamporag.flashlightpro.action.PAUSE_MODE"
+            "com.claudysoft.flashlightpro.action.PAUSE_MODE"
         const val ACTION_RESUME_MODE =
-            "io.github.iamporag.flashlightpro.action.RESUME_MODE"
+            "com.claudysoft.flashlightpro.action.RESUME_MODE"
         const val ACTION_SYNC_SHAKE =
-            "io.github.iamporag.flashlightpro.action.SYNC_SHAKE"
+            "com.claudysoft.flashlightpro.action.SYNC_SHAKE"
         const val ACTION_STOP_ALL =
-            "io.github.iamporag.flashlightpro.action.STOP_ALL"
+            "com.claudysoft.flashlightpro.action.STOP_ALL"
 
         fun start(context: Context): StartResult {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {

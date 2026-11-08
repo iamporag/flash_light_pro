@@ -1,4 +1,4 @@
-package io.github.iamporag.flashlightpro
+package com.claudysoft.flashlightpro
 
 import android.content.Context
 import java.util.concurrent.CopyOnWriteArraySet

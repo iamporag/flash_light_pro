@@ -70,7 +70,7 @@ class MethodChannelNativeControls implements NativeControlsSource {
   MethodChannelNativeControls();
 
   static const EventChannel _events = EventChannel(
-    'io.github.iamporag.flashlightpro/native_controls_state',
+    'com.claudysoft.flashlightpro/native_controls_state',
   );
 
   Stream<NativeControlsSnapshot>? _stream;

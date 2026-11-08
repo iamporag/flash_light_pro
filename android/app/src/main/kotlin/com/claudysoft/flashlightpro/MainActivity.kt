@@ -1,4 +1,4 @@
-package io.github.iamporag.flashlightpro
+package com.claudysoft.flashlightpro
 
 import android.Manifest
 import android.content.ActivityNotFoundException
@@ -19,15 +19,15 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
     private val deviceControlsChannelName =
-        "io.github.iamporag.flashlightpro/device_controls"
+        "com.claudysoft.flashlightpro/device_controls"
     private val torchEventsChannelName =
-        "io.github.iamporag.flashlightpro/torch_state"
+        "com.claudysoft.flashlightpro/torch_state"
     private val backgroundTorchEventsChannelName =
-        "io.github.iamporag.flashlightpro/background_torch_state"
+        "com.claudysoft.flashlightpro/background_torch_state"
     private val shakeMonitorEventsChannelName =
-        "io.github.iamporag.flashlightpro/shake_monitor_state"
+        "com.claudysoft.flashlightpro/shake_monitor_state"
     private val nativeControlsEventsChannelName =
-        "io.github.iamporag.flashlightpro/native_controls_state"
+        "com.claudysoft.flashlightpro/native_controls_state"
 
     private var originalWindowBrightness: Float? = null
     private var notificationPermissionResult: MethodChannel.Result? = null

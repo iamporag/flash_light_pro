@@ -1,4 +1,4 @@
-package io.github.iamporag.flashlightpro
+package com.claudysoft.flashlightpro
 
 // Background shake monitoring was merged into TorchForegroundService so the
 // app runs a single foreground service, a single notification, and a single

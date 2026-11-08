@@ -59,11 +59,11 @@ class MethodChannelShakeMonitorService implements ShakeMonitorService {
   MethodChannelShakeMonitorService();
 
   static const MethodChannel _channel = MethodChannel(
-    'io.github.iamporag.flashlightpro/device_controls',
+    'com.claudysoft.flashlightpro/device_controls',
   );
 
   static const EventChannel _events = EventChannel(
-    'io.github.iamporag.flashlightpro/shake_monitor_state',
+    'com.claudysoft.flashlightpro/shake_monitor_state',
   );
 
   static const Duration _timeout = Duration(seconds: 5);

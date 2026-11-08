@@ -1,4 +1,4 @@
-package io.github.iamporag.flashlightpro
+package com.claudysoft.flashlightpro
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -55,7 +55,7 @@ class TorchWidgetProvider : AppWidgetProvider() {
 
     companion object {
         const val ACTION_TOGGLE =
-            "io.github.iamporag.flashlightpro.action.TOGGLE_TORCH_FROM_WIDGET"
+            "com.claudysoft.flashlightpro.action.TOGGLE_TORCH_FROM_WIDGET"
 
         private const val EXTRA_WIDGET_ID = "appWidgetId"
 

@@ -1,4 +1,4 @@
-package io.github.iamporag.flashlightpro
+package com.claudysoft.flashlightpro
 
 /**
  * Platform-independent torch state machine. Android hardware access, storage,

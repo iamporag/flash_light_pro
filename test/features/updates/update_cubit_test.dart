@@ -411,7 +411,7 @@ void main() {
         expect(gateway.flexibleCalls, 0);
         expect(
           launcher.opened.single.toString(),
-          'https://play.google.com/store/apps/details?id=io.github.iamporag.flashlightpro',
+          'https://play.google.com/store/apps/details?id=com.claudysoft.flashlightpro',
         );
       },
     );
@@ -423,7 +423,7 @@ void main() {
 
       expect(
         launcher.opened.single.toString(),
-        'https://play.google.com/store/apps/details?id=io.github.iamporag.flashlightpro',
+        'https://play.google.com/store/apps/details?id=com.claudysoft.flashlightpro',
       );
     });
 

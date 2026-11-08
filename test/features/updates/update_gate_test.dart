@@ -298,7 +298,7 @@ void main() {
       expect(
         launcher.opened.single.toString(),
         'https://play.google.com/store/apps/details'
-        '?id=io.github.iamporag.flashlightpro',
+        '?id=com.claudysoft.flashlightpro',
       );
     });
 

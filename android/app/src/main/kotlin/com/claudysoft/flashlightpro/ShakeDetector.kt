@@ -1,4 +1,4 @@
-package io.github.iamporag.flashlightpro
+package com.claudysoft.flashlightpro
 
 import kotlin.math.abs
 import kotlin.math.sqrt

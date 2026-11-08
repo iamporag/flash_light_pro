@@ -40,8 +40,8 @@ flashlight, or navigation.
 
 1. Create or open an [AdMob](https://admob.google.com/) account.
 2. Add two apps with your existing store identities:
-   - Android: `io.github.iamporag.flashlightpro`
-   - iOS: `io.github.iamporag.flashlightpro`
+   - Android: `com.claudysoft.flashlightpro`
+   - iOS: `com.claudysoft.flashlightpro`
 3. Copy each **AdMob App ID** (format `ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX`).
 4. Create five ad units per platform:
    - Banner

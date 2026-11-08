@@ -5,7 +5,7 @@ import Foundation
 final class TorchController {
   static let shared = TorchController()
   static let stateDidChange = Notification.Name(
-    "io.github.iamporag.flashlightpro.torchStateDidChange"
+    "com.claudysoft.flashlightpro.torchStateDidChange"
   )
 
   enum Failure: LocalizedError {

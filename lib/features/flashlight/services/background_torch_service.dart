@@ -53,11 +53,11 @@ class MethodChannelBackgroundTorchService implements BackgroundTorchService {
   MethodChannelBackgroundTorchService();
 
   static const MethodChannel _channel = MethodChannel(
-    'io.github.iamporag.flashlightpro/device_controls',
+    'com.claudysoft.flashlightpro/device_controls',
   );
 
   static const EventChannel _events = EventChannel(
-    'io.github.iamporag.flashlightpro/background_torch_state',
+    'com.claudysoft.flashlightpro/background_torch_state',
   );
 
   static const Duration _timeout = Duration(seconds: 5);

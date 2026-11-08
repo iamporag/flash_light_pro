@@ -5,13 +5,13 @@ void main() {
   group('UpdateConfig', () {
     test('builds the Play Store URL from the application id', () {
       const config = UpdateConfig(
-        playStoreId: 'io.github.iamporag.flashlightpro',
+        playStoreId: 'com.claudysoft.flashlightpro',
       );
 
       expect(
         config.playStoreUrl,
         'https://play.google.com/store/apps/details'
-        '?id=io.github.iamporag.flashlightpro',
+        '?id=com.claudysoft.flashlightpro',
       );
     });
 

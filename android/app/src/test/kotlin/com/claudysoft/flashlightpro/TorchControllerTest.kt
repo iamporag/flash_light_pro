@@ -1,4 +1,4 @@
-package io.github.iamporag.flashlightpro
+package com.claudysoft.flashlightpro
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

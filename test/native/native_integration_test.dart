@@ -86,7 +86,7 @@ void main() {
       'the tile toggles through the shared controller and exposes state',
       () {
         final tile = read(
-          'android/app/src/main/kotlin/io/github/iamporag/flashlightpro/'
+          'android/app/src/main/kotlin/com/claudysoft/flashlightpro/'
           'TorchTileService.kt',
         );
 
@@ -103,7 +103,7 @@ void main() {
 
     test('the tile stops an active pattern instead of toggling a blink', () {
       final tile = read(
-        'android/app/src/main/kotlin/io/github/iamporag/flashlightpro/'
+        'android/app/src/main/kotlin/com/claudysoft/flashlightpro/'
         'TorchTileService.kt',
       );
 
@@ -117,7 +117,7 @@ void main() {
 
     test('the widget stops an active pattern instead of toggling a blink', () {
       final widget = read(
-        'android/app/src/main/kotlin/io/github/iamporag/flashlightpro/'
+        'android/app/src/main/kotlin/com/claudysoft/flashlightpro/'
         'TorchWidgetProvider.kt',
       );
 
@@ -128,7 +128,7 @@ void main() {
 
     test('the widget toggles without starting a background service', () {
       final widget = read(
-        'android/app/src/main/kotlin/io/github/iamporag/flashlightpro/'
+        'android/app/src/main/kotlin/com/claudysoft/flashlightpro/'
         'TorchWidgetProvider.kt',
       );
 
@@ -147,7 +147,7 @@ void main() {
 
     test('the notification panel uses RemoteViews with every control', () {
       final notification = read(
-        'android/app/src/main/kotlin/io/github/iamporag/flashlightpro/'
+        'android/app/src/main/kotlin/com/claudysoft/flashlightpro/'
         'FlashlightNotification.kt',
       );
       final expanded = read(
@@ -167,7 +167,7 @@ void main() {
 
     test('one stable notification and one sensor listener serve all modes', () {
       final service = read(
-        'android/app/src/main/kotlin/io/github/iamporag/flashlightpro/'
+        'android/app/src/main/kotlin/com/claudysoft/flashlightpro/'
         'TorchForegroundService.kt',
       );
 
@@ -184,13 +184,13 @@ void main() {
 
     test('native control and battery state are bridged to Flutter', () {
       final activity = read(
-        'android/app/src/main/kotlin/io/github/iamporag/flashlightpro/'
+        'android/app/src/main/kotlin/com/claudysoft/flashlightpro/'
         'MainActivity.kt',
       );
 
       expect(
         activity,
-        contains('io.github.iamporag.flashlightpro/native_controls_state'),
+        contains('com.claudysoft.flashlightpro/native_controls_state'),
       );
       expect(activity, contains('"getNativeControlState"'));
       expect(activity, contains('"getBatteryOptimizationStatus"'));
@@ -209,11 +209,11 @@ void main() {
 
     test('one process-wide controller backs every surface', () {
       final manager = read(
-        'android/app/src/main/kotlin/io/github/iamporag/flashlightpro/'
+        'android/app/src/main/kotlin/com/claudysoft/flashlightpro/'
         'TorchManager.kt',
       );
       final activity = read(
-        'android/app/src/main/kotlin/io/github/iamporag/flashlightpro/'
+        'android/app/src/main/kotlin/com/claudysoft/flashlightpro/'
         'MainActivity.kt',
       );
 
@@ -223,11 +223,11 @@ void main() {
       expect(activity, contains('TorchManager.get(this)'));
       expect(
         activity,
-        contains('io.github.iamporag.flashlightpro/device_controls'),
+        contains('com.claudysoft.flashlightpro/device_controls'),
       );
       expect(
         activity,
-        contains('io.github.iamporag.flashlightpro/torch_state'),
+        contains('com.claudysoft.flashlightpro/torch_state'),
       );
     });
 
@@ -235,7 +235,7 @@ void main() {
       'the camera hardware uses the torch API, not a camera capture session',
       () {
         final hardware = read(
-          'android/app/src/main/kotlin/io/github/iamporag/flashlightpro/'
+          'android/app/src/main/kotlin/com/claudysoft/flashlightpro/'
           'CameraTorchHardware.kt',
         );
 
@@ -248,7 +248,7 @@ void main() {
 
     test('the controller has JVM unit tests for toggle and error paths', () {
       final tests = read(
-        'android/app/src/test/kotlin/io/github/iamporag/flashlightpro/'
+        'android/app/src/test/kotlin/com/claudysoft/flashlightpro/'
         'TorchControllerTest.kt',
       );
 
@@ -296,11 +296,11 @@ void main() {
       expect(delegate, contains('#available(iOS 16.0, *)'));
       expect(
         delegate,
-        contains('io.github.iamporag.flashlightpro/device_controls'),
+        contains('com.claudysoft.flashlightpro/device_controls'),
       );
       expect(
         delegate,
-        contains('io.github.iamporag.flashlightpro/torch_state'),
+        contains('com.claudysoft.flashlightpro/torch_state'),
       );
       expect(delegate, contains('TorchController.shared'));
     });
@@ -365,7 +365,7 @@ void main() {
           .firstMatch(buildGradle)
           ?.group(1);
 
-      expect(applicationId, 'io.github.iamporag.flashlightpro');
+      expect(applicationId, 'com.claudysoft.flashlightpro');
       expect(config, contains("defaultValue: '$applicationId'"));
     });
   });

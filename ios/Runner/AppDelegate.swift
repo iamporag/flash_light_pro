@@ -3,8 +3,8 @@ import UIKit
 
 @main
 @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
-  private let deviceControlsChannelName = "io.github.iamporag.flashlightpro/device_controls"
-  private let torchEventsChannelName = "io.github.iamporag.flashlightpro/torch_state"
+  private let deviceControlsChannelName = "com.claudysoft.flashlightpro/device_controls"
+  private let torchEventsChannelName = "com.claudysoft.flashlightpro/torch_state"
   private var deviceControlsChannel: FlutterMethodChannel?
   private var originalBrightness: CGFloat?
 

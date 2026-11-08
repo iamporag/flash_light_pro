@@ -47,7 +47,7 @@ class MethodChannelTorchService implements TorchService {
   const MethodChannelTorchService();
 
   static const MethodChannel _channel = MethodChannel(
-    'io.github.iamporag.flashlightpro/device_controls',
+    'com.claudysoft.flashlightpro/device_controls',
   );
 
   static const Duration _timeout = Duration(seconds: 5);
@@ -132,7 +132,7 @@ class EventChannelTorchStateSource implements TorchStateSource {
   EventChannelTorchStateSource();
 
   static const EventChannel _channel = EventChannel(
-    'io.github.iamporag.flashlightpro/torch_state',
+    'com.claudysoft.flashlightpro/torch_state',
   );
 
   Stream<bool>? _stream;
