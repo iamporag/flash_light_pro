@@ -338,6 +338,7 @@ class MutableAdContext {
     this.updateCheckInProgress = false,
     this.mandatoryUpdateActive = false,
     this.updateFlowActive = false,
+    this.purchaseFlowActive = false,
     this.fullscreenAdVisible = false,
     this.firstSession = false,
   });
@@ -348,6 +349,7 @@ class MutableAdContext {
   bool updateCheckInProgress;
   bool mandatoryUpdateActive;
   bool updateFlowActive;
+  bool purchaseFlowActive;
   bool fullscreenAdVisible;
   bool firstSession;
 
@@ -358,6 +360,7 @@ class MutableAdContext {
     updateCheckInProgress: updateCheckInProgress,
     mandatoryUpdateActive: mandatoryUpdateActive,
     updateFlowActive: updateFlowActive,
+    purchaseFlowActive: purchaseFlowActive,
     fullscreenAdVisible: fullscreenAdVisible,
     firstSession: firstSession,
   );

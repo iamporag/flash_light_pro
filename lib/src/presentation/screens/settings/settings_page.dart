@@ -76,8 +76,11 @@ class SettingsPage extends StatelessWidget {
                             ),
                             label: Text(_languageName(l10n, language)),
                             selected: state.appLanguage == language,
-                            onSelected: (_) =>
-                                bloc.add(SetAppLanguage(language)),
+                            onSelected: (_) {
+                              if (state.appLanguage == language) return;
+                              _register(context, AdActionId.settingsLanguage);
+                              bloc.add(SetAppLanguage(language));
+                            },
                           ),
                       ],
                     ),
@@ -90,7 +93,11 @@ class SettingsPage extends StatelessWidget {
                       key: const Key('settings-haptics'),
                       contentPadding: EdgeInsets.zero,
                       value: state.hapticsEnabled,
-                      onChanged: (value) => bloc.add(SetHapticsEnabled(value)),
+                      onChanged: (value) {
+                        if (value == state.hapticsEnabled) return;
+                        _register(context, AdActionId.settingsHaptics);
+                        bloc.add(SetHapticsEnabled(value));
+                      },
                       title: Text(l10n.haptics),
                       subtitle: Text(l10n.hapticsSubtitle),
                     ),
@@ -99,8 +106,11 @@ class SettingsPage extends StatelessWidget {
                       key: const Key('settings-reduce-animations'),
                       contentPadding: EdgeInsets.zero,
                       value: state.reduceAnimations,
-                      onChanged: (value) =>
-                          bloc.add(SetReduceAnimations(value)),
+                      onChanged: (value) {
+                        if (value == state.reduceAnimations) return;
+                        _register(context, AdActionId.settingsReduceAnimations);
+                        bloc.add(SetReduceAnimations(value));
+                      },
                       title: Text(l10n.reduceAnimations),
                       subtitle: Text(l10n.reduceAnimationsSubtitle),
                     ),
@@ -185,9 +195,11 @@ class SettingsPage extends StatelessWidget {
                               ),
                           ],
                           onChanged: (mode) {
-                            if (mode != null) {
-                              bloc.add(SelectLightMode(mode));
+                            if (mode == null || mode == state.selectedMode) {
+                              return;
                             }
+                            _register(context, AdActionId.settingsDefaultMode);
+                            bloc.add(SelectLightMode(mode));
                           },
                         ),
                       ],
@@ -197,7 +209,11 @@ class SettingsPage extends StatelessWidget {
                       key: const Key('settings-keep-awake'),
                       contentPadding: EdgeInsets.zero,
                       value: state.keepScreenAwake,
-                      onChanged: (value) => bloc.add(SetKeepScreenAwake(value)),
+                      onChanged: (value) {
+                        if (value == state.keepScreenAwake) return;
+                        _register(context, AdActionId.settingsKeepScreenAwake);
+                        bloc.add(SetKeepScreenAwake(value));
+                      },
                       title: Text(l10n.keepScreenAwake),
                       subtitle: Text(l10n.keepScreenAwakeSubtitle),
                     ),
@@ -261,11 +277,7 @@ class SettingsPage extends StatelessWidget {
                       ),
                       title: Text(l10n.openSourceLicenses),
                       trailing: const Icon(Icons.chevron_right_rounded),
-                      onTap: () => showLicensePage(
-                        context: context,
-                        applicationName: l10n.appName,
-                        applicationVersion: AppInfo.fullVersion,
-                      ),
+                      onTap: () => unawaited(_openLicenses(context)),
                     ),
                   ],
                 ),
@@ -315,15 +327,37 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  /// Returning from the policy is a natural optional-information transition,
-  /// so it is the only place an interstitial may be offered.
+  /// Utility-screen navigation counts as one eligible action when it is
+  /// opened and one when it is left. The cycle is centralised in
+  /// [AdClickFrequencyManager]; this page never shows an ad directly.
   Future<void> _openPrivacyPolicy(BuildContext context) async {
+    _register(context, AdActionId.openPrivacyPolicy);
     await Navigator.of(context).push(
       MaterialPageRoute<void>(builder: (context) => const PrivacyPolicyPage()),
     );
     if (!context.mounted) return;
-    final controller = MonetizationScope.maybeOf(context);
-    await controller?.maybeShowInterstitial(AdPlacement.privacyPolicyExit);
+    _register(context, AdActionId.closePrivacyPolicy);
+  }
+
+  Future<void> _openLicenses(BuildContext context) async {
+    final l10n = context.l10n;
+    _register(context, AdActionId.openLicenses);
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => LicensePage(
+          applicationName: l10n.appName,
+          applicationVersion: AppInfo.fullVersion,
+        ),
+      ),
+    );
+    if (!context.mounted) return;
+    _register(context, AdActionId.closeLicenses);
+  }
+
+  void _register(BuildContext context, AdActionId action) {
+    unawaited(
+      MonetizationScope.maybeOf(context)?.registerEligibleAction(action),
+    );
   }
 
   String _languageName(AppLocalizations l10n, AppLanguage language) {

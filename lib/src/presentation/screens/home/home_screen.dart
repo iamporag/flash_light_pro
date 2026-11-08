@@ -3,6 +3,9 @@ import 'dart:math' as math;
 
 import 'package:flash_light_pro/features/flashlight/services/torch_service.dart';
 import 'package:flash_light_pro/features/lighting/domain/light_mode.dart';
+import 'package:flash_light_pro/features/monetization/domain/ad_models.dart';
+import 'package:flash_light_pro/features/monetization/presentation/monetization_scope.dart';
+import 'package:flash_light_pro/features/monetization/presentation/torch_banner_ad.dart';
 import 'package:flash_light_pro/features/morse/domain/morse_codec.dart';
 import 'package:flash_light_pro/src/bloc/flash_light/flash_light_bloc.dart';
 import 'package:flash_light_pro/src/presentation/screens/home/widgets/mode_panels.dart';
@@ -213,6 +216,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     fontSize: 11.5,
                   ),
                 ),
+                const TorchBannerAd(),
               ],
             ),
           ),
@@ -319,10 +323,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 
   void _openSettings(BuildContext context) {
+    final controller = MonetizationScope.maybeOf(context);
+    unawaited(controller?.registerEligibleAction(AdActionId.openSettings));
     unawaited(
-      Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute<void>(builder: (context) => const SettingsPage()),
-      ),
+      Navigator.of(context, rootNavigator: true)
+          .push(
+            MaterialPageRoute<void>(builder: (context) => const SettingsPage()),
+          )
+          .whenComplete(() {
+            unawaited(
+              controller?.registerEligibleAction(AdActionId.closeSettings),
+            );
+          }),
     );
   }
 

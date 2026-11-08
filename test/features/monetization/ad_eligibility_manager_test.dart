@@ -57,6 +57,12 @@ class _Harness {
     );
     await eligibility.loadPersistedState();
   }
+
+  Future<void> reachTrigger() async {
+    await eligibility.clickFrequency.register(AdActionId.openSettings);
+    await eligibility.clickFrequency.register(AdActionId.openLicenses);
+    await eligibility.clickFrequency.register(AdActionId.closeLicenses);
+  }
 }
 
 AdEligibility check(
@@ -171,7 +177,7 @@ void main() {
       expect(
         check(
           harness.eligibility,
-          AdPlacement.privacyPolicyExit,
+          AdPlacement.interstitialAction,
           ready: true,
         ).reason,
         AdBlockReason.mandatoryUpdateActive,
@@ -215,15 +221,17 @@ void main() {
       );
     });
 
-    test('a fullscreen placement must be confirmed ready', () {
+    test('a fullscreen placement must be confirmed ready', () async {
+      await harness.reachTrigger();
+
       expect(
-        check(harness.eligibility, AdPlacement.privacyPolicyExit).reason,
+        check(harness.eligibility, AdPlacement.interstitialAction).reason,
         AdBlockReason.adNotReady,
       );
       expect(
         check(
           harness.eligibility,
-          AdPlacement.privacyPolicyExit,
+          AdPlacement.interstitialAction,
           ready: true,
         ).isAllowed,
         isTrue,
@@ -232,70 +240,72 @@ void main() {
   });
 
   group('frequency', () {
-    test(
-      'an interstitial impression starts the five minute cooldown',
-      () async {
-        var now = DateTime(2026, 1, 1, 12);
-        final harness = _Harness(clock: () => now);
-        await harness.setUp();
+    test('an interstitial impression starts the two minute cooldown', () async {
+      var now = DateTime(2026, 1, 1, 12);
+      final harness = _Harness(clock: () => now);
+      await harness.setUp();
+      await harness.reachTrigger();
 
-        await harness.eligibility.recordImpression(
-          AdPlacement.privacyPolicyExit,
-        );
+      await harness.eligibility.recordImpression(
+        AdPlacement.interstitialAction,
+      );
 
-        now = now.add(const Duration(minutes: 4));
-        expect(
-          check(
-            harness.eligibility,
-            AdPlacement.privacyPolicyExit,
-            ready: true,
-          ).reason,
-          AdBlockReason.frequencyCooldown,
-        );
+      now = now.add(const Duration(minutes: 1, seconds: 59));
+      await harness.reachTrigger();
+      expect(
+        check(
+          harness.eligibility,
+          AdPlacement.interstitialAction,
+          ready: true,
+        ).reason,
+        AdBlockReason.frequencyCooldown,
+      );
 
-        now = now.add(const Duration(minutes: 1));
-        expect(
-          check(
-            harness.eligibility,
-            AdPlacement.privacyPolicyExit,
-            ready: true,
-          ).isAllowed,
-          isTrue,
-        );
-      },
-    );
+      now = now.add(const Duration(seconds: 1));
+      expect(
+        check(
+          harness.eligibility,
+          AdPlacement.interstitialAction,
+          ready: true,
+        ).isAllowed,
+        isTrue,
+      );
+    });
 
-    test('three interstitials in one day block the fourth', () async {
+    test('five interstitials in one day block the sixth', () async {
       var now = DateTime(2026, 1, 1, 12);
       final store = FakeAdFrequencyStore();
       final harness = _Harness(clock: () => now, frequencyStore: store);
       await harness.setUp();
 
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < 5; i++) {
+        await harness.reachTrigger();
         await harness.eligibility.recordImpression(
-          AdPlacement.privacyPolicyExit,
+          AdPlacement.interstitialAction,
         );
-        now = now.add(const Duration(minutes: 6));
+        now = now.add(const Duration(minutes: 3));
       }
 
+      await harness.reachTrigger();
       expect(
         check(
           harness.eligibility,
-          AdPlacement.privacyPolicyExit,
+          AdPlacement.interstitialAction,
           ready: true,
         ).reason,
         AdBlockReason.dailyLimitReached,
       );
-      expect(store.saves, 3);
+      expect(harness.eligibility.frequencyState.interstitialCount, 5);
+      expect(store.state.interstitialCount, 5);
     });
 
-    test('app-open is never allowed during the first session', () async {
+    test('app-open is allowed on the first eligible session', () async {
       final harness = _Harness(context: MutableAdContext(firstSession: true));
       await harness.setUp();
 
       expect(
-        check(harness.eligibility, AdPlacement.appOpen, ready: true).reason,
-        AdBlockReason.appOpenFirstSession,
+        check(harness.eligibility, AdPlacement.appOpen, ready: true).isAllowed,
+        isTrue,
       );
     });
 
@@ -325,18 +335,34 @@ void main() {
         var now = DateTime(2026, 1, 1, 12);
         final harness = _Harness(clock: () => now);
         await harness.setUp();
+        await harness.reachTrigger();
 
         await harness.eligibility.recordImpression(
-          AdPlacement.privacyPolicyExit,
+          AdPlacement.interstitialAction,
         );
 
         now = now.add(const Duration(seconds: 29));
         expect(
           check(harness.eligibility, AdPlacement.appOpen, ready: true).reason,
-          AdBlockReason.frequencyCooldown,
+          AdBlockReason.fullscreenFormatCooldown,
         );
       },
     );
+
+    test('a purchase flow blocks fullscreen ads', () async {
+      final harness = _Harness();
+      await harness.setUp();
+      harness.context.purchaseFlowActive = true;
+
+      expect(
+        check(harness.eligibility, AdPlacement.appOpen, ready: true).reason,
+        AdBlockReason.purchaseFlowActive,
+      );
+      expect(
+        check(harness.eligibility, AdPlacement.torchBanner).reason,
+        AdBlockReason.purchaseFlowActive,
+      );
+    });
 
     test('persisted frequency data is enforced after a restart', () async {
       final now = DateTime(2026, 1, 1, 12);

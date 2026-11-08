@@ -12,14 +12,14 @@ when those are missing, ads stay disabled and the app remains fully usable.
 
 | Format | Placement | Behavior |
 | --- | --- | --- |
-| Banner | Bottom of the privacy policy page | Informational screen only; not on the flashlight screen |
+| Banner | Bottom of the torch (home) screen | Adaptive anchored banner, hidden (not re-requested) while a light is active; never on the full-screen light page |
 | Native | Bottom of Settings | Labeled `Ad`; loads only when eligible |
-| Interstitial | Returning from the privacy policy to Settings | Natural transition only; 5-minute minimum, 3 per local day |
-| App open | Return from the background | Never first session; 4-hour cooldown; 600 ms re-check; skipped if a light or update prompt is active |
+| Interstitial | After every 3 approved utility actions | 2-minute minimum, 5 per local day, pending trigger survives a blocked attempt |
+| App open | First eligible moment of a cold start and real returns from the background | 4-hour cooldown; never during a torch session, purchase, update, or permission flow |
 | Rewarded | Reusable service, no UI | The app has no suitable optional benefit, so it is intentionally unwired |
 
-Every request runs through `AdEligibilityManager`. Ads are refused when any of
-these is true:
+Every request and every presentation runs through `AdEligibilityManager`. Ads
+are refused when any of these is true:
 
 - the placement has no unit ID;
 - UMP consent does not allow ad requests;
@@ -27,9 +27,10 @@ these is true:
 - the flashlight, SOS, strobe, Morse, or screen light is active;
 - essential initialization is running;
 - the app is not resumed or a fullscreen ad is visible;
+- a purchase or restore is running;
 - an update check is running, a mandatory update prompt is visible, or the Play
   update flow is active (download, install, or launch);
-- frequency limits or first-session rules block the format;
+- frequency limits block the format, or no interstitial trigger is pending;
 - the fullscreen ad is not loaded (navigation continues immediately).
 
 AdMob errors are caught everywhere. They cannot block an update check, the
@@ -234,8 +235,8 @@ Consequences you should understand before publishing:
   user may need to tap **Restore purchases** on iOS.
 - AdMob invalid-traffic detection and policy enforcement are Google's
   responsibility. This app records impressions only after the SDK confirms
-  presentation, keeps a local 3/day limit, and never auto-shows fullscreen ads
-  on the flashlight screen.
+  presentation, keeps a local 5/day limit, and never auto-shows fullscreen ads
+  during an active light session.
 - No analytics or crash reporting is added. AdMob reporting is available in your
   AdMob account only.
 
@@ -263,11 +264,14 @@ Update both stores before submitting:
 - [ ] A UMP message is published in AdMob for every required region.
 - [ ] `flash_light_pro_remove_ads` exists and is active in both stores.
 - [ ] Debug build shows sample ads only; release build shows production ads.
-- [ ] No ad appears on the flashlight screen, during SOS/strobe/Morse/screen
-      light, or while a mandatory update prompt is visible.
-- [ ] Interstitial shows only after leaving the privacy policy, never on launch
-      or torch toggles; the 5-minute and 3-per-day limits hold after restart.
-- [ ] App-open never appears on a fresh install's first session.
+- [ ] A banner appears at the bottom of the torch screen and is hidden during
+      SOS, strobe, Morse, and screen-light use without re-requesting per toggle.
+- [ ] Interstitial shows after the third approved utility action, never on
+      launch or torch toggles; the 2-minute and 5-per-day limits hold after
+      restart, and a blocked trigger is retried at the next safe action.
+- [ ] App Open appears on a fresh install's first eligible session and never
+      after a brief Quick Settings or system-settings round trip.
+- [ ] No two fullscreen formats appear back to back.
 - [ ] Purchase, pending, cancel, failure, restore, and already-owned paths were
       each exercised with a store test account.
 - [ ] An owned entitlement suppresses every format immediately, including after

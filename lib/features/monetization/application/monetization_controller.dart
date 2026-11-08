@@ -33,8 +33,9 @@ class MonetizationController extends ChangeNotifier {
     required FullScreenAdPresenter fullscreenPresenter,
     required RewardedAdPresenter rewardedPresenter,
     required this.frequencyStore,
-    required AdRuntimeFlags runtimeFlags,
+    required this.runtimeFlags,
     DateTime Function()? clock,
+    this.interstitialActionDelay = const Duration(milliseconds: 350),
   }) {
     consent = ConsentManager(gateway: consentGateway);
     entitlement = AdFreeEntitlementService(
@@ -69,6 +70,8 @@ class MonetizationController extends ChangeNotifier {
   final AdConfig config;
   final AdInitializer adInitializer;
   final AdFrequencyStore frequencyStore;
+  final AdRuntimeFlags runtimeFlags;
+  final Duration interstitialActionDelay;
 
   late final ConsentManager consent;
   late final AdFreeEntitlementService entitlement;
@@ -84,6 +87,7 @@ class MonetizationController extends ChangeNotifier {
   bool _disposed = false;
   DateTime? _lastStartAttemptAt;
   DateTime? _lastPreloadAttemptAt;
+  Timer? _interstitialAttemptTimer;
 
   static const Duration _startRetryInterval = Duration(seconds: 20);
   static const Duration _preloadRetryInterval = Duration(seconds: 15);
@@ -106,6 +110,14 @@ class MonetizationController extends ChangeNotifier {
 
   String? get bannerUnitId => config.unitIdFor(AdFormat.banner);
   String? get nativeUnitId => config.unitIdFor(AdFormat.native);
+
+  int get eligibleActionCount => eligibility.clickFrequency.eligibleActionCount;
+  int get interstitialActionThreshold =>
+      eligibility.clickFrequency.actionThreshold;
+  bool get pendingInterstitial =>
+      eligibility.clickFrequency.hasPendingInterstitial;
+  bool get isAppOpenReady => fullscreen.isAppOpenReady;
+  bool get externalSystemFlow => runtimeFlags.externalSystemFlow;
 
   /// Coarse, user-facing advertising status. It never exposes configuration
   /// values or technical identifiers.
@@ -217,6 +229,49 @@ class MonetizationController extends ChangeNotifier {
     return eligibility.check(placement).isAllowed;
   }
 
+  AdEligibility placementEligibility(AdPlacement placement) {
+    if (!_sdkReady) {
+      return const AdEligibility.blocked(AdBlockReason.adNotReady);
+    }
+    return eligibility.checkBase(placement);
+  }
+
+  /// Records one approved user action and schedules an Interstitial attempt
+  /// when the threshold is reached. A pending trigger is preserved and retried
+  /// on the next eligible action; the counter never advances past the trigger.
+  Future<bool> registerEligibleAction(AdActionId action) async {
+    if (!config.hasAnyUnitId) return false;
+    if (isAdFree) {
+      AdDiagnostics.log('eligible action ignored', '${action.name} (ad-free)');
+      return false;
+    }
+
+    final registration = await eligibility.clickFrequency.register(action);
+    if (registration.triggerReached && !registration.duplicate) {
+      _scheduleInterstitialAttempt();
+    }
+    return registration.triggerReached;
+  }
+
+  void _scheduleInterstitialAttempt() {
+    _interstitialAttemptTimer?.cancel();
+    _interstitialAttemptTimer = Timer(interstitialActionDelay, () {
+      if (_disposed) return;
+      unawaited(maybeShowInterstitial(AdPlacement.interstitialAction));
+    });
+  }
+
+  /// Marks a deliberate hand-off to a system surface (for example battery
+  /// settings) so returning from it never triggers an App Open ad.
+  void markExternalSystemFlow() {
+    runtimeFlags.externalSystemFlow = true;
+    AdDiagnostics.log('external system flow marked');
+  }
+
+  void clearExternalSystemFlow() {
+    runtimeFlags.externalSystemFlow = false;
+  }
+
   /// Immediately skips when the ad is not ready; navigation never waits.
   Future<bool> maybeShowInterstitial(AdPlacement placement) async {
     if (!_sdkReady) return false;
@@ -227,6 +282,10 @@ class MonetizationController extends ChangeNotifier {
 
   Future<bool> maybeShowAppOpen() async {
     if (!_sdkReady) return false;
+    if (pendingInterstitial) {
+      AdDiagnostics.log('app open skipped', 'interstitial trigger pending');
+      return false;
+    }
     final shown = await fullscreen.maybeShowAppOpen();
     _notify();
     return shown;
@@ -277,6 +336,7 @@ class MonetizationController extends ChangeNotifier {
     _notify();
     if (entitlement.isAdFree) {
       // Loaded fullscreen ads must not resurface after ownership is confirmed.
+      _interstitialAttemptTimer?.cancel();
       fullscreen.disposeLoaded();
     }
     _retryPreloadIfNeeded();
@@ -289,6 +349,7 @@ class MonetizationController extends ChangeNotifier {
   @override
   void dispose() {
     _disposed = true;
+    _interstitialAttemptTimer?.cancel();
     consent.removeListener(_onDependencyChanged);
     entitlement.removeListener(_onDependencyChanged);
     consent.dispose();

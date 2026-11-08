@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flash_light_pro/features/battery/services/battery_optimization_service.dart';
+import 'package:flash_light_pro/features/monetization/presentation/monetization_scope.dart';
 import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,7 @@ class _BatteryOptimizationSectionState extends State<BatteryOptimizationSection>
 
   Future<void> _request() async {
     setState(() => _requesting = true);
+    _markExternalSystemFlow();
     final opened = await widget.service.requestIgnore();
     if (!mounted) return;
     setState(() {
@@ -67,6 +69,10 @@ class _BatteryOptimizationSectionState extends State<BatteryOptimizationSection>
       // The user decides in the system dialog; refresh when they return.
       unawaited(_refresh());
     }
+  }
+
+  void _markExternalSystemFlow() {
+    MonetizationScope.maybeOf(context)?.markExternalSystemFlow();
   }
 
   @override
@@ -175,7 +181,10 @@ class _BatteryOptimizationSectionState extends State<BatteryOptimizationSection>
                     ),
                   TextButton(
                     key: const Key('settings-battery-open'),
-                    onPressed: () => unawaited(widget.service.openSettings()),
+                    onPressed: () {
+                      _markExternalSystemFlow();
+                      unawaited(widget.service.openSettings());
+                    },
                     child: Text(l10n.batteryOpenSettings),
                   ),
                 ],

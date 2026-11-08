@@ -5,6 +5,7 @@ import 'package:flash_light_pro/features/monetization/presentation/monetization_
 import 'package:flash_light_pro/features/monetization/presentation/monetization_native_ad.dart';
 import 'package:flash_light_pro/features/monetization/presentation/monetization_scope.dart';
 import 'package:flash_light_pro/features/monetization/presentation/remove_ads_card.dart';
+import 'package:flash_light_pro/features/monetization/presentation/torch_banner_ad.dart';
 import 'package:flash_light_pro/features/monetization/data/consent_gateway.dart';
 import 'package:flash_light_pro/features/monetization/application/monetization_controller.dart';
 import 'package:flash_light_pro/l10n/app_localizations.dart';
@@ -103,6 +104,31 @@ void main() {
       await tester.pump();
 
       expect(find.byType(AdWidget), findsNothing);
+      controller.dispose();
+    });
+
+    testWidgets('the torch banner renders nothing without a scope', (
+      tester,
+    ) async {
+      await tester.pumpWidget(app(const TorchBannerAd()));
+
+      expect(find.byType(AdWidget), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('the torch banner is hidden while a light is active', (
+      tester,
+    ) async {
+      final context = MutableAdContext(lightActive: true);
+      final controller = buildTestController(context: context);
+      await controller.startAds();
+
+      await tester.pumpWidget(scoped(controller, const TorchBannerAd()));
+      await tester.pump();
+
+      expect(find.byType(AdWidget), findsNothing);
+      expect(find.text('Ad'), findsNothing);
+      expect(tester.takeException(), isNull);
       controller.dispose();
     });
   });

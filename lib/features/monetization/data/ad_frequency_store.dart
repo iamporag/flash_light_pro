@@ -1,10 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../domain/ad_frequency_policy.dart';
+import '../domain/ad_models.dart';
 
 /// Persists interstitial/app-open frequency data and the very first session
-/// flag. The first session flag is what makes "never on first launch" a hard
-/// rule rather than an in-memory accident.
+/// flag. The flag is written once per install so the controller can tell a
+/// genuinely first launch apart from later sessions.
 abstract class AdFrequencyStore {
   Future<AdFrequencyState> load();
 
@@ -23,6 +24,11 @@ class SharedPreferencesAdFrequencyStore implements AdFrequencyStore {
       'monetization.interstitial.day_count';
   static const String _interstitialDayKey = 'monetization.interstitial.day';
   static const String _lastAppOpenKey = 'monetization.app_open.last_at';
+  static const String _actionCountKey = 'monetization.actions.count';
+  static const String _pendingInterstitialKey =
+      'monetization.actions.pending_interstitial';
+  static const String _lastFullscreenFormatKey =
+      'monetization.fullscreen.last_format';
   static const String _sessionStartedKey = 'monetization.session.started';
 
   @override
@@ -34,6 +40,11 @@ class SharedPreferencesAdFrequencyStore implements AdFrequencyStore {
         interstitialCount: prefs.getInt(_interstitialCountKey) ?? 0,
         interstitialDayKey: prefs.getString(_interstitialDayKey),
         lastAppOpenAt: _readDate(prefs.getString(_lastAppOpenKey)),
+        eligibleActionCount: prefs.getInt(_actionCountKey) ?? 0,
+        pendingInterstitial: prefs.getBool(_pendingInterstitialKey) ?? false,
+        lastFullscreenFormat: _readFormat(
+          prefs.getString(_lastFullscreenFormatKey),
+        ),
       );
     } catch (_) {
       return const AdFrequencyState();
@@ -56,6 +67,12 @@ class SharedPreferencesAdFrequencyStore implements AdFrequencyStore {
       await prefs.setString(
         _lastAppOpenKey,
         state.lastAppOpenAt?.toIso8601String() ?? '',
+      );
+      await prefs.setInt(_actionCountKey, state.eligibleActionCount);
+      await prefs.setBool(_pendingInterstitialKey, state.pendingInterstitial);
+      await prefs.setString(
+        _lastFullscreenFormatKey,
+        state.lastFullscreenFormat?.name ?? '',
       );
     } catch (_) {
       // Frequency persistence is best-effort; the in-memory state still
@@ -82,5 +99,13 @@ class SharedPreferencesAdFrequencyStore implements AdFrequencyStore {
   static DateTime? _readDate(String? raw) {
     if (raw == null || raw.isEmpty) return null;
     return DateTime.tryParse(raw);
+  }
+
+  static AdFormat? _readFormat(String? raw) {
+    if (raw == null || raw.isEmpty) return null;
+    for (final format in AdFormat.values) {
+      if (format.name == raw) return format;
+    }
+    return null;
   }
 }

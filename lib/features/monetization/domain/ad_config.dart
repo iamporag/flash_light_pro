@@ -59,9 +59,11 @@ class AdConfig {
     required this.androidUnitIds,
     required this.iosUnitIds,
     this.testDeviceIds = const [],
-    this.interstitialMinInterval = const Duration(minutes: 5),
-    this.interstitialDailyCap = 3,
+    this.interstitialMinInterval = const Duration(minutes: 2),
+    this.interstitialDailyCap = 5,
     this.appOpenCooldown = const Duration(hours: 4),
+    this.interstitialActionInterval = 3,
+    this.fullscreenCrossCooldown = const Duration(minutes: 2),
   });
 
   factory AdConfig.test({List<String> testDeviceIds = const []}) {
@@ -112,6 +114,8 @@ class AdConfig {
   final Duration interstitialMinInterval;
   final int interstitialDailyCap;
   final Duration appOpenCooldown;
+  final Duration fullscreenCrossCooldown;
+  final int interstitialActionInterval;
 
   String? unitIdFor(AdFormat format, {TargetPlatform? platform}) {
     final target = platform ?? defaultTargetPlatform;

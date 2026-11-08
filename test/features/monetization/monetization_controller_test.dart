@@ -145,7 +145,7 @@ void main() {
         isFalse,
       );
       expect(
-        await controller.maybeShowInterstitial(AdPlacement.privacyPolicyExit),
+        await controller.maybeShowInterstitial(AdPlacement.interstitialAction),
         isFalse,
       );
 
@@ -154,23 +154,50 @@ void main() {
   });
 
   group('fullscreen presentation', () {
-    test('interstitial shows once and records frequency', () async {
+    test('interstitial shows only after three eligible actions', () async {
       final frequency = FakeAdFrequencyStore();
       final controller = buildTestController(frequencyStore: frequency);
       await controller.startAds();
       await pumpEventQueue();
 
+      await controller.registerEligibleAction(AdActionId.openSettings);
+      await controller.registerEligibleAction(AdActionId.openPrivacyPolicy);
+      expect(controller.eligibleActionCount, 2);
+      expect(controller.pendingInterstitial, isFalse);
+
+      await controller.registerEligibleAction(AdActionId.closePrivacyPolicy);
+      expect(controller.eligibleActionCount, 3);
+      expect(controller.pendingInterstitial, isTrue);
+
       final shown = await controller.maybeShowInterstitial(
-        AdPlacement.privacyPolicyExit,
+        AdPlacement.interstitialAction,
       );
 
       expect(shown, isTrue);
       expect(frequency.state.lastInterstitialAt, isNotNull);
+      expect(controller.eligibleActionCount, 0);
+      expect(controller.pendingInterstitial, isFalse);
 
       controller.dispose();
     });
 
-    test('app-open is refused on the first session', () async {
+    test('an ad-free entitlement stops the counter', () async {
+      final controller = buildTestController(
+        adFreeStore: FakeAdFreeStore(owned: true),
+      );
+      await controller.startAds();
+      await pumpEventQueue();
+
+      expect(
+        await controller.registerEligibleAction(AdActionId.openSettings),
+        isFalse,
+      );
+      expect(controller.eligibleActionCount, 0);
+
+      controller.dispose();
+    });
+
+    test('app-open is allowed on the first session', () async {
       final presenter = FakeFullScreenPresenter();
       final controller = buildTestController(
         context: MutableAdContext(firstSession: true),
@@ -179,6 +206,23 @@ void main() {
       );
       await controller.startAds();
       await pumpEventQueue();
+
+      expect(await controller.maybeShowAppOpen(), isTrue);
+      expect(presenter.appOpenShows, 1);
+
+      controller.dispose();
+    });
+
+    test('app-open waits while an interstitial trigger is pending', () async {
+      final presenter = FakeFullScreenPresenter();
+      final controller = buildTestController(fullscreenPresenter: presenter);
+      await controller.startAds();
+      await pumpEventQueue();
+
+      for (var i = 0; i < 3; i++) {
+        await controller.registerEligibleAction(AdActionId.values[i]);
+      }
+      expect(controller.pendingInterstitial, isTrue);
 
       expect(await controller.maybeShowAppOpen(), isFalse);
       expect(presenter.appOpenShows, 0);

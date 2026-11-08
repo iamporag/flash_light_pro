@@ -17,14 +17,16 @@ import '../data/fullscreen_ad_presenter.dart';
 import '../data/rewarded_ad_presenter.dart';
 import '../domain/ad_config.dart';
 import '../domain/ad_models.dart';
+import '../domain/monetization_models.dart';
 import 'monetization_scope.dart';
 
 /// Composition root and lifecycle owner for monetization.
 ///
 /// It waits for the update check to settle, for no light to be active, and for
 /// the app to be resumed before consent or any ad request is started. Once
-/// running, it shows app-open ads only on a return from the background and only
-/// after a fresh safety check.
+/// running, it requests one App Open on the first eligible moment of a cold
+/// start and one on a real return from the background, never for a brief
+/// Quick Settings or system-settings round trip.
 class MonetizationHost extends StatefulWidget {
   const MonetizationHost({
     super.key,
@@ -55,12 +57,19 @@ class _MonetizationHostState extends State<MonetizationHost>
 
   bool _appResumed = true;
   bool _hasBackgrounded = false;
+  bool _sawBackground = false;
   bool _sawUpdateCheck = false;
   bool _allowBeforeFirstCheck = false;
   bool _startCallInFlight = false;
   bool _pendingAppOpen = false;
   bool _appOpenAttempted = false;
+  bool _coldStartAppOpenRequested = false;
+  int _appOpenRetriesLeft = 0;
+  DateTime? _backgroundedAt;
   DateTime? _lastGateLogAt;
+
+  static const Duration _briefBackgroundThreshold = Duration(seconds: 2);
+  static const Duration _appOpenRetryDelay = Duration(seconds: 2);
 
   @override
   void initState() {
@@ -146,12 +155,32 @@ class _MonetizationHostState extends State<MonetizationHost>
     switch (state) {
       case AppLifecycleState.resumed:
         final returningFromBackground = _hasBackgrounded;
+        final backgroundedAt = _backgroundedAt;
+        final wasBrief =
+            backgroundedAt != null &&
+            DateTime.now().difference(backgroundedAt) <
+                _briefBackgroundThreshold;
+        final externalFlow = _controller!.externalSystemFlow;
+        _controller!.clearExternalSystemFlow();
         _hasBackgrounded = false;
+        _backgroundedAt = null;
         _appResumed = true;
         _appOpenAttempted = false;
         _controller!.notifyAppStateChanged();
         _tryStartAds();
-        if (returningFromBackground) _requestAppOpen();
+        if (returningFromBackground) {
+          // Returning from Quick Settings, a permission surface, Android
+          // Settings, or another brief system hand-off must not show a
+          // fullscreen ad.
+          if (wasBrief || externalFlow) {
+            AdDiagnostics.log(
+              'app-open skipped',
+              wasBrief ? 'brief background return' : 'external system flow',
+            );
+          } else {
+            _requestAppOpen();
+          }
+        }
       case AppLifecycleState.inactive:
         // A system dialog, permission prompt, or the app switcher.
         _appResumed = false;
@@ -160,6 +189,8 @@ class _MonetizationHostState extends State<MonetizationHost>
       case AppLifecycleState.hidden:
         _appResumed = false;
         _hasBackgrounded = true;
+        _sawBackground = true;
+        _backgroundedAt ??= DateTime.now();
         _controller!.notifyAppStateChanged();
       case AppLifecycleState.detached:
         _appResumed = false;
@@ -170,6 +201,7 @@ class _MonetizationHostState extends State<MonetizationHost>
   AdRequestContext _requestContext() {
     final light = _flashlight!.state;
     final update = _updates!.state;
+    final removeAdsPhase = _controller?.removeAdsPhase;
     return AdRequestContext(
       lightActive: light.activeLight != null,
       essentialInitialization: light.isLoading,
@@ -181,6 +213,10 @@ class _MonetizationHostState extends State<MonetizationHost>
           update.phase == UpdatePhase.downloaded ||
           update.phase == UpdatePhase.installing ||
           update.phase == UpdatePhase.installed,
+      purchaseFlowActive:
+          removeAdsPhase == RemoveAdsPhase.purchasing ||
+          removeAdsPhase == RemoveAdsPhase.pending ||
+          removeAdsPhase == RemoveAdsPhase.restoring,
       fullscreenAdVisible: _flags!.fullscreenVisible,
       firstSession: _controller?.isFirstSession ?? true,
     );
@@ -209,6 +245,9 @@ class _MonetizationHostState extends State<MonetizationHost>
   void _tryStartAds() {
     final controller = _controller;
     if (controller == null || _startCallInFlight || controller.isSdkReady) {
+      if (controller != null && controller.isSdkReady) {
+        _requestColdStartAppOpen();
+      }
       return;
     }
 
@@ -237,12 +276,31 @@ class _MonetizationHostState extends State<MonetizationHost>
       } finally {
         _startCallInFlight = false;
       }
-      if (!mounted || controller.isSdkReady) return;
+      if (!mounted) return;
+      if (controller.isSdkReady) {
+        _requestColdStartAppOpen();
+        return;
+      }
       // Consent or SDK initialization can fail transiently (for example while
       // offline). Retry later instead of latching ads off for the session.
       _startRetryTimer?.cancel();
       _startRetryTimer = Timer(const Duration(seconds: 20), _tryStartAds);
     });
+  }
+
+  /// The first App Open of a process is requested once the SDK is ready.
+  /// A process that has already been backgrounded is not a cold start, so the
+  /// lifecycle path owns the request instead.
+  void _requestColdStartAppOpen() {
+    final controller = _controller;
+    if (controller == null || !controller.isSdkReady) return;
+    if (!_appResumed || _coldStartAppOpenRequested || _sawBackground) return;
+    _coldStartAppOpenRequested = true;
+    AdDiagnostics.log(
+      'app-open cold start',
+      'firstSession=${controller.isFirstSession}',
+    );
+    _requestAppOpen();
   }
 
   void _logGateBlock(UpdateState update, FlashLightState light) {
@@ -283,7 +341,10 @@ class _MonetizationHostState extends State<MonetizationHost>
 
     AdDiagnostics.log('app-open pending');
     _pendingAppOpen = true;
+    _appOpenAttempted = false;
+    _appOpenRetriesLeft = 3;
     _appOpenTimer?.cancel();
+    _appOpenRetryTimer?.cancel();
     // Give the update check triggered by this resume a moment to report that
     // it is running, so an app-open ad can never appear over a mandatory
     // update prompt.
@@ -291,6 +352,19 @@ class _MonetizationHostState extends State<MonetizationHost>
       const Duration(milliseconds: 600),
       _flushPendingAppOpen,
     );
+  }
+
+  /// Defers the pending App Open a few times while a transient condition (an
+  /// update check or a not-yet-loaded ad) clears, then abandons it.
+  void _retryPendingAppOpen(String reason) {
+    if (_appOpenRetriesLeft <= 0) {
+      _pendingAppOpen = false;
+      AdDiagnostics.log('app-open abandoned', reason);
+      return;
+    }
+    _appOpenRetriesLeft--;
+    _appOpenRetryTimer?.cancel();
+    _appOpenRetryTimer = Timer(_appOpenRetryDelay, _flushPendingAppOpen);
   }
 
   void _flushPendingAppOpen() {
@@ -309,14 +383,23 @@ class _MonetizationHostState extends State<MonetizationHost>
       _pendingAppOpen = false;
       return;
     }
+    if (controller.externalSystemFlow) {
+      controller.clearExternalSystemFlow();
+      _pendingAppOpen = false;
+      AdDiagnostics.log('app-open skipped', 'external system flow');
+      return;
+    }
+    // An interstitial is owed after the third eligible action. It takes
+    // priority so a fullscreen ad is never shown immediately before another.
+    if (controller.pendingInterstitial) {
+      _pendingAppOpen = false;
+      AdDiagnostics.log('app-open skipped', 'interstitial trigger pending');
+      return;
+    }
 
     final update = _updates!.state;
     if (update.phase == UpdatePhase.checking) {
-      _appOpenRetryTimer?.cancel();
-      _appOpenRetryTimer = Timer(
-        const Duration(milliseconds: 800),
-        _flushPendingAppOpen,
-      );
+      _retryPendingAppOpen('update check in progress');
       return;
     }
     if (update.isMandatory && update.shouldPrompt) {
@@ -343,9 +426,18 @@ class _MonetizationHostState extends State<MonetizationHost>
 
     _appOpenAttempted = true;
     _pendingAppOpen = false;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
-      unawaited(controller.maybeShowAppOpen());
+      final shown = await controller.maybeShowAppOpen();
+      if (shown || !mounted) return;
+      if (_appOpenRetriesLeft <= 0) {
+        AdDiagnostics.log('app-open not shown', 'retries exhausted');
+        return;
+      }
+      // A cold start can race the first preload; retry briefly.
+      _appOpenAttempted = false;
+      _pendingAppOpen = true;
+      _retryPendingAppOpen('not shown');
     });
   }
 

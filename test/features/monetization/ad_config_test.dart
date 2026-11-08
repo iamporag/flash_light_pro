@@ -52,9 +52,11 @@ void main() {
     test('frequency defaults match the product requirements', () {
       final config = AdConfig.test();
 
-      expect(config.interstitialMinInterval, const Duration(minutes: 5));
-      expect(config.interstitialDailyCap, 3);
+      expect(config.interstitialMinInterval, const Duration(minutes: 2));
+      expect(config.interstitialDailyCap, 5);
+      expect(config.interstitialActionInterval, 3);
       expect(config.appOpenCooldown, const Duration(hours: 4));
+      expect(config.fullscreenCrossCooldown, const Duration(minutes: 2));
     });
 
     test('debug builds resolve to test ids and never to production ids', () {

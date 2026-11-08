@@ -18,6 +18,7 @@ class _Fixture {
   final FakeFullScreenPresenter presenter;
   final FakeAdFrequencyStore frequencyStore = FakeAdFrequencyStore();
   final AdRuntimeFlags runtimeFlags = AdRuntimeFlags();
+  late final AdEligibilityManager eligibility;
   late final FullscreenAdCoordinator coordinator;
 
   Future<void> setUp() async {
@@ -28,7 +29,7 @@ class _Fixture {
       gateway: FakeBillingGateway(),
     );
     await entitlement.initialize(reconcileSilently: false);
-    final eligibility = AdEligibilityManager(
+    eligibility = AdEligibilityManager(
       config: AdConfig.test(),
       contextProvider: context.call,
       entitlement: entitlement,
@@ -43,6 +44,12 @@ class _Fixture {
       presenter: presenter,
       runtimeFlags: runtimeFlags,
     );
+  }
+
+  Future<void> reachTrigger() async {
+    await eligibility.clickFrequency.register(AdActionId.openSettings);
+    await eligibility.clickFrequency.register(AdActionId.openLicenses);
+    await eligibility.clickFrequency.register(AdActionId.closeLicenses);
   }
 }
 
@@ -87,28 +94,44 @@ void main() {
     test('skips immediately when the ad is not ready', () async {
       final fixture = _Fixture();
       await fixture.setUp();
+      await fixture.reachTrigger();
 
       final shown = await fixture.coordinator.maybeShowInterstitial(
-        AdPlacement.privacyPolicyExit,
+        AdPlacement.interstitialAction,
       );
 
       expect(shown, isFalse);
       expect(fixture.presenter.interstitialShows, 0);
-      expect(fixture.presenter.interstitialLoadCalls, 1);
+      expect(fixture.presenter.interstitialLoadCalls, greaterThanOrEqualTo(1));
     });
 
-    test('presents once and records the impression', () async {
+    test('does nothing without a pending trigger', () async {
       final fixture = _Fixture();
       await fixture.setUp();
       await fixture.coordinator.preload();
 
       final shown = await fixture.coordinator.maybeShowInterstitial(
-        AdPlacement.privacyPolicyExit,
+        AdPlacement.interstitialAction,
+      );
+
+      expect(shown, isFalse);
+      expect(fixture.presenter.interstitialShows, 0);
+    });
+
+    test('presents once and records the impression', () async {
+      final fixture = _Fixture();
+      await fixture.setUp();
+      await fixture.reachTrigger();
+      await fixture.coordinator.preload();
+
+      final shown = await fixture.coordinator.maybeShowInterstitial(
+        AdPlacement.interstitialAction,
       );
 
       expect(shown, isTrue);
       expect(fixture.presenter.interstitialShows, 1);
       expect(fixture.frequencyStore.state.lastInterstitialAt, isNotNull);
+      expect(fixture.frequencyStore.state.eligibleActionCount, 0);
       expect(fixture.runtimeFlags.fullscreenVisible, isFalse);
     });
 
@@ -119,19 +142,22 @@ void main() {
         ),
       );
       await fixture.setUp();
+      await fixture.reachTrigger();
       await fixture.coordinator.preload();
 
       final shown = await fixture.coordinator.maybeShowInterstitial(
-        AdPlacement.privacyPolicyExit,
+        AdPlacement.interstitialAction,
       );
 
       expect(shown, isFalse);
       expect(fixture.frequencyStore.state.lastInterstitialAt, isNull);
+      expect(fixture.frequencyStore.state.pendingInterstitial, isTrue);
     });
 
-    test('refuses a placement that is not an interstitial exit', () async {
+    test('refuses a placement that is not an action interstitial', () async {
       final fixture = _Fixture();
       await fixture.setUp();
+      await fixture.reachTrigger();
       await fixture.coordinator.preload();
 
       expect(
@@ -146,13 +172,14 @@ void main() {
     test('an active light prevents presentation', () async {
       final fixture = _Fixture();
       await fixture.setUp();
+      await fixture.reachTrigger();
       await fixture.coordinator.preload();
 
       fixture.context.lightActive = true;
 
       expect(
         await fixture.coordinator.maybeShowInterstitial(
-          AdPlacement.privacyPolicyExit,
+          AdPlacement.interstitialAction,
         ),
         isFalse,
       );
@@ -161,13 +188,14 @@ void main() {
   });
 
   group('app open', () {
-    test('is never shown during the first session', () async {
+    test('is shown on the first eligible session', () async {
       final fixture = _Fixture(context: MutableAdContext(firstSession: true));
       await fixture.setUp();
       await fixture.coordinator.preload();
 
-      expect(await fixture.coordinator.maybeShowAppOpen(), isFalse);
-      expect(fixture.presenter.appOpenShows, 0);
+      expect(await fixture.coordinator.maybeShowAppOpen(), isTrue);
+      expect(fixture.presenter.appOpenShows, 1);
+      expect(fixture.frequencyStore.state.lastAppOpenAt, isNotNull);
     });
 
     test('presents and records the cooldown timestamp', () async {

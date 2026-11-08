@@ -2,6 +2,7 @@ import '../data/ad_frequency_store.dart';
 import '../domain/ad_config.dart';
 import '../domain/ad_frequency_policy.dart';
 import '../domain/ad_models.dart';
+import 'ad_click_frequency_manager.dart';
 import 'ad_diagnostics.dart';
 import 'ad_free_entitlement_service.dart';
 import 'consent_manager.dart';
@@ -19,36 +20,41 @@ class AdEligibilityManager {
     required this.contextProvider,
     required this.entitlement,
     required this.consent,
-    required this.frequencyStore,
+    required AdFrequencyStore frequencyStore,
     DateTime Function()? clock,
     this.minFullscreenSeparation = const Duration(seconds: 30),
   }) : _clock = clock ?? DateTime.now,
-       _frequencyPolicy = AdFrequencyPolicy(
-         interstitialMinInterval: config.interstitialMinInterval,
-         interstitialDailyCap: config.interstitialDailyCap,
-         appOpenCooldown: config.appOpenCooldown,
+       clickFrequency = AdClickFrequencyManager(
+         store: frequencyStore,
+         policy: AdFrequencyPolicy(
+           interstitialMinInterval: config.interstitialMinInterval,
+           interstitialDailyCap: config.interstitialDailyCap,
+           appOpenCooldown: config.appOpenCooldown,
+           eligibleActionThreshold: config.interstitialActionInterval,
+           crossFormatCooldown: config.fullscreenCrossCooldown,
+         ),
+         clock: clock,
        );
 
   final AdConfig config;
   final AdRequestContextProvider contextProvider;
   final AdFreeEntitlementService entitlement;
   final ConsentManager consent;
-  final AdFrequencyStore frequencyStore;
   final DateTime Function() _clock;
   final Duration minFullscreenSeparation;
-  final AdFrequencyPolicy _frequencyPolicy;
+  final AdClickFrequencyManager clickFrequency;
 
-  AdFrequencyState _frequency = const AdFrequencyState();
   DateTime? _lastFullscreenPresentedAt;
 
-  AdFrequencyState get frequencyState => _frequency;
+  AdFrequencyState get frequencyState => clickFrequency.state;
 
-  Future<void> loadPersistedState() async {
-    _frequency = await frequencyStore.load();
-  }
+  Future<void> loadPersistedState() => clickFrequency.load();
 
   AdEligibility check(AdPlacement placement, {bool ready = true}) {
-    final base = checkBase(placement);
+    final base = _checkBase(
+      placement,
+      requirePending: placement.format == AdFormat.interstitial,
+    );
     if (!base.isAllowed) return base;
     if (placement.isFullScreen && !ready) {
       const blocked = AdEligibility.blocked(AdBlockReason.adNotReady);
@@ -59,14 +65,25 @@ class AdEligibilityManager {
   }
 
   /// State/consent/frequency checks only. Preloading uses this because a
-  /// not-yet-loaded ad is exactly what preloading is trying to fix.
+  /// not-yet-loaded ad is exactly what preloading is trying to fix, and it must
+  /// be allowed before the user has performed the triggering action.
   AdEligibility checkBase(AdPlacement placement) {
-    final result = _checkBase(placement);
+    return _checkBase(placement, requirePending: false);
+  }
+
+  AdEligibility _checkBase(
+    AdPlacement placement, {
+    required bool requirePending,
+  }) {
+    final result = _evaluate(placement, requirePending: requirePending);
     AdDiagnostics.eligibility(placement, result);
     return result;
   }
 
-  AdEligibility _checkBase(AdPlacement placement) {
+  AdEligibility _evaluate(
+    AdPlacement placement, {
+    required bool requirePending,
+  }) {
     if (config.unitIdFor(placement.format) == null) {
       return const AdEligibility.blocked(AdBlockReason.adsNotConfigured);
     }
@@ -87,6 +104,9 @@ class AdEligibilityManager {
     if (context.updateFlowActive) {
       return const AdEligibility.blocked(AdBlockReason.updateFlowActive);
     }
+    if (context.purchaseFlowActive) {
+      return const AdEligibility.blocked(AdBlockReason.purchaseFlowActive);
+    }
     if (context.lightActive) {
       return const AdEligibility.blocked(AdBlockReason.lightActive);
     }
@@ -102,25 +122,22 @@ class AdEligibilityManager {
 
     final now = _clock();
     switch (placement) {
-      case AdPlacement.privacyPolicyExit:
-        final reason = _frequencyPolicy.interstitialBlockReason(
-          _frequency,
+      case AdPlacement.interstitialAction:
+        final reason = clickFrequency.interstitialBlockReason(
           now,
+          requirePending: requirePending,
         );
         if (reason != null) return AdEligibility.blocked(reason);
         if (!_hasFullscreenSeparation(now)) {
           return const AdEligibility.blocked(AdBlockReason.frequencyCooldown);
         }
       case AdPlacement.appOpen:
-        final reason = _frequencyPolicy.appOpenBlockReason(
-          _frequency,
-          now,
-          firstSession: context.firstSession,
-        );
+        final reason = clickFrequency.appOpenBlockReason(now);
         if (reason != null) return AdEligibility.blocked(reason);
         if (!_hasFullscreenSeparation(now)) {
           return const AdEligibility.blocked(AdBlockReason.frequencyCooldown);
         }
+      case AdPlacement.torchBanner:
       case AdPlacement.settingsNative:
       case AdPlacement.privacyPolicyBanner:
       case AdPlacement.rewarded:
@@ -134,10 +151,11 @@ class AdEligibilityManager {
   Future<void> recordImpression(AdPlacement placement) async {
     final now = _clock();
     switch (placement) {
-      case AdPlacement.privacyPolicyExit:
-        _frequency = _frequencyPolicy.recordInterstitial(_frequency, now);
+      case AdPlacement.interstitialAction:
+        await clickFrequency.recordInterstitial(now);
       case AdPlacement.appOpen:
-        _frequency = _frequencyPolicy.recordAppOpen(_frequency, now);
+        await clickFrequency.recordAppOpen(now);
+      case AdPlacement.torchBanner:
       case AdPlacement.settingsNative:
       case AdPlacement.privacyPolicyBanner:
       case AdPlacement.rewarded:
@@ -145,11 +163,6 @@ class AdEligibilityManager {
     }
 
     _lastFullscreenPresentedAt = now;
-    try {
-      await frequencyStore.save(_frequency);
-    } catch (_) {
-      // The in-memory state still enforces limits for this session.
-    }
   }
 
   bool _hasFullscreenSeparation(DateTime now) {
