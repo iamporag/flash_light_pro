@@ -5,6 +5,7 @@ import 'package:flash_light_pro/features/shake/services/shake_monitor_service.da
 import 'package:flash_light_pro/features/lighting/domain/light_mode.dart';
 import 'package:flash_light_pro/flash_light_pro.dart';
 import 'package:flash_light_pro/src/presentation/screens/settings/privacy_policy_page.dart';
+import 'package:flash_light_pro/src/presentation/screens/settings/terms_and_conditions_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -172,6 +173,38 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(LicensePage), findsOneWidget);
+  });
+
+  testWidgets('the terms and conditions page opens from settings', (
+    tester,
+  ) async {
+    await pumpSettings(tester);
+
+    await reveal(tester, find.byKey(const Key('settings-terms')));
+    await tester.tap(find.byKey(const Key('settings-terms')));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TermsAndConditionsPage), findsOneWidget);
+    expect(find.text('Terms and conditions'), findsOneWidget);
+    expect(find.text('Effective 8 November 2026'), findsOneWidget);
+    expect(find.text('Licence to use the app'), findsOneWidget);
+
+    final termsScrollable = find.descendant(
+      of: find.byType(TermsAndConditionsPage),
+      matching: find.byType(Scrollable),
+    );
+
+    await tester.scrollUntilVisible(
+      find.text('Disclaimers and liability'),
+      250,
+      scrollable: termsScrollable,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Disclaimers and liability'), findsOneWidget);
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('settings-scroll')), findsOneWidget);
   });
 
   testWidgets('the background setting is honest about platform support', (

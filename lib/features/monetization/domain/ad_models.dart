@@ -54,6 +54,8 @@ enum AdActionId {
   closeSettings,
   openPrivacyPolicy,
   closePrivacyPolicy,
+  openTerms,
+  closeTerms,
   openLicenses,
   closeLicenses,
   settingsLanguage,

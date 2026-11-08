@@ -1747,6 +1747,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Store price'**
   String get premiumStorePriceLabel;
+
+  /// No description provided for @termsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and conditions'**
+  String get termsAndConditions;
+
+  /// No description provided for @termsEffectiveDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Effective 8 November 2026'**
+  String get termsEffectiveDate;
+
+  /// No description provided for @termsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'These terms govern your use of Flash Light Pro. By installing or using the app, you agree to them. If you do not agree, please uninstall the app.'**
+  String get termsIntro;
+
+  /// No description provided for @termsLicenceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Licence to use the app'**
+  String get termsLicenceTitle;
+
+  /// No description provided for @termsLicenceBody.
+  ///
+  /// In en, this message translates to:
+  /// **'ClaudySoft grants you a personal, non-exclusive, non-transferable and revocable licence to use Flash Light Pro on devices you own or control. You may not copy, resell, redistribute, modify, reverse engineer or attempt to extract the source code, except where the law expressly allows it.'**
+  String get termsLicenceBody;
+
+  /// No description provided for @termsAdsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ads and Remove ads'**
+  String get termsAdsTitle;
+
+  /// No description provided for @termsAdsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The free version is supported by Google AdMob ads, shown only after the consent required in your region. An optional one-time, non-consumable purchase removes all ads. Payments and refunds are handled by Google Play or the App Store; the app never receives your payment details. You can restore the purchase from Settings.'**
+  String get termsAdsBody;
+
+  /// No description provided for @termsSafetyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety'**
+  String get termsSafetyTitle;
+
+  /// No description provided for @termsSafetyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Flash Light Pro is a convenience tool, not safety or emergency equipment. SOS, strobe and Morse only produce light; they do not call emergency services or share your location. Strobe can trigger seizures in people with photosensitivity. Do not use the light while driving or in any situation where distraction is dangerous, and do not shine it into eyes, at vehicles or at aircraft. Long use can drain the battery and heat the device, and background operation is not guaranteed by the operating system.'**
+  String get termsSafetyBody;
+
+  /// No description provided for @termsUseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptable use'**
+  String get termsUseTitle;
+
+  /// No description provided for @termsUseBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the app only for lawful purposes. Do not use it to impersonate emergency services, harass or endanger anyone, distract drivers, or break road, aviation or public-order rules.'**
+  String get termsUseBody;
+
+  /// No description provided for @termsPermissionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions and privacy'**
+  String get termsPermissionsTitle;
+
+  /// No description provided for @termsPermissionsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The app uses the camera flash, screen brightness, optional haptics and, only when Shake to toggle is on, the motion sensor. It does not request camera, microphone, location, contacts or file access. See the Privacy policy in Settings for how data is handled.'**
+  String get termsPermissionsBody;
+
+  /// No description provided for @termsUpdatesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability and updates'**
+  String get termsUpdatesTitle;
+
+  /// No description provided for @termsUpdatesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The core light modes work offline. Features may change, be removed or be unavailable on some devices, and updates may be required. We do not guarantee uninterrupted or error-free operation.'**
+  String get termsUpdatesBody;
+
+  /// No description provided for @termsIpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Intellectual property'**
+  String get termsIpTitle;
+
+  /// No description provided for @termsIpBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The app, its name, logo, design and code are owned by ClaudySoft or its licensors and are protected by law. These terms grant you a limited licence only.'**
+  String get termsIpBody;
+
+  /// No description provided for @termsThirdPartyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Third-party services'**
+  String get termsThirdPartyTitle;
+
+  /// No description provided for @termsThirdPartyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The app uses services from Google AdMob, Google Play and, on iOS, the Apple App Store. Those services are governed by their own terms and privacy policies.'**
+  String get termsThirdPartyBody;
+
+  /// No description provided for @termsLiabilityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Disclaimers and liability'**
+  String get termsLiabilityTitle;
+
+  /// No description provided for @termsLiabilityBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The app is provided \"as is\" and \"as available\", to the maximum extent permitted by law. We are not liable for indirect or consequential loss, and our total liability is limited to the greater of the amount you paid for the app in the last twelve months or USD 5. Nothing here limits rights that the law does not allow to be excluded.'**
+  String get termsLiabilityBody;
+
+  /// No description provided for @termsIndemnityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Indemnity'**
+  String get termsIndemnityTitle;
+
+  /// No description provided for @termsIndemnityBody.
+  ///
+  /// In en, this message translates to:
+  /// **'To the extent permitted by law, you agree to indemnify ClaudySoft against claims, losses and reasonable legal costs arising from your misuse of the app or your breach of these terms.'**
+  String get termsIndemnityBody;
+
+  /// No description provided for @termsLawTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Governing law and consumer rights'**
+  String get termsLawTitle;
+
+  /// No description provided for @termsLawBody.
+  ///
+  /// In en, this message translates to:
+  /// **'These terms are governed by the laws applicable where ClaudySoft is established, without limiting any mandatory consumer protection you have where you live. Disputes may be brought before a competent court or consumer authority under applicable law.'**
+  String get termsLawBody;
+
+  /// No description provided for @termsChangesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes and contact'**
+  String get termsChangesTitle;
+
+  /// No description provided for @termsChangesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We may update these terms; the effective date above will change and continued use means you accept the new version. Questions? Contact us using the support email on the app\'s store listing.'**
+  String get termsChangesBody;
+
+  /// No description provided for @termsFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing to use Flash Light Pro, you accept these terms and the Privacy policy.'**
+  String get termsFooter;
 }
 
 class _AppLocalizationsDelegate

@@ -13,6 +13,7 @@ import 'package:flash_light_pro/l10n/app_localizations.dart';
 import 'package:flash_light_pro/src/bloc/flash_light/flash_light_bloc.dart';
 import 'package:flash_light_pro/src/presentation/screens/settings/battery_optimization_section.dart';
 import 'package:flash_light_pro/src/presentation/screens/settings/privacy_policy_page.dart';
+import 'package:flash_light_pro/src/presentation/screens/settings/terms_and_conditions_page.dart';
 import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
 import 'package:flash_light_pro/src/presentation/utils/light_mode_labels.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
@@ -269,6 +270,18 @@ class SettingsPage extends StatelessWidget {
                     ),
                     const Divider(height: 1),
                     ListTile(
+                      key: const Key('settings-terms'),
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(
+                        Icons.gavel_rounded,
+                        color: AppColors.accent,
+                      ),
+                      title: Text(l10n.termsAndConditions),
+                      trailing: const Icon(Icons.chevron_right_rounded),
+                      onTap: () => unawaited(_openTerms(context)),
+                    ),
+                    const Divider(height: 1),
+                    ListTile(
                       key: const Key('settings-licenses'),
                       contentPadding: EdgeInsets.zero,
                       leading: const Icon(
@@ -337,6 +350,17 @@ class SettingsPage extends StatelessWidget {
     );
     if (!context.mounted) return;
     _register(context, AdActionId.closePrivacyPolicy);
+  }
+
+  Future<void> _openTerms(BuildContext context) async {
+    _register(context, AdActionId.openTerms);
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => const TermsAndConditionsPage(),
+      ),
+    );
+    if (!context.mounted) return;
+    _register(context, AdActionId.closeTerms);
   }
 
   Future<void> _openLicenses(BuildContext context) async {

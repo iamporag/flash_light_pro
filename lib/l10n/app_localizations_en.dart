@@ -938,4 +938,102 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get premiumStorePriceLabel => 'Store price';
+
+  @override
+  String get termsAndConditions => 'Terms and conditions';
+
+  @override
+  String get termsEffectiveDate => 'Effective 8 November 2026';
+
+  @override
+  String get termsIntro =>
+      'These terms govern your use of Flash Light Pro. By installing or using the app, you agree to them. If you do not agree, please uninstall the app.';
+
+  @override
+  String get termsLicenceTitle => 'Licence to use the app';
+
+  @override
+  String get termsLicenceBody =>
+      'ClaudySoft grants you a personal, non-exclusive, non-transferable and revocable licence to use Flash Light Pro on devices you own or control. You may not copy, resell, redistribute, modify, reverse engineer or attempt to extract the source code, except where the law expressly allows it.';
+
+  @override
+  String get termsAdsTitle => 'Ads and Remove ads';
+
+  @override
+  String get termsAdsBody =>
+      'The free version is supported by Google AdMob ads, shown only after the consent required in your region. An optional one-time, non-consumable purchase removes all ads. Payments and refunds are handled by Google Play or the App Store; the app never receives your payment details. You can restore the purchase from Settings.';
+
+  @override
+  String get termsSafetyTitle => 'Safety';
+
+  @override
+  String get termsSafetyBody =>
+      'Flash Light Pro is a convenience tool, not safety or emergency equipment. SOS, strobe and Morse only produce light; they do not call emergency services or share your location. Strobe can trigger seizures in people with photosensitivity. Do not use the light while driving or in any situation where distraction is dangerous, and do not shine it into eyes, at vehicles or at aircraft. Long use can drain the battery and heat the device, and background operation is not guaranteed by the operating system.';
+
+  @override
+  String get termsUseTitle => 'Acceptable use';
+
+  @override
+  String get termsUseBody =>
+      'Use the app only for lawful purposes. Do not use it to impersonate emergency services, harass or endanger anyone, distract drivers, or break road, aviation or public-order rules.';
+
+  @override
+  String get termsPermissionsTitle => 'Permissions and privacy';
+
+  @override
+  String get termsPermissionsBody =>
+      'The app uses the camera flash, screen brightness, optional haptics and, only when Shake to toggle is on, the motion sensor. It does not request camera, microphone, location, contacts or file access. See the Privacy policy in Settings for how data is handled.';
+
+  @override
+  String get termsUpdatesTitle => 'Availability and updates';
+
+  @override
+  String get termsUpdatesBody =>
+      'The core light modes work offline. Features may change, be removed or be unavailable on some devices, and updates may be required. We do not guarantee uninterrupted or error-free operation.';
+
+  @override
+  String get termsIpTitle => 'Intellectual property';
+
+  @override
+  String get termsIpBody =>
+      'The app, its name, logo, design and code are owned by ClaudySoft or its licensors and are protected by law. These terms grant you a limited licence only.';
+
+  @override
+  String get termsThirdPartyTitle => 'Third-party services';
+
+  @override
+  String get termsThirdPartyBody =>
+      'The app uses services from Google AdMob, Google Play and, on iOS, the Apple App Store. Those services are governed by their own terms and privacy policies.';
+
+  @override
+  String get termsLiabilityTitle => 'Disclaimers and liability';
+
+  @override
+  String get termsLiabilityBody =>
+      'The app is provided \"as is\" and \"as available\", to the maximum extent permitted by law. We are not liable for indirect or consequential loss, and our total liability is limited to the greater of the amount you paid for the app in the last twelve months or USD 5. Nothing here limits rights that the law does not allow to be excluded.';
+
+  @override
+  String get termsIndemnityTitle => 'Indemnity';
+
+  @override
+  String get termsIndemnityBody =>
+      'To the extent permitted by law, you agree to indemnify ClaudySoft against claims, losses and reasonable legal costs arising from your misuse of the app or your breach of these terms.';
+
+  @override
+  String get termsLawTitle => 'Governing law and consumer rights';
+
+  @override
+  String get termsLawBody =>
+      'These terms are governed by the laws applicable where ClaudySoft is established, without limiting any mandatory consumer protection you have where you live. Disputes may be brought before a competent court or consumer authority under applicable law.';
+
+  @override
+  String get termsChangesTitle => 'Changes and contact';
+
+  @override
+  String get termsChangesBody =>
+      'We may update these terms; the effective date above will change and continued use means you accept the new version. Questions? Contact us using the support email on the app\'s store listing.';
+
+  @override
+  String get termsFooter =>
+      'By continuing to use Flash Light Pro, you accept these terms and the Privacy policy.';
 }

@@ -62,9 +62,9 @@ development and review.
 
 1. Gradle property `admobAppId`
 2. Environment variable `ADMOB_APP_ID`
-3. Debug builds fall back to Google's test App ID; release builds leave the
-   value empty and, because release ad unit IDs are also empty, never
-   initialize the SDK.
+3. Google's test App ID, used only by debug and profile builds. Release builds
+   fail with a `GradleException` instead, because the Google Mobile Ads SDK
+   throws on startup when the manifest holds a missing or invalid App ID.
 
 Preferred for local release builds, in `android/gradle.properties`:
 
@@ -98,6 +98,17 @@ keep working. Replace it before archiving for the App Store.
 Release builds read unit IDs from `--dart-define` values. Keep them out of
 source control and pass them to every release build:
 
+Start from the committed templates, then fill in your own IDs:
+
+```sh
+cp admob.android.example.json admob.android.json   # Android
+cp admob.ios.example.json admob.ios.json           # iOS
+```
+
+`admob.android.json` and `admob.ios.json` are git-ignored. Set
+`ADMOB_TEST_DEVICE_IDS` inside them while testing on registered devices, and
+leave it empty for the production build.
+
 | Platform | Define |
 | --- | --- |
 | Android | `ADMOB_ANDROID_BANNER_ID` |
@@ -111,7 +122,14 @@ source control and pass them to every release build:
 | iOS | `ADMOB_IOS_REWARDED_ID` |
 | iOS | `ADMOB_IOS_APP_OPEN_ID` |
 
-Example Android app bundle:
+With the filled-in file (preferred):
+
+```sh
+flutter build appbundle --release --dart-define-from-file=admob.android.json
+flutter build ipa --release --dart-define-from-file=admob.ios.json
+```
+
+Equivalent explicit Android app bundle:
 
 ```sh
 flutter build appbundle \
@@ -122,7 +140,7 @@ flutter build appbundle \
   --dart-define=ADMOB_ANDROID_APP_OPEN_ID=ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX
 ```
 
-Example iOS archive:
+Equivalent explicit iOS archive:
 
 ```sh
 flutter build ipa \
@@ -260,6 +278,10 @@ Update both stores before submitting:
 ## 11. Release checklist
 
 - [ ] Real Android and iOS AdMob App IDs are configured natively.
+- [ ] Android release builds pass `-PadmobAppId` or `ADMOB_APP_ID`; the build
+      fails on purpose when neither is set.
+- [ ] The `android/app/proguard-rules.pro` Room keep rule is present; removing
+      it makes release builds crash at startup inside WorkManager.
 - [ ] All ten production unit IDs are passed to release builds.
 - [ ] A UMP message is published in AdMob for every required region.
 - [ ] `flash_light_pro_remove_ads` exists and is active in both stores.
@@ -285,7 +307,7 @@ Update both stores before submitting:
 | --- | --- |
 | No ads in a release build | Unit IDs missing from `--dart-define`, or the app owns Remove ads |
 | Test ads in a release build | Release build received test unit IDs; check the defines, not `AdConfig.test` |
-| Android build fails on AdMob App ID | `admobAppId` or `ADMOB_APP_ID` missing and the test fallback was overridden |
+| Android build fails on AdMob App ID | Expected: release builds require `admobAppId` or `ADMOB_APP_ID`; pass the real App ID |
 | UMP form never appears | No message published in AdMob, or the device is outside the configured region and not a test device |
 | `canRequestAds` stays false | Consent was denied or UMP failed; ads stay off by design |
 | Product not found | Product ID mismatch, product inactive, or the store account is not a license tester |

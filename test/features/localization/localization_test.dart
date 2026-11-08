@@ -180,6 +180,32 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
       expect(find.text('গোপনীয়তা নীতি'), findsOneWidget);
+
+      final settingsScrollable = find.descendant(
+        of: find.byKey(const Key('settings-scroll')),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        find.byKey(const Key('settings-terms')),
+        250,
+        scrollable: settingsScrollable,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('settings-terms')));
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      expect(find.text('শর্তাবলি ও নিয়মাবলি'), findsOneWidget);
+
+      await tester.scrollUntilVisible(
+        find.text('দায়বদ্ধতার সীমা'),
+        250,
+        scrollable: find.descendant(
+          of: find.byKey(const Key('terms-scroll')),
+          matching: find.byType(Scrollable),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
     });
   });
 }

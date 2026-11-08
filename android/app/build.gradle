@@ -8,12 +8,12 @@ plugins {
 // Google's official test App ID so local builds keep working. Production builds
 // must supply the real App ID with -PadmobAppId=... or ADMOB_APP_ID.
 def admobAppId = project.findProperty("admobAppId") ?: System.getenv("ADMOB_APP_ID")
-def hasAdmobAppId = admobAppId != null && !admobAppId.isEmpty()
+def hasAdmobAppId = admobAppId != null && !admobAppId.trim().isEmpty()
 if (!hasAdmobAppId) {
     admobAppId = "ca-app-pub-3940256099942544~3347511713"
     logger.warn(
-        "AdMob App ID is not configured. Debug builds use Google's test App ID " +
-        "and release builds ship without one, so ads stay disabled. " +
+        "AdMob App ID is not configured. Debug builds use Google's test App ID; " +
+        "release builds fail instead of shipping an invalid manifest. " +
         "Pass -PadmobAppId=ca-app-pub-XXXX~YYYY (or set ADMOB_APP_ID) " +
         "before publishing."
     )
@@ -66,10 +66,6 @@ android {
 
     buildTypes {
         release {
-            // Test App IDs must never reach a production manifest. Without a
-            // configured ID the SDK is never initialized because release ad
-            // unit IDs are also empty.
-            manifestPlaceholders.admobAppId = hasAdmobAppId ? admobAppId : ""
             if (keystorePropertiesFile.exists()) {
                 signingConfig = signingConfigs.release
             } else {
@@ -79,6 +75,21 @@ android {
                     "and provide your upload keystore before publishing."
                 )
             }
+        }
+    }
+}
+
+// The Google Mobile Ads manifest provider throws at startup when the App ID is
+// missing or invalid, so a release artifact must never be produced without a
+// real one. Checking at execution time keeps debug builds configuration-safe.
+tasks.matching { it.name == "preReleaseBuild" }.configureEach {
+    doFirst {
+        if (!hasAdmobAppId) {
+            throw new GradleException(
+                "AdMob App ID is required for release builds. " +
+                "Pass -PadmobAppId=ca-app-pub-XXXX~YYYY or set ADMOB_APP_ID " +
+                "to your production AdMob App ID."
+            )
         }
     }
 }
