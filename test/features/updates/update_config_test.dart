@@ -4,9 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('UpdateConfig', () {
     test('builds the Play Store URL from the application id', () {
-      const config = UpdateConfig(
-        playStoreId: 'com.claudysoft.flashlightpro',
-      );
+      const config = UpdateConfig(playStoreId: 'com.claudysoft.flashlightpro');
 
       expect(
         config.playStoreUrl,

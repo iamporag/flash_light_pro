@@ -1,5 +1,5 @@
 import 'package:flash_light_pro/features/monetization/data/consent_gateway.dart';
-import 'package:flash_light_pro/features/monetization/domain/ad_config.dart';
+import 'package:flash_light_pro/core/config/admob/admob_config.dart';
 import 'package:flash_light_pro/features/monetization/domain/ad_models.dart';
 import 'package:flash_light_pro/features/monetization/domain/monetization_models.dart';
 import 'package:flutter_test/flutter_test.dart';

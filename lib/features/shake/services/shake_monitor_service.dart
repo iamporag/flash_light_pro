@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flash_light_pro/core/config/app_info.dart';
 import 'package:flutter/services.dart';
 
 import '../domain/shake_sensitivity.dart';
@@ -59,11 +60,11 @@ class MethodChannelShakeMonitorService implements ShakeMonitorService {
   MethodChannelShakeMonitorService();
 
   static const MethodChannel _channel = MethodChannel(
-    'com.claudysoft.flashlightpro/device_controls',
+    AppInfo.deviceControlsChannel,
   );
 
   static const EventChannel _events = EventChannel(
-    'com.claudysoft.flashlightpro/shake_monitor_state',
+    AppInfo.shakeMonitorStateChannel,
   );
 
   static const Duration _timeout = Duration(seconds: 5);

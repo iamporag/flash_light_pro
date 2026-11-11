@@ -1,6 +1,6 @@
 import 'package:flash_light_pro/features/lighting/domain/lighting_defaults.dart';
 import 'package:flash_light_pro/src/bloc/flash_light/flash_light_bloc.dart';
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

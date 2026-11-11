@@ -1,9 +1,11 @@
-import 'package:flash_light_pro/features/monetization/domain/ad_config.dart';
+import 'package:flash_light_pro/core/config/admob/admob_config.dart';
+import 'package:flash_light_pro/core/config/purchase_config.dart';
 import 'package:flash_light_pro/features/monetization/domain/ad_models.dart';
 import 'package:flash_light_pro/features/monetization/domain/monetization_models.dart';
 import 'package:flash_light_pro/features/monetization/presentation/monetization_banner.dart';
 import 'package:flash_light_pro/features/monetization/presentation/monetization_native_ad.dart';
 import 'package:flash_light_pro/features/monetization/presentation/monetization_scope.dart';
+import 'package:flash_light_pro/features/monetization/presentation/privacy_options_tile.dart';
 import 'package:flash_light_pro/features/monetization/presentation/remove_ads_card.dart';
 import 'package:flash_light_pro/features/monetization/presentation/torch_banner_ad.dart';
 import 'package:flash_light_pro/features/monetization/data/consent_gateway.dart';
@@ -26,6 +28,15 @@ Widget app(Widget child) {
 
 Widget scoped(MonetizationController controller, Widget child) {
   return app(MonetizationScope(controller: controller, child: child));
+}
+
+Widget scopedScrollable(MonetizationController controller, Widget child) {
+  return app(
+    MonetizationScope(
+      controller: controller,
+      child: SingleChildScrollView(child: child),
+    ),
+  );
 }
 
 void main() {
@@ -194,8 +205,50 @@ void main() {
       await tester.tap(find.byKey(const Key('settings-remove-ads-buy')));
       await tester.pump();
 
-      expect(billing.bought, ['flash_light_pro_remove_ads']);
+      expect(billing.bought, [PurchaseConfig.removeAdsProductId]);
       expect(find.text('Waiting for the store to confirm...'), findsOneWidget);
+
+      // Resolve the flow so the purchase watchdog timer does not outlive the
+      // test.
+      billing.emit(status: BillingPurchaseStatus.purchased);
+      await tester.pump();
+    });
+
+    testWidgets('a cancelled payment stops the spinner and shows a snackbar', (
+      tester,
+    ) async {
+      final billing = FakeBillingGateway();
+      final controller = buildTestController(billingGateway: billing);
+      await controller.initialize();
+      addTearDown(controller.dispose);
+
+      await tester.pumpWidget(
+        scopedScrollable(controller, const RemoveAdsCard()),
+      );
+      await tester.tap(find.byKey(const Key('settings-remove-ads-buy')));
+      await tester.pump();
+
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+      // Android reports the cancel without a product ID.
+      billing.emit(status: BillingPurchaseStatus.canceled, productId: '');
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+      expect(find.byKey(const Key('settings-remove-ads-buy')), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byType(SnackBar),
+          matching: find.text(
+            'Payment cancelled. You were not charged. You can try again any time.',
+          ),
+        ),
+        findsOneWidget,
+      );
+
+      // Let the snackbar auto-dismiss so no timer outlives the test.
+      await tester.pumpAndSettle(const Duration(seconds: 1));
     });
 
     testWidgets('a confirmed purchase shows the owned state', (tester) async {

@@ -8,7 +8,7 @@ Console before uploading; both stores change them over time.
 - [x] iOS 1024×1024 opaque icon in
       `ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png`
 - [x] Android legacy and adaptive icons in `android/app/src/main/res/mipmap-*`
-- [x] Play icon 512×512: `docs/store/assets/play_icon_512.png`
+- [x] Play icon 512×512: `assets/playstore/app_icon_512.png`
 - [x] Vector source: `assets/branding/app_icon.svg`
 - [ ] Confirm the icon has no transparency and no pre-rounded corners in the
       store upload.
@@ -16,10 +16,14 @@ Console before uploading; both stores change them over time.
 ## Google Play graphics
 
 - [x] Feature graphic 1024×500:
-      `docs/store/assets/play_feature_graphic_1024x500.png`
-- [ ] Phone screenshots: at least 2, captured from the release build on a real
-      Android device or emulator. Use portrait 1080×1920 or larger, no device
-      frames, no invented UI.
+      `assets/playstore/feature_graphic_1024x500.png`
+- [x] Phone screenshots: 6 captured from the release build on a physical
+      device, portrait 1080×1920 (9:16), no device frames, no text overlays,
+      no backgrounds added. Files:
+      `assets/playstore/screenshots-play/` (`01_torch`, `02_screen_light`,
+      `03_sos`, `04_strobe`, `05_morse`, `06_settings`), each under 1 MB.
+      The styled marketing set in `assets/playstore/screenshots/` must not be
+      uploaded to Play because it adds frames, headlines, and backgrounds.
 - [ ] Tablet screenshots (optional but recommended for large-screen
       eligibility).
 - [ ] Short video (optional).

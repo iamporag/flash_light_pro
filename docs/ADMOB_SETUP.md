@@ -4,9 +4,15 @@ This document covers the production configuration for Google AdMob and the
 one-time `Remove ads` purchase. The code is complete; the items below require
 your own AdMob, Play Console, and App Store Connect accounts.
 
-The app never ships production ad IDs by default. Debug and profile builds use
-Google's official sample IDs. Release builds use only IDs passed at build time;
-when those are missing, ads stay disabled and the app remains fully usable.
+Debug and profile builds use Google's official sample IDs. Android release
+builds use the production unit IDs compiled into `AdMobIds`
+(`lib/core/config/admob/admob_ids.dart`) and consumed by `AdConfig`
+(`lib/core/config/admob/admob_config.dart`), so a release build requests real ads
+without any extra build flag. Ad unit IDs are public identifiers, not secrets.
+`--dart-define` values still override the compiled-in IDs per format. Per-format
+switches and frequency limits live in `AdMobPolicy`
+(`lib/core/config/admob/admob_policy.dart`). iOS unit IDs are not committed;
+without them ads stay off on iOS and the app remains fully usable.
 
 ## 1. What is implemented
 
@@ -51,10 +57,10 @@ flashlight, or navigation.
    - App open
 5. Copy each **ad unit ID** (format `ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX`).
 
-Do not reuse a test ID in production. Google's sample IDs from
-`lib/features/monetization/domain/ad_config.dart` (`AdMobTestIds`) and the
-fallbacks in `android/app/build.gradle` and `ios/Runner/Info.plist` are only for
-development and review.
+Do not reuse a test ID in production. Google's sample IDs in
+`lib/core/config/admob/admob_ids.dart` (`AdMobIds.testAndroid` and
+`AdMobIds.testIos`) and the fallbacks in `android/app/build.gradle` and
+`ios/Runner/Info.plist` are only for development and review.
 
 ## 3. Android App ID
 
@@ -95,19 +101,14 @@ keep working. Replace it before archiving for the App Store.
 
 ## 5. Production ad unit IDs
 
-Release builds read unit IDs from `--dart-define` values. Keep them out of
-source control and pass them to every release build:
+Android unit IDs live in `AdMobIds` in
+`lib/core/config/admob/admob_ids.dart`; that file is the only Dart source of
+truth for them. They are compiled into every release build, so
+`flutter build appbundle --release` is enough. Ad unit IDs are public
+identifiers; they are not secrets and committing them is safe.
 
-Start from the committed templates, then fill in your own IDs:
-
-```sh
-cp admob.android.example.json admob.android.json   # Android
-cp admob.ios.example.json admob.ios.json           # iOS
-```
-
-`admob.android.json` and `admob.ios.json` are git-ignored. Set
-`ADMOB_TEST_DEVICE_IDS` inside them while testing on registered devices, and
-leave it empty for the production build.
+To replace them, edit that map or pass a `--dart-define` override. Overrides win
+per format, so a partial set is allowed:
 
 | Platform | Define |
 | --- | --- |
@@ -122,12 +123,18 @@ leave it empty for the production build.
 | iOS | `ADMOB_IOS_REWARDED_ID` |
 | iOS | `ADMOB_IOS_APP_OPEN_ID` |
 
-With the filled-in file (preferred):
+Optional override with a filled-in file (the templates stay in the repository):
 
 ```sh
+cp admob.android.example.json admob.android.json   # Android
+cp admob.ios.example.json admob.ios.json           # iOS
 flutter build appbundle --release --dart-define-from-file=admob.android.json
 flutter build ipa --release --dart-define-from-file=admob.ios.json
 ```
+
+`admob.android.json` and `admob.ios.json` are git-ignored. Set
+`ADMOB_TEST_DEVICE_IDS` inside them while testing on registered devices, and
+leave it empty for the production build.
 
 Equivalent explicit Android app bundle:
 
@@ -154,6 +161,24 @@ flutter build ipa \
 `ADMOB_TEST_MODE=true` is ignored in release builds by design, so a release
 artifact can never serve sample ads accidentally. Debug and profile builds always
 use the sample IDs.
+
+### Why a Play test build can still show no ads
+
+A compiled-in ID is necessary but not sufficient. Before ads serve, Google must
+approve the AdMob app:
+
+1. In AdMob, open the app and use **App store details → Add** to link the Play
+   listing. The AdMob package name must be exactly
+   `com.claudysoft.flashlightpro`.
+2. Wait for **Approval status** to change from *Requires review* to *Ready*.
+   New apps and newly linked store listings are reviewed, which can take from a
+   few hours to a few days. Until then the ad units report 0 requests or serve
+   limited ads even when the app requests them correctly.
+3. Verify that the AdMob App ID (`ca-app-pub-...~...`) in
+   `android/gradle.properties` belongs to the same AdMob app as the unit IDs.
+
+A brand-new AdMob account can also be limited until its own review and payment
+setup complete.
 
 ## 6. Test devices and UMP
 
@@ -282,7 +307,8 @@ Update both stores before submitting:
       fails on purpose when neither is set.
 - [ ] The `android/app/proguard-rules.pro` Room keep rule is present; removing
       it makes release builds crash at startup inside WorkManager.
-- [ ] All ten production unit IDs are passed to release builds.
+- [ ] All ten production unit IDs are configured: Android in
+      `AdMobIds`, iOS in the iOS build defines.
 - [ ] A UMP message is published in AdMob for every required region.
 - [ ] `flash_light_pro_remove_ads` exists and is active in both stores.
 - [ ] Debug build shows sample ads only; release build shows production ads.
@@ -305,7 +331,7 @@ Update both stores before submitting:
 
 | Symptom | Likely cause |
 | --- | --- |
-| No ads in a release build | Unit IDs missing from `--dart-define`, or the app owns Remove ads |
+| No ads in a release build | The AdMob app is still **Requires review** or not linked to the Play listing, consent does not allow requests, the app owns Remove ads, or the IDs do not match the AdMob app |
 | Test ads in a release build | Release build received test unit IDs; check the defines, not `AdConfig.test` |
 | Android build fails on AdMob App ID | Expected: release builds require `admobAppId` or `ADMOB_APP_ID`; pass the real App ID |
 | UMP form never appears | No message published in AdMob, or the device is outside the configured region and not a test device |

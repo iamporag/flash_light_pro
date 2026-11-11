@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../application/ad_diagnostics.dart';
-import '../domain/ad_config.dart';
+
+import 'package:flash_light_pro/core/config/admob/admob_config.dart';
 
 class ConsentInfo {
   const ConsentInfo({

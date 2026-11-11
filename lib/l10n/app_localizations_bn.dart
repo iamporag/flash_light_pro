@@ -388,6 +388,20 @@ class AppLocalizationsBn extends AppLocalizations {
   String get customColor => 'কাস্টম রং';
 
   @override
+  String get screenColorWarm => 'উষ্ণ';
+
+  @override
+  String get screenColorNeutral => 'নিরপেক্ষ';
+
+  @override
+  String get screenColorCool => 'শীতল';
+
+  @override
+  String screenColorSemantics(String color) {
+    return '$color স্ক্রিন রঙ';
+  }
+
+  @override
   String get turnOffLight => 'আলো বন্ধ করুন';
 
   @override
@@ -553,6 +567,9 @@ class AppLocalizationsBn extends AppLocalizations {
       'Flash Light Pro আপনার ডিভাইসে কাজ করে। ফ্ল্যাশলাইটের জন্য কোনো অ্যাকাউন্ট বা নেটওয়ার্ক লাগে না। বিনামূল্যের সংস্করণে Google AdMob-এর বিজ্ঞাপন দেখা যায় এবং একবারের ঐচ্ছিক ক্রয়ে সেগুলো সরানো যায়।';
 
   @override
+  String get privacyViewOnline => 'সম্পূর্ণ নীতি অনলাইনে দেখুন';
+
+  @override
   String get privacyLocalTitle => 'আপনার ডিভাইসে সংরক্ষিত তথ্য';
 
   @override
@@ -589,8 +606,9 @@ class AppLocalizationsBn extends AppLocalizations {
       'অ্যাপে কোনো অ্যানালিটিক্স SDK বা রিমোট ক্র্যাশ রিপোর্টিং নেই। Google AdMob তাদের নিজস্ব গোপনীয়তা শর্ত অনুযায়ী ডিভাইস ও বিজ্ঞাপন-মিথস্ক্রিয়া তথ্য সংগ্রহ করতে পারে। ইন্টারনেট ছাড়াই ফ্ল্যাশলাইট, SOS, স্ট্রোব, মোর্স ও স্ক্রিন লাইট কাজ করে।';
 
   @override
-  String get privacyPolicyFooter =>
-      'এই নীতি Flash Light Pro সংস্করণ 0.1.0-এর জন্য প্রযোজ্য। iOS-এ অ্যাপ মোশন অ্যাক্সেস চায়, এবং তা কেবল ঝাঁকিয়ে চালু/বন্ধ সক্রিয় থাকলে। Android 13 ও পরের সংস্করণে এটি নোটিফিকেশন অনুমতি চায়, যাতে ব্যাকগ্রাউন্ড ফ্ল্যাশলাইট ও ঝাঁকুনি সার্ভিস তাদের নিয়ন্ত্রণ দেখাতে পারে। বিজ্ঞাপন ও ক্রয় Google AdMob ও প্ল্যাটফর্ম স্টোর তাদের নিজস্ব গোপনীয়তা শর্তে প্রদান করে।';
+  String privacyPolicyFooter(String version) {
+    return 'এই নীতি Flash Light Pro সংস্করণ $version-এর জন্য প্রযোজ্য। iOS-এ অ্যাপ মোশন অ্যাক্সেস চায়, এবং তা কেবল ঝাঁকিয়ে চালু/বন্ধ সক্রিয় থাকলে। Android 13 ও পরের সংস্করণে এটি নোটিফিকেশন অনুমতি চায়, যাতে ব্যাকগ্রাউন্ড ফ্ল্যাশলাইট ও ঝাঁকুনি সার্ভিস তাদের নিয়ন্ত্রণ দেখাতে পারে। বিজ্ঞাপন ও ক্রয় Google AdMob ও প্ল্যাটফর্ম স্টোর তাদের নিজস্ব গোপনীয়তা শর্তে প্রদান করে।';
+  }
 
   @override
   String get close => 'বন্ধ করুন';
@@ -777,6 +795,10 @@ class AppLocalizationsBn extends AppLocalizations {
       'ক্রয়টি সম্পন্ন হয়নি। কোনো টাকা কাটা হয়নি।';
 
   @override
+  String get removeAdsPurchaseCanceled =>
+      'পেমেন্ট বাতিল হয়েছে। আপনার কোনো টাকা কাটা হয়নি। আপনি আবার চেষ্টা করতে পারেন।';
+
+  @override
   String get removeAdsRestoreFailed =>
       'আগের ক্রয় যাচাই করা যায়নি। পরে আবার চেষ্টা করুন।';
 
@@ -798,61 +820,10 @@ class AppLocalizationsBn extends AppLocalizations {
   String get adLabel => 'বিজ্ঞাপন';
 
   @override
-  String get monetizationStatusTitle => 'ক্রয় ও বিজ্ঞাপনের অবস্থা';
-
-  @override
-  String get adsStatusLabel => 'বিজ্ঞাপন';
-
-  @override
-  String get adsStatusAvailable => 'চালু আছে';
-
-  @override
-  String get adsStatusDisabled => 'বন্ধ আছে';
-
-  @override
-  String get adsStatusWaitingConsent => 'সম্মতির অপেক্ষায়';
-
-  @override
-  String get adsStatusConfigurationMissing => 'কনফিগারেশন নেই';
-
-  @override
-  String get adsStatusStarting => 'শুরু হচ্ছে';
-
-  @override
-  String get removeAdsStatusLabel => 'বিজ্ঞাপন সরান';
-
-  @override
-  String get removeAdsStatusNotPurchased => 'ক্রয় করা হয়নি';
-
-  @override
-  String get removeAdsStatusOwned => 'আজীবন বিজ্ঞাপনমুক্ত';
-
-  @override
-  String get removeAdsStatusStoreUnavailable => 'স্টোর পাওয়া যাচ্ছে না';
-
-  @override
-  String get purchaseStatusLabel => 'ক্রয়';
-
-  @override
-  String get purchaseStatusAvailable => 'উপলব্ধ';
-
-  @override
-  String get purchaseStatusPending => 'অপেক্ষমাণ';
-
-  @override
-  String get purchaseStatusFailed => 'ব্যর্থ';
-
-  @override
-  String get purchaseStatusUnavailable => 'উপলব্ধ নয়';
-
-  @override
   String get privacyOptions => 'গোপনীয়তা বিকল্প';
 
   @override
   String get privacyOptionsBody => 'বিজ্ঞাপন সম্মতি পছন্দগুলো পর্যালোচনা করুন।';
-
-  @override
-  String get openPrivacyOptions => 'গোপনীয়তা বিকল্প খুলুন';
 
   @override
   String get batterySection => 'ব্যাকগ্রাউন্ড নির্ভরযোগ্যতা';
@@ -948,6 +919,9 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get termsIntro =>
       'এই শর্তাবলি Flash Light Pro ব্যবহারের নিয়ন্ত্রণ করে। অ্যাপটি ইনস্টল বা ব্যবহার করলে আপনি এগুলো মেনে নিচ্ছেন। সম্মত না হলে অনুগ্রহ করে অ্যাপটি আনইনস্টল করুন।';
+
+  @override
+  String get termsViewOnline => 'সম্পূর্ণ শর্তাবলি অনলাইনে দেখুন';
 
   @override
   String get termsLicenceTitle => 'অ্যাপ ব্যবহারের লাইসেন্স';

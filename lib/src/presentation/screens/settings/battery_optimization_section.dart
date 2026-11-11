@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flash_light_pro/features/battery/services/battery_optimization_service.dart';
 import 'package:flash_light_pro/features/monetization/presentation/monetization_scope.dart';
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 import 'package:flutter/material.dart';
 
@@ -91,7 +91,7 @@ class _BatteryOptimizationSectionState extends State<BatteryOptimizationSection>
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: Color(0x14FFFFFF)),
+          side: const BorderSide(color: AppColors.surfaceBorder),
         ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),

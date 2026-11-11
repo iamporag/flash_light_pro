@@ -2,7 +2,7 @@ import 'package:flash_light_pro/features/lighting/domain/light_mode.dart';
 import 'package:flash_light_pro/features/lighting/domain/lighting_defaults.dart';
 import 'package:flash_light_pro/src/bloc/flash_light/flash_light_bloc.dart';
 import 'package:flash_light_pro/src/presentation/screens/home/widgets/timer_sheet.dart';
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 import 'package:flash_light_pro/src/presentation/widgets/color_preset_row.dart';
 import 'package:flutter/material.dart';

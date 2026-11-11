@@ -1,3 +1,4 @@
+import 'package:flash_light_pro/core/config/app_info.dart';
 import 'package:flutter/services.dart';
 
 /// Platform controls that live outside the torch plugin: screen brightness,
@@ -35,7 +36,7 @@ class MethodChannelDeviceControls implements DeviceControls {
   const MethodChannelDeviceControls();
 
   static const MethodChannel _channel = MethodChannel(
-    'com.claudysoft.flashlightpro/device_controls',
+    AppInfo.deviceControlsChannel,
   );
 
   @override

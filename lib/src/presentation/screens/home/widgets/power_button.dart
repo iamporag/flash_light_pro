@@ -1,4 +1,4 @@
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
 import 'package:flutter/material.dart';
 
 class PowerButton extends StatelessWidget {
@@ -65,8 +65,8 @@ class PowerButton extends StatelessWidget {
                 color: isOn
                     ? AppColors.accent
                     : enabled
-                    ? const Color(0x33FFFFFF)
-                    : const Color(0x14FFFFFF),
+                    ? AppColors.track
+                    : AppColors.surfaceBorder,
                 width: isOn ? 2 : 1.5,
               ),
               boxShadow: isOn

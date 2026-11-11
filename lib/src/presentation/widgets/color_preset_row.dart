@@ -1,27 +1,33 @@
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
+import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 import 'package:flutter/material.dart';
 
 class ScreenColorPreset {
   const ScreenColorPreset({
-    required this.label,
+    required this.id,
     required this.value,
     required this.color,
   });
 
-  final String label;
+  final String id;
   final int value;
   final Color color;
 }
 
 const List<ScreenColorPreset> screenColorPresets = [
-  ScreenColorPreset(label: 'Warm', value: 0xFFFFD9A0, color: AppColors.warm),
-  ScreenColorPreset(
-    label: 'Neutral',
-    value: 0xFFFFFFFF,
-    color: AppColors.neutral,
-  ),
-  ScreenColorPreset(label: 'Cool', value: 0xFFCCE4FF, color: AppColors.cool),
+  ScreenColorPreset(id: 'warm', value: 0xFFFFD9A0, color: AppColors.warm),
+  ScreenColorPreset(id: 'neutral', value: 0xFFFFFFFF, color: AppColors.neutral),
+  ScreenColorPreset(id: 'cool', value: 0xFFCCE4FF, color: AppColors.cool),
 ];
+
+String _presetLabel(BuildContext context, ScreenColorPreset preset) {
+  final l10n = context.l10n;
+  return switch (preset.id) {
+    'warm' => l10n.screenColorWarm,
+    'cool' => l10n.screenColorCool,
+    _ => l10n.screenColorNeutral,
+  };
+}
 
 class ColorPresetRow extends StatelessWidget {
   const ColorPresetRow({
@@ -67,15 +73,16 @@ class _PresetSwatch extends StatelessWidget {
         ThemeData.estimateBrightnessForColor(preset.color) == Brightness.dark
         ? Colors.white
         : Colors.black87;
+    final label = _presetLabel(context, preset);
 
     return Semantics(
       button: true,
       selected: selected,
-      label: '${preset.label} screen color',
+      label: context.l10n.screenColorSemantics(label),
       child: Tooltip(
-        message: preset.label,
+        message: label,
         child: InkWell(
-          key: Key('screen-color-${preset.label.toLowerCase()}'),
+          key: Key('screen-color-${preset.id}'),
           customBorder: const CircleBorder(),
           onTap: onTap,
           child: AnimatedContainer(
@@ -86,7 +93,7 @@ class _PresetSwatch extends StatelessWidget {
               color: preset.color,
               shape: BoxShape.circle,
               border: Border.all(
-                color: selected ? AppColors.accent : const Color(0x33FFFFFF),
+                color: selected ? AppColors.accent : AppColors.track,
                 width: selected ? 3 : 1,
               ),
             ),

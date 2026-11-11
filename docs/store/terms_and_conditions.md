@@ -1,19 +1,8 @@
-<!--
-INTERNAL NOTES — not rendered when hosted:
-1. Replace every placeholder in square brackets before publishing:
-   [SUPPORT_EMAIL], [GOVERNING_LAW], [COURT_LOCATION].
-2. Host this file at a public URL (same place as the privacy policy) and link it
-   from the store listing / app Settings if you want it accessible in-app.
-3. Google Play requires a privacy policy URL; a separate Terms URL is optional
-   but recommended for an app with ads and in-app purchases.
-4. This document is a starting template, not legal advice. Have a qualified
-   lawyer review it for your jurisdiction before publishing.
--->
-
 # Terms and Conditions — Flash Light Pro
 
 **Effective date:** 8 November 2026
 **Last updated:** 8 November 2026
+**Published at:** https://iamporag.github.io/flash_light_pro/terms.html
 
 These Terms and Conditions ("Terms") govern your access to and use of the
 Flash Light Pro mobile application, including any updates, content, and
@@ -162,8 +151,8 @@ photos, or file permissions.
 
 ## 9. Privacy
 
-Our Privacy Policy explains what data the App and its third-party providers
-process and how. By using the App, you acknowledge that you have read the
+Our [Privacy Policy](https://iamporag.github.io/flash_light_pro/privacy.html)
+explains what data the App and its third-party providers process and how. By using the App, you acknowledge that you have read the
 Privacy Policy. The Privacy Policy is available from the App's Settings and
 from the store listing.
 
@@ -243,9 +232,9 @@ survive.
 
 ## 17. Governing law and disputes
 
-These Terms are governed by the laws of **[GOVERNING_LAW]**, without regard to
+These Terms are governed by the laws of **Bangladesh**, without regard to
 its conflict-of-law rules. Subject to any mandatory consumer-protection rules
-in your country of residence, the courts of **[COURT_LOCATION]** have exclusive
+in your country of residence, the courts of **Dhaka, Bangladesh** have exclusive
 jurisdiction over any dispute arising out of or relating to these Terms or the
 App. Nothing in this section prevents you from bringing a claim before a
 competent consumer authority or court where local law gives you that right.
@@ -284,4 +273,4 @@ take effect means you accept the updated Terms.
 If you have questions about these Terms, contact:
 
 **ClaudySoft**
-Email: **[SUPPORT_EMAIL]**
+Email: **sakibporag24@gmail.com**

@@ -189,6 +189,17 @@
   "exitScreenLight": "Exit screen light",
   "hideCustomColor": "Hide custom color",
   "customColor": "Custom color",
+  "screenColorWarm": "Warm",
+  "screenColorNeutral": "Neutral",
+  "screenColorCool": "Cool",
+  "screenColorSemantics": "{color} screen color",
+  "@screenColorSemantics": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
   "turnOffLight": "Turn off light",
   "hue": "Hue",
   "saturation": "Saturation",
@@ -245,6 +256,7 @@
   "madeOffline": "The flashlight works offline. Ads need a connection.",
   "privacyPolicyTitle": "Privacy policy",
   "privacyIntro": "Flash Light Pro works on your device. The flashlight itself needs no account and no network. The free version shows ads from Google AdMob, and an optional one-time purchase removes them.",
+  "privacyViewOnline": "View full policy online",
   "privacyLocalTitle": "Data stored on your device",
   "privacyLocalBody": "Preferences such as language, default mode, brightness, and shake sensitivity are stored locally by the operating system. Ad frequency limits, your ad consent choice, and Remove ads purchase status are cached locally too. The Android Quick Settings tile and home screen widget also store the last torch state locally so they can show the correct state.",
   "privacyHardwareTitle": "Hardware access",
@@ -255,7 +267,14 @@
   "privacyBillingBody": "Remove ads is a one-time, non-consumable purchase handled by Google Play or the App Store. The app never receives your payment details. The entitlement is cached on your device and confirmed with the store, and you can restore it at any time from Settings.",
   "privacyNoAnalyticsTitle": "No analytics or crash uploads",
   "privacyNoAnalyticsBody": "The app includes no analytics SDK and no remote crash reporting. Google AdMob may collect device and ad-interaction data under Google's own privacy terms. The flashlight, SOS, strobe, Morse, and screen light keep working without a connection.",
-  "privacyPolicyFooter": "This policy applies to Flash Light Pro version 0.1.0. On iOS the app requests motion access, and only when Shake to toggle is enabled. On Android 13 and later it asks for notification permission so the background flashlight and shake services can show their controls. Ads and purchases are provided by Google AdMob and the platform store under their own privacy terms.",
+  "privacyPolicyFooter": "This policy applies to Flash Light Pro version {version}. On iOS the app requests motion access, and only when Shake to toggle is enabled. On Android 13 and later it asks for notification permission so the background flashlight and shake services can show their controls. Ads and purchases are provided by Google AdMob and the platform store under their own privacy terms.",
+  "@privacyPolicyFooter": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "close": "Close",
   "updateRequiredTitle": "Update Required",
   "updateRequiredBody": "A newer version of Flash Light Pro is required to keep the app working safely. Please update to continue.",
@@ -338,31 +357,15 @@
   "removeAdsRestoring": "Checking previous purchases...",
   "removeAdsUnavailable": "The store is unavailable right now. Every flashlight feature still works.",
   "removeAdsPurchaseFailed": "The purchase could not be completed. Nothing was charged.",
+  "removeAdsPurchaseCanceled": "Payment cancelled. You were not charged. You can try again any time.",
   "removeAdsRestoreFailed": "Couldn't check previous purchases. Try again later.",
   "removeAdsNoPurchase": "No previous purchase was found on this account.",
   "removeAdsProductNotFound": "The store does not list the Remove Ads product yet.",
   "removeAdsRestore": "Restore purchases",
   "removeAdsRetry": "Try again",
   "adLabel": "Ad",
-  "monetizationStatusTitle": "Purchase and ad status",
-  "adsStatusLabel": "Ads",
-  "adsStatusAvailable": "Available",
-  "adsStatusDisabled": "Disabled",
-  "adsStatusWaitingConsent": "Waiting for consent",
-  "adsStatusConfigurationMissing": "Configuration missing",
-  "adsStatusStarting": "Starting",
-  "removeAdsStatusLabel": "Remove ads",
-  "removeAdsStatusNotPurchased": "Not purchased",
-  "removeAdsStatusOwned": "Lifetime ad-free",
-  "removeAdsStatusStoreUnavailable": "Store unavailable",
-  "purchaseStatusLabel": "Purchase",
-  "purchaseStatusAvailable": "Available",
-  "purchaseStatusPending": "Pending",
-  "purchaseStatusFailed": "Failed",
-  "purchaseStatusUnavailable": "Unavailable",
   "privacyOptions": "Privacy options",
   "privacyOptionsBody": "Review your ad consent choices.",
-  "openPrivacyOptions": "Open privacy options",
   "batterySection": "Background reliability",
   "batteryOptimizationTitle": "Battery optimization",
   "batteryStatusOptimized": "Optimized by Android",
@@ -393,6 +396,7 @@
   "termsAndConditions": "Terms and conditions",
   "termsEffectiveDate": "Effective 8 November 2026",
   "termsIntro": "These terms govern your use of Flash Light Pro. By installing or using the app, you agree to them. If you do not agree, please uninstall the app.",
+  "termsViewOnline": "View full terms online",
   "termsLicenceTitle": "Licence to use the app",
   "termsLicenceBody": "ClaudySoft grants you a personal, non-exclusive, non-transferable and revocable licence to use Flash Light Pro on devices you own or control. You may not copy, resell, redistribute, modify, reverse engineer or attempt to extract the source code, except where the law expressly allows it.",
   "termsAdsTitle": "Ads and Remove ads",

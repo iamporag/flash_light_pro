@@ -3,7 +3,7 @@ import 'package:flash_light_pro/features/monetization/application/ad_free_entitl
 import 'package:flash_light_pro/features/monetization/application/consent_manager.dart';
 import 'package:flash_light_pro/features/monetization/application/rewarded_ad_service.dart';
 import 'package:flash_light_pro/features/monetization/data/rewarded_ad_presenter.dart';
-import 'package:flash_light_pro/features/monetization/domain/ad_config.dart';
+import 'package:flash_light_pro/core/config/admob/admob_config.dart';
 import 'package:flash_light_pro/features/monetization/domain/ad_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 

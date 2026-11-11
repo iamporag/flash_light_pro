@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-import '../../../src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
+
 import '../../../src/presentation/utils/localization.dart';
 import '../application/ad_diagnostics.dart';
 import '../application/monetization_controller.dart';

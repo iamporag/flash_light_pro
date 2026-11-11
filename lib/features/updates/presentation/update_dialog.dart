@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flash_light_pro/features/updates/application/update_cubit.dart';
 import 'package:flash_light_pro/features/updates/domain/update_models.dart';
 import 'package:flash_light_pro/l10n/app_localizations.dart';
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 
 class UpdateDialog extends StatelessWidget {
@@ -63,7 +63,7 @@ class UpdateDialog extends StatelessWidget {
                         ),
                         boxShadow: const [
                           BoxShadow(
-                            color: Color(0x33FFC94D),
+                            color: AppColors.accentOverlay,
                             blurRadius: 24,
                             offset: Offset(0, 8),
                           ),
@@ -76,7 +76,7 @@ class UpdateDialog extends StatelessWidget {
                             ? Icons.check_rounded
                             : Icons.system_update_rounded,
                         size: 30,
-                        color: const Color(0xFF201A05),
+                        color: AppColors.onAccent,
                       ),
                     ),
                   ),
@@ -277,7 +277,7 @@ class _VersionCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surfaceHigh.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0x14FFFFFF)),
+        border: Border.all(color: AppColors.surfaceBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -363,7 +363,7 @@ class _PrimaryButton extends StatelessWidget {
       onPressed: onPressed,
       style: FilledButton.styleFrom(
         backgroundColor: AppColors.accent,
-        foregroundColor: const Color(0xFF201A05),
+        foregroundColor: AppColors.onAccent,
         minimumSize: const Size.fromHeight(50),
         textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

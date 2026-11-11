@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flash_light_pro/core/config/app_info.dart';
 import 'package:flutter/services.dart';
 
 class BatteryOptimizationStatus extends Equatable {
@@ -38,7 +39,7 @@ class MethodChannelBatteryOptimizationService
   const MethodChannelBatteryOptimizationService();
 
   static const MethodChannel _channel = MethodChannel(
-    'com.claudysoft.flashlightpro/device_controls',
+    AppInfo.deviceControlsChannel,
   );
 
   static bool get _supported =>

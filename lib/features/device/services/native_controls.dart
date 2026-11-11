@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flash_light_pro/core/config/app_info.dart';
 import 'package:flutter/services.dart';
 
 /// Pattern modes that the Android foreground service can own natively, so they
@@ -70,7 +71,7 @@ class MethodChannelNativeControls implements NativeControlsSource {
   MethodChannelNativeControls();
 
   static const EventChannel _events = EventChannel(
-    'com.claudysoft.flashlightpro/native_controls_state',
+    AppInfo.nativeControlsStateChannel,
   );
 
   Stream<NativeControlsSnapshot>? _stream;

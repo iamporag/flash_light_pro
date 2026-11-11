@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flash_light_pro/core/config/feature_config.dart';
 import 'package:flutter/foundation.dart';
 
 import '../data/ad_frequency_store.dart';
@@ -8,7 +9,9 @@ import '../data/consent_gateway.dart';
 import '../data/entitlement_store.dart';
 import '../data/fullscreen_ad_presenter.dart';
 import '../data/rewarded_ad_presenter.dart';
-import '../domain/ad_config.dart';
+
+import 'package:flash_light_pro/core/config/admob/admob_config.dart';
+
 import '../domain/ad_models.dart';
 import '../domain/monetization_models.dart';
 import 'ad_diagnostics.dart';
@@ -35,7 +38,6 @@ class MonetizationController extends ChangeNotifier {
     required this.frequencyStore,
     required this.runtimeFlags,
     DateTime Function()? clock,
-    this.interstitialActionDelay = const Duration(milliseconds: 350),
   }) {
     consent = ConsentManager(gateway: consentGateway);
     entitlement = AdFreeEntitlementService(
@@ -71,7 +73,6 @@ class MonetizationController extends ChangeNotifier {
   final AdInitializer adInitializer;
   final AdFrequencyStore frequencyStore;
   final AdRuntimeFlags runtimeFlags;
-  final Duration interstitialActionDelay;
 
   late final ConsentManager consent;
   late final AdFreeEntitlementService entitlement;
@@ -89,16 +90,14 @@ class MonetizationController extends ChangeNotifier {
   DateTime? _lastPreloadAttemptAt;
   Timer? _interstitialAttemptTimer;
 
-  static const Duration _startRetryInterval = Duration(seconds: 20);
-  static const Duration _preloadRetryInterval = Duration(seconds: 15);
-
   bool get isInitialized => _initialized;
   bool get isSdkReady => _sdkReady;
   bool get isFirstSession => _firstSession;
   bool get isAdFree => entitlement.isAdFree;
   bool get canRequestAds => consent.canRequestAds;
   bool get privacyOptionsRequired => consent.privacyOptionsRequired;
-  bool get shouldOfferRemoveAds => config.hasAnyUnitId;
+  bool get shouldOfferRemoveAds =>
+      FeatureConfig.removeAds && config.hasAnyUnitId;
   bool get isStoreSupported => entitlement.isStoreSupported;
 
   ConsentPhase get consentPhase => consent.phase;
@@ -178,7 +177,7 @@ class MonetizationController extends ChangeNotifier {
     final now = DateTime.now();
     final lastAttempt = _lastStartAttemptAt;
     if (lastAttempt != null &&
-        now.difference(lastAttempt) < _startRetryInterval) {
+        now.difference(lastAttempt) < config.policy.startRetryInterval) {
       return;
     }
     _lastStartAttemptAt = now;
@@ -255,10 +254,13 @@ class MonetizationController extends ChangeNotifier {
 
   void _scheduleInterstitialAttempt() {
     _interstitialAttemptTimer?.cancel();
-    _interstitialAttemptTimer = Timer(interstitialActionDelay, () {
-      if (_disposed) return;
-      unawaited(maybeShowInterstitial(AdPlacement.interstitialAction));
-    });
+    _interstitialAttemptTimer = Timer(
+      config.policy.interstitialActionDelay,
+      () {
+        if (_disposed) return;
+        unawaited(maybeShowInterstitial(AdPlacement.interstitialAction));
+      },
+    );
   }
 
   /// Marks a deliberate hand-off to a system surface (for example battery
@@ -326,7 +328,10 @@ class MonetizationController extends ChangeNotifier {
     if (fullscreen.isInterstitialReady && fullscreen.isAppOpenReady) return;
     final now = DateTime.now();
     final last = _lastPreloadAttemptAt;
-    if (last != null && now.difference(last) < _preloadRetryInterval) return;
+    if (last != null &&
+        now.difference(last) < config.policy.preloadRetryInterval) {
+      return;
+    }
     _lastPreloadAttemptAt = now;
     unawaited(fullscreen.preload());
   }

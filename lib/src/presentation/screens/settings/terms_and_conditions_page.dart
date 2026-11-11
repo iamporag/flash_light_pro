@@ -1,9 +1,24 @@
+import 'dart:async';
+
+import 'package:flash_light_pro/core/config/app_info.dart';
 import 'package:flash_light_pro/features/monetization/domain/ad_models.dart';
 import 'package:flash_light_pro/features/monetization/presentation/monetization_banner.dart';
 import 'package:flash_light_pro/src/presentation/screens/settings/policy_section.dart';
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+Future<void> _openOnlineTerms() async {
+  try {
+    await launchUrl(
+      Uri.parse(AppInfo.termsUrl),
+      mode: LaunchMode.externalApplication,
+    );
+  } catch (_) {
+    // The same terms are already shown on this screen.
+  }
+}
 
 class TermsAndConditionsPage extends StatelessWidget {
   const TermsAndConditionsPage({super.key});
@@ -42,7 +57,25 @@ class TermsAndConditionsPage extends StatelessWidget {
                 height: 1.55,
               ),
             ),
-            const SizedBox(height: 22),
+            const SizedBox(height: 6),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                key: const Key('terms-online'),
+                onPressed: () => unawaited(_openOnlineTerms()),
+                style: TextButton.styleFrom(
+                  foregroundColor: AppColors.accent,
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  textStyle: const TextStyle(
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                icon: const Icon(Icons.open_in_new_rounded, size: 16),
+                label: Text(l10n.termsViewOnline),
+              ),
+            ),
+            const SizedBox(height: 14),
             PolicySection(
               icon: Icons.verified_user_outlined,
               title: l10n.termsLicenceTitle,

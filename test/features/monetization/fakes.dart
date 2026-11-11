@@ -9,7 +9,7 @@ import 'package:flash_light_pro/features/monetization/data/consent_gateway.dart'
 import 'package:flash_light_pro/features/monetization/data/entitlement_store.dart';
 import 'package:flash_light_pro/features/monetization/data/fullscreen_ad_presenter.dart';
 import 'package:flash_light_pro/features/monetization/data/rewarded_ad_presenter.dart';
-import 'package:flash_light_pro/features/monetization/domain/ad_config.dart';
+import 'package:flash_light_pro/core/config/admob/admob_config.dart';
 import 'package:flash_light_pro/features/monetization/domain/ad_frequency_policy.dart';
 import 'package:flash_light_pro/features/monetization/domain/ad_models.dart';
 import 'package:flash_light_pro/features/monetization/domain/monetization_models.dart';

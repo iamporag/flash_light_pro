@@ -15,7 +15,9 @@ import '../data/consent_gateway.dart';
 import '../data/entitlement_store.dart';
 import '../data/fullscreen_ad_presenter.dart';
 import '../data/rewarded_ad_presenter.dart';
-import '../domain/ad_config.dart';
+
+import 'package:flash_light_pro/core/config/admob/admob_config.dart';
+
 import '../domain/ad_models.dart';
 import '../domain/monetization_models.dart';
 import 'monetization_scope.dart';

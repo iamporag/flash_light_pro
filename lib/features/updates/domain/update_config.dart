@@ -1,3 +1,5 @@
+import 'package:flash_light_pro/core/config/app_info.dart';
+
 /// Central update policy configuration.
 ///
 /// There is deliberately no default remote endpoint. The Play In-App Updates
@@ -8,7 +10,7 @@ class UpdateConfig {
   const UpdateConfig({
     this.playStoreId = defaultPlayStoreId,
     this.appStoreId = defaultAppStoreId,
-    this.minimumSupportedVersion = '0.1.0',
+    this.minimumSupportedVersion = AppInfo.version,
     this.mandatoryPriority = 5,
     this.recommendedPriority = 3,
     this.startupCheckDelay = const Duration(milliseconds: 1500),
@@ -23,7 +25,7 @@ class UpdateConfig {
   /// Actual Android application id from `android/app/build.gradle`.
   static const String defaultPlayStoreId = String.fromEnvironment(
     'PLAY_STORE_ID',
-    defaultValue: 'com.claudysoft.flashlightpro',
+    defaultValue: AppInfo.packageName,
   );
 
   /// Only used when a real numeric App Store id is supplied at build time.

@@ -2,7 +2,7 @@ import 'package:flash_light_pro/features/lighting/domain/light_mode.dart';
 import 'package:flash_light_pro/features/lighting/domain/lighting_defaults.dart';
 import 'package:flash_light_pro/features/morse/domain/morse_codec.dart';
 import 'package:flash_light_pro/src/bloc/flash_light/flash_light_bloc.dart';
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 import 'package:flash_light_pro/src/presentation/widgets/color_preset_row.dart';
 import 'package:flutter/material.dart';
@@ -408,7 +408,7 @@ class _PanelCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface.withValues(alpha: 0.78),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: const Color(0x14FFFFFF)),
+        border: Border.all(color: AppColors.surfaceBorder),
       ),
       child: child,
     );

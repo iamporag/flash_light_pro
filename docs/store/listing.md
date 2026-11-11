@@ -60,8 +60,9 @@ intercepted because that would require accessibility or root access.
 ```
 
 - **Tags:** flashlight, torch, sos, strobe, morse code, screen light, offline
-- **Contact email:** TODO
-- **Privacy policy URL:** TODO (host `docs/store/privacy_policy.md` and paste the URL)
+- **Contact email:** sakibporag24@gmail.com
+- **Privacy policy URL:** https://iamporag.github.io/flash_light_pro/privacy.html
+- **Terms and conditions URL:** https://iamporag.github.io/flash_light_pro/terms.html
 - **Data safety:** Declare Google AdMob collection and sharing (device or other IDs, app interactions, diagnostics, approximate location) and Play Billing purchase history. The developer collects no account data; preferences, ad-frequency limits, consent state, and entitlement status stay on the device.
 - **Content rating questionnaire:** Utility app; no user-generated content; ads present (removable with a one-time purchase); in-app purchases present. The strobe feature includes an in-app photosensitivity warning.
 - **Ads declaration:** Yes — banner, native, interstitial, and app-open ads from Google AdMob, never on the flashlight screen and never while a light or update prompt is active. A one-time non-consumable purchase removes them.
@@ -120,7 +121,8 @@ SYSTEM INTEGRATIONS
 ```
 
 - **Support URL:** TODO
-- **Privacy policy URL:** TODO
+- **Privacy policy URL:** https://iamporag.github.io/flash_light_pro/privacy.html
+- **Terms and conditions URL:** https://iamporag.github.io/flash_light_pro/terms.html
 - **Copyright:** TODO (for example, the developer or studio name)
 - **Age rating:** 4+ expected; answer the questionnaire truthfully. The strobe warning is inside the app.
 - **App privacy (nutrition label):** Declare purchases (Remove ads) and Google AdMob's data use: identifiers, usage/advertising data, and diagnostics. Whether AdMob data is used to track you depends on the consent choice in the app; answer App Store Connect truthfully. The developer runs no analytics and no server.

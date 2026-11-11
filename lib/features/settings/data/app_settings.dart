@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flash_light_pro/core/config/feature_config.dart';
 
 import '../../lighting/domain/light_mode.dart';
 import '../../lighting/domain/lighting_defaults.dart';
@@ -14,12 +15,12 @@ class AppSettings extends Equatable {
     this.strobeIntervalMs = LightingDefaults.strobeIntervalMs,
     this.timerPresetMinutes,
     this.appLanguage = AppLanguage.english,
-    this.hapticsEnabled = true,
-    this.shakeEnabled = false,
+    this.hapticsEnabled = FeatureConfig.hapticsEnabledByDefault,
+    this.shakeEnabled = FeatureConfig.shakeEnabledByDefault,
     this.shakeSensitivity = ShakeSensitivity.medium,
-    this.keepScreenAwake = true,
-    this.reduceAnimations = false,
-    this.backgroundTorchEnabled = true,
+    this.keepScreenAwake = FeatureConfig.keepScreenAwakeByDefault,
+    this.reduceAnimations = FeatureConfig.reduceAnimationsByDefault,
+    this.backgroundTorchEnabled = FeatureConfig.backgroundTorchEnabledByDefault,
   });
 
   final LightMode selectedMode;

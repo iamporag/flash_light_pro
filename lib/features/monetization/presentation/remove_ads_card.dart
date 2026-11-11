@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../../l10n/app_localizations.dart';
-import '../../../src/presentation/theme/app_theme.dart';
 import '../../../src/presentation/utils/localization.dart';
 import '../application/monetization_controller.dart';
 import '../domain/monetization_models.dart';
@@ -13,8 +12,68 @@ import 'monetization_scope.dart';
 ///
 /// Price comes from the store, never hardcoded. No subscription language is
 /// used, and success is only shown after the store confirms the transaction.
-class RemoveAdsCard extends StatelessWidget {
+class RemoveAdsCard extends StatefulWidget {
   const RemoveAdsCard({super.key});
+
+  @override
+  State<RemoveAdsCard> createState() => _RemoveAdsCardState();
+}
+
+class _RemoveAdsCardState extends State<RemoveAdsCard> {
+  MonetizationController? _controller;
+  RemoveAdsPhase _lastPhase = RemoveAdsPhase.loading;
+  bool _cancelSnackShown = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final controller = MonetizationScope.maybeOf(context);
+    if (identical(controller, _controller)) return;
+    _controller?.removeListener(_onControllerChanged);
+    _controller = controller;
+    controller?.addListener(_onControllerChanged);
+    _lastPhase = controller?.removeAdsPhase ?? RemoveAdsPhase.loading;
+  }
+
+  @override
+  void dispose() {
+    _controller?.removeListener(_onControllerChanged);
+    super.dispose();
+  }
+
+  bool _isBusy(RemoveAdsPhase phase) =>
+      phase == RemoveAdsPhase.purchasing ||
+      phase == RemoveAdsPhase.pending ||
+      phase == RemoveAdsPhase.restoring;
+
+  /// Announces a cancelled billing flow once, as soon as the flow ends. The
+  /// card itself only shows inline status text, which is easy to miss after
+  /// the store sheet closes.
+  void _onControllerChanged() {
+    final controller = _controller;
+    if (controller == null || !mounted) return;
+
+    final phase = controller.removeAdsPhase;
+    final previous = _lastPhase;
+    _lastPhase = phase;
+
+    if (phase == RemoveAdsPhase.purchasing) _cancelSnackShown = false;
+
+    final canceled =
+        _isBusy(previous) &&
+        !_isBusy(phase) &&
+        controller.removeAdsNotice == RemoveAdsNotice.purchaseCanceled;
+    if (!canceled || _cancelSnackShown) return;
+    _cancelSnackShown = true;
+
+    final message = context.l10n.removeAdsPurchaseCanceled;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ScaffoldMessenger.maybeOf(context)
+        ?..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(message)));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -454,6 +513,7 @@ class _PurchaseContent extends StatelessWidget {
           RemoveAdsNotice.noPurchaseFound => l10n.removeAdsNoPurchase,
           RemoveAdsNotice.storeUnavailable => l10n.removeAdsUnavailable,
           RemoveAdsNotice.productNotFound => l10n.removeAdsProductNotFound,
+          RemoveAdsNotice.purchaseCanceled => l10n.removeAdsPurchaseCanceled,
           RemoveAdsNotice.purchaseFailed ||
           RemoveAdsNotice.none => l10n.removeAdsPurchaseFailed,
         };
@@ -464,6 +524,7 @@ class _PurchaseContent extends StatelessWidget {
           RemoveAdsNotice.storeUnavailable => l10n.removeAdsUnavailable,
           RemoveAdsNotice.productNotFound => l10n.removeAdsProductNotFound,
           RemoveAdsNotice.purchaseFailed => l10n.removeAdsPurchaseFailed,
+          RemoveAdsNotice.purchaseCanceled => l10n.removeAdsPurchaseCanceled,
           RemoveAdsNotice.restoreFailed => l10n.removeAdsRestoreFailed,
           RemoveAdsNotice.none => null,
         };
@@ -575,188 +636,6 @@ class _PriceBlock extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-/// Read-only summary of advertising and purchase availability for Settings.
-/// It shows user-facing states only and never exposes unit IDs or store codes.
-class MonetizationStatusCard extends StatelessWidget {
-  const MonetizationStatusCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = MonetizationScope.maybeOf(context);
-    if (controller == null) return const SizedBox.shrink();
-
-    return ListenableBuilder(
-      listenable: controller,
-      builder: (context, _) {
-        final l10n = context.l10n;
-        return Padding(
-          padding: const EdgeInsets.only(top: 14),
-          child: Material(
-            key: const Key('settings-monetization-status'),
-            color: AppColors.surface.withValues(alpha: 0.78),
-            clipBehavior: Clip.antiAlias,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: const BorderSide(color: Color(0x14FFFFFF)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.monetizationStatusTitle,
-                    style: const TextStyle(
-                      color: AppColors.accent,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.3,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  _StatusRow(
-                    label: l10n.adsStatusLabel,
-                    value: _adsStatus(l10n, controller),
-                    valueKey: const Key('settings-ads-status'),
-                  ),
-                  _StatusRow(
-                    label: l10n.removeAdsStatusLabel,
-                    value: _removeAdsStatus(l10n, controller),
-                    valueKey: const Key('settings-remove-ads-state'),
-                  ),
-                  _StatusRow(
-                    label: l10n.purchaseStatusLabel,
-                    value: _purchaseStatus(l10n, controller),
-                    valueKey: const Key('settings-purchase-status'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  String _adsStatus(AppLocalizations l10n, MonetizationController controller) {
-    return switch (controller.adsStatus) {
-      AdsStatus.available => l10n.adsStatusAvailable,
-      AdsStatus.disabled => l10n.adsStatusDisabled,
-      AdsStatus.waitingForConsent => l10n.adsStatusWaitingConsent,
-      AdsStatus.configurationMissing => l10n.adsStatusConfigurationMissing,
-      AdsStatus.starting => l10n.adsStatusStarting,
-    };
-  }
-
-  String _removeAdsStatus(
-    AppLocalizations l10n,
-    MonetizationController controller,
-  ) {
-    if (controller.isAdFree) return l10n.removeAdsStatusOwned;
-    if (!controller.isStoreSupported ||
-        controller.removeAdsPhase == RemoveAdsPhase.unavailable) {
-      return l10n.removeAdsStatusStoreUnavailable;
-    }
-    return l10n.removeAdsStatusNotPurchased;
-  }
-
-  String _purchaseStatus(
-    AppLocalizations l10n,
-    MonetizationController controller,
-  ) {
-    final phase = controller.removeAdsPhase;
-    if (phase == RemoveAdsPhase.purchasing ||
-        phase == RemoveAdsPhase.pending ||
-        phase == RemoveAdsPhase.restoring) {
-      return l10n.purchaseStatusPending;
-    }
-    if (phase == RemoveAdsPhase.failed ||
-        controller.removeAdsNotice == RemoveAdsNotice.purchaseFailed ||
-        controller.removeAdsNotice == RemoveAdsNotice.restoreFailed) {
-      return l10n.purchaseStatusFailed;
-    }
-    if (controller.canPurchaseRemoveAds) return l10n.purchaseStatusAvailable;
-    return l10n.purchaseStatusUnavailable;
-  }
-}
-
-class _StatusRow extends StatelessWidget {
-  const _StatusRow({
-    required this.label,
-    required this.value,
-    required this.valueKey,
-  });
-
-  final String label;
-  final String value;
-  final Key valueKey;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              label,
-              style: const TextStyle(
-                color: AppColors.textMuted,
-                fontSize: 12.5,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Text(
-            value,
-            key: valueKey,
-            textAlign: TextAlign.end,
-            style: const TextStyle(
-              color: AppColors.textPrimary,
-              fontSize: 12.5,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Kept out of the purchase card so the About area can offer UMP privacy
-/// options without crowding the entitlement UI.
-class PrivacyOptionsTile extends StatelessWidget {
-  const PrivacyOptionsTile({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = MonetizationScope.maybeOf(context);
-    if (controller == null) return const SizedBox.shrink();
-
-    return ListenableBuilder(
-      listenable: controller,
-      builder: (context, _) {
-        if (!controller.privacyOptionsRequired) {
-          return const SizedBox.shrink();
-        }
-        final l10n = context.l10n;
-        return ListTile(
-          key: const Key('settings-privacy-options'),
-          contentPadding: EdgeInsets.zero,
-          leading: const Icon(
-            Icons.privacy_tip_outlined,
-            color: AppColors.accent,
-          ),
-          title: Text(l10n.privacyOptions),
-          subtitle: Text(l10n.privacyOptionsBody),
-          trailing: const Icon(Icons.chevron_right_rounded),
-          onTap: () => unawaited(controller.showPrivacyOptions()),
-        );
-      },
     );
   }
 }

@@ -752,6 +752,30 @@ abstract class AppLocalizations {
   /// **'Custom color'**
   String get customColor;
 
+  /// No description provided for @screenColorWarm.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm'**
+  String get screenColorWarm;
+
+  /// No description provided for @screenColorNeutral.
+  ///
+  /// In en, this message translates to:
+  /// **'Neutral'**
+  String get screenColorNeutral;
+
+  /// No description provided for @screenColorCool.
+  ///
+  /// In en, this message translates to:
+  /// **'Cool'**
+  String get screenColorCool;
+
+  /// No description provided for @screenColorSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'{color} screen color'**
+  String screenColorSemantics(String color);
+
   /// No description provided for @turnOffLight.
   ///
   /// In en, this message translates to:
@@ -1046,6 +1070,12 @@ abstract class AppLocalizations {
   /// **'Flash Light Pro works on your device. The flashlight itself needs no account and no network. The free version shows ads from Google AdMob, and an optional one-time purchase removes them.'**
   String get privacyIntro;
 
+  /// No description provided for @privacyViewOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'View full policy online'**
+  String get privacyViewOnline;
+
   /// No description provided for @privacyLocalTitle.
   ///
   /// In en, this message translates to:
@@ -1109,8 +1139,8 @@ abstract class AppLocalizations {
   /// No description provided for @privacyPolicyFooter.
   ///
   /// In en, this message translates to:
-  /// **'This policy applies to Flash Light Pro version 0.1.0. On iOS the app requests motion access, and only when Shake to toggle is enabled. On Android 13 and later it asks for notification permission so the background flashlight and shake services can show their controls. Ads and purchases are provided by Google AdMob and the platform store under their own privacy terms.'**
-  String get privacyPolicyFooter;
+  /// **'This policy applies to Flash Light Pro version {version}. On iOS the app requests motion access, and only when Shake to toggle is enabled. On Android 13 and later it asks for notification permission so the background flashlight and shake services can show their controls. Ads and purchases are provided by Google AdMob and the platform store under their own privacy terms.'**
+  String privacyPolicyFooter(String version);
 
   /// No description provided for @close.
   ///
@@ -1436,6 +1466,12 @@ abstract class AppLocalizations {
   /// **'The purchase could not be completed. Nothing was charged.'**
   String get removeAdsPurchaseFailed;
 
+  /// No description provided for @removeAdsPurchaseCanceled.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment cancelled. You were not charged. You can try again any time.'**
+  String get removeAdsPurchaseCanceled;
+
   /// No description provided for @removeAdsRestoreFailed.
   ///
   /// In en, this message translates to:
@@ -1472,102 +1508,6 @@ abstract class AppLocalizations {
   /// **'Ad'**
   String get adLabel;
 
-  /// No description provided for @monetizationStatusTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Purchase and ad status'**
-  String get monetizationStatusTitle;
-
-  /// No description provided for @adsStatusLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Ads'**
-  String get adsStatusLabel;
-
-  /// No description provided for @adsStatusAvailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Available'**
-  String get adsStatusAvailable;
-
-  /// No description provided for @adsStatusDisabled.
-  ///
-  /// In en, this message translates to:
-  /// **'Disabled'**
-  String get adsStatusDisabled;
-
-  /// No description provided for @adsStatusWaitingConsent.
-  ///
-  /// In en, this message translates to:
-  /// **'Waiting for consent'**
-  String get adsStatusWaitingConsent;
-
-  /// No description provided for @adsStatusConfigurationMissing.
-  ///
-  /// In en, this message translates to:
-  /// **'Configuration missing'**
-  String get adsStatusConfigurationMissing;
-
-  /// No description provided for @adsStatusStarting.
-  ///
-  /// In en, this message translates to:
-  /// **'Starting'**
-  String get adsStatusStarting;
-
-  /// No description provided for @removeAdsStatusLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Remove ads'**
-  String get removeAdsStatusLabel;
-
-  /// No description provided for @removeAdsStatusNotPurchased.
-  ///
-  /// In en, this message translates to:
-  /// **'Not purchased'**
-  String get removeAdsStatusNotPurchased;
-
-  /// No description provided for @removeAdsStatusOwned.
-  ///
-  /// In en, this message translates to:
-  /// **'Lifetime ad-free'**
-  String get removeAdsStatusOwned;
-
-  /// No description provided for @removeAdsStatusStoreUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Store unavailable'**
-  String get removeAdsStatusStoreUnavailable;
-
-  /// No description provided for @purchaseStatusLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Purchase'**
-  String get purchaseStatusLabel;
-
-  /// No description provided for @purchaseStatusAvailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Available'**
-  String get purchaseStatusAvailable;
-
-  /// No description provided for @purchaseStatusPending.
-  ///
-  /// In en, this message translates to:
-  /// **'Pending'**
-  String get purchaseStatusPending;
-
-  /// No description provided for @purchaseStatusFailed.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed'**
-  String get purchaseStatusFailed;
-
-  /// No description provided for @purchaseStatusUnavailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Unavailable'**
-  String get purchaseStatusUnavailable;
-
   /// No description provided for @privacyOptions.
   ///
   /// In en, this message translates to:
@@ -1579,12 +1519,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Review your ad consent choices.'**
   String get privacyOptionsBody;
-
-  /// No description provided for @openPrivacyOptions.
-  ///
-  /// In en, this message translates to:
-  /// **'Open privacy options'**
-  String get openPrivacyOptions;
 
   /// No description provided for @batterySection.
   ///
@@ -1765,6 +1699,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'These terms govern your use of Flash Light Pro. By installing or using the app, you agree to them. If you do not agree, please uninstall the app.'**
   String get termsIntro;
+
+  /// No description provided for @termsViewOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'View full terms online'**
+  String get termsViewOnline;
 
   /// No description provided for @termsLicenceTitle.
   ///

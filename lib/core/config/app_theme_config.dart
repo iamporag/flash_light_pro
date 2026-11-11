@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Shared visual tokens for the dark premium theme.
+///
+/// Component-specific decoration (gradients, glows) stays with its widget; the
+/// values here are the ones shared by more than one screen or by the theme.
 abstract final class AppColors {
   static const Color accent = Color(0xFFFFC94D);
   static const Color accentAlt = Color(0xFF6FD3FF);
@@ -14,6 +18,38 @@ abstract final class AppColors {
   static const Color warm = Color(0xFFFFD9A0);
   static const Color neutral = Color(0xFFFFFFFF);
   static const Color cool = Color(0xFFCCE4FF);
+
+  static const Color onAccent = Color(0xFF201A05);
+  static const Color track = Color(0x33FFFFFF);
+  static const Color accentOverlay = Color(0x33FFC94D);
+  static const Color divider = Color(0x1FFFFFFF);
+  static const Color surfaceBorder = Color(0x14FFFFFF);
+}
+
+/// Shared spacing steps used across screens and cards.
+abstract final class AppSpacing {
+  static const double xs = 4;
+  static const double sm = 8;
+  static const double md = 12;
+  static const double lg = 16;
+  static const double xl = 20;
+  static const double xxl = 32;
+}
+
+/// Shared corner radii.
+abstract final class AppRadii {
+  static const double sm = 8;
+  static const double md = 12;
+  static const double lg = 14;
+  static const double xl = 16;
+  static const double xxl = 20;
+}
+
+/// Shared motion durations. Screens that honour reduced motion pass
+/// [Duration.zero] instead.
+abstract final class AppDurations {
+  static const Duration chip = Duration(milliseconds: 220);
+  static const Duration quick = Duration(milliseconds: 180);
 }
 
 ThemeData buildAppTheme() {
@@ -23,7 +59,7 @@ ThemeData buildAppTheme() {
     scaffoldBackgroundColor: AppColors.background,
     colorScheme: base.colorScheme.copyWith(
       primary: AppColors.accent,
-      onPrimary: const Color(0xFF201A05),
+      onPrimary: AppColors.onAccent,
       secondary: AppColors.accentAlt,
       surface: AppColors.surface,
       onSurface: AppColors.textPrimary,
@@ -36,12 +72,12 @@ ThemeData buildAppTheme() {
     sliderTheme: const SliderThemeData(
       activeTrackColor: AppColors.accent,
       thumbColor: AppColors.accent,
-      inactiveTrackColor: Color(0x33FFFFFF),
-      overlayColor: Color(0x33FFC94D),
+      inactiveTrackColor: AppColors.track,
+      overlayColor: AppColors.accentOverlay,
       valueIndicatorColor: AppColors.accent,
     ),
     chipTheme: base.chipTheme.copyWith(
-      side: const BorderSide(color: Color(0x33FFFFFF)),
+      side: const BorderSide(color: AppColors.track),
       labelStyle: const TextStyle(color: AppColors.textPrimary),
     ),
     snackBarTheme: const SnackBarThemeData(
@@ -54,7 +90,7 @@ ThemeData buildAppTheme() {
       modalBackgroundColor: AppColors.surface,
       showDragHandle: true,
     ),
-    dividerTheme: const DividerThemeData(color: Color(0x1FFFFFFF)),
+    dividerTheme: const DividerThemeData(color: AppColors.divider),
     iconTheme: const IconThemeData(color: AppColors.textPrimary),
   );
 }

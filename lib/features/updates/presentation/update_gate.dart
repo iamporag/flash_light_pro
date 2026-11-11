@@ -6,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flash_light_pro/features/updates/application/update_cubit.dart';
 import 'package:flash_light_pro/features/updates/domain/update_config.dart';
 import 'package:flash_light_pro/src/bloc/flash_light/flash_light_bloc.dart';
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
+import 'package:flash_light_pro/core/config/feature_config.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 
 import 'update_dialog.dart';
@@ -35,6 +36,7 @@ class _UpdateGateState extends State<UpdateGate> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
+    if (!FeatureConfig.appUpdates) return;
     if (!context.read<UpdateCubit>().state.isSupported) return;
 
     _startupTimer = Timer(widget.config.startupCheckDelay, () {

@@ -1,5 +1,5 @@
 import 'package:flash_light_pro/features/lighting/domain/light_mode.dart';
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
 import 'package:flash_light_pro/src/presentation/utils/light_mode_labels.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 import 'package:flutter/material.dart';
@@ -16,16 +16,16 @@ class ModeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final modes = enabledLightModes;
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: Row(
         children: [
-          for (final mode in LightMode.values)
+          for (final mode in modes)
             Padding(
-              padding: EdgeInsets.only(
-                right: mode == LightMode.values.last ? 0 : 8,
-              ),
+              padding: EdgeInsets.only(right: mode == modes.last ? 0 : 8),
               child: _ModeChip(
                 mode: mode,
                 selected: mode == selected,
@@ -75,7 +75,7 @@ class _ModeChip extends StatelessWidget {
                   ? AppColors.accent.withValues(alpha: 0.16)
                   : AppColors.surface.withValues(alpha: 0.72),
               border: Border.all(
-                color: selected ? AppColors.accent : const Color(0x1FFFFFFF),
+                color: selected ? AppColors.accent : AppColors.divider,
               ),
             ),
             child: Row(

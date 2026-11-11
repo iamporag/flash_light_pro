@@ -52,6 +52,7 @@ enum RemoveAdsPhase {
 enum RemoveAdsNotice {
   none,
   purchaseFailed,
+  purchaseCanceled,
   restoreFailed,
   storeUnavailable,
   productNotFound,

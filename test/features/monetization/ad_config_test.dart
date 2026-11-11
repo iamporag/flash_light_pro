@@ -1,4 +1,6 @@
-import 'package:flash_light_pro/features/monetization/domain/ad_config.dart';
+import 'package:flash_light_pro/core/config/admob/admob_config.dart';
+import 'package:flash_light_pro/core/config/admob/admob_ids.dart';
+import 'package:flash_light_pro/core/config/admob/admob_policy.dart';
 import 'package:flash_light_pro/features/monetization/domain/ad_models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,12 +16,32 @@ void main() {
         expect(config.hasUnitId(format), isTrue, reason: '$format');
         expect(
           config.unitIdFor(format, platform: TargetPlatform.android),
-          AdMobTestIds.android[format],
+          AdMobIds.testAndroid[format.name],
         );
         expect(
           config.unitIdFor(format, platform: TargetPlatform.iOS),
-          AdMobTestIds.ios[format],
+          AdMobIds.testIos[format.name],
         );
+      }
+    });
+
+    test('production ids are the exact five Android AdMob unit ids', () {
+      const expected = {
+        AdFormat.banner: 'ca-app-pub-8125551545712066/8706742446',
+        AdFormat.native: 'ca-app-pub-8125551545712066/8911802759',
+        AdFormat.interstitial: 'ca-app-pub-8125551545712066/2699562288',
+        AdFormat.rewarded: 'ca-app-pub-8125551545712066/3906888086',
+        AdFormat.appOpen: 'ca-app-pub-8125551545712066/9267025974',
+      };
+
+      expect(AdMobIds.banner, expected[AdFormat.banner]);
+      expect(AdMobIds.native, expected[AdFormat.native]);
+      expect(AdMobIds.interstitial, expected[AdFormat.interstitial]);
+      expect(AdMobIds.rewarded, expected[AdFormat.rewarded]);
+      expect(AdMobIds.appOpen, expected[AdFormat.appOpen]);
+      expect(expected.values.toSet(), hasLength(5));
+      for (final id in expected.values) {
+        expect(id, startsWith('ca-app-pub-8125551545712066/'));
       }
     });
 
@@ -69,8 +91,37 @@ void main() {
           AdFormat.interstitial,
           platform: TargetPlatform.android,
         ),
-        AdMobTestIds.android[AdFormat.interstitial],
+        AdMobIds.testAndroid['interstitial'],
       );
+      expect(
+        config.androidUnitIds.values,
+        isNot(contains(AdMobIds.interstitial)),
+      );
+    });
+
+    test('the master switch disables every format', () {
+      final config = AdConfig.test().copyWithPolicy(
+        const AdMobPolicy(adsEnabled: false),
+      );
+
+      expect(config.hasAnyUnitId, isFalse);
+      for (final format in AdFormat.values) {
+        expect(config.unitIdFor(format), isNull, reason: '$format');
+      }
+      expect(config.hasUnitId(AdFormat.banner), isFalse);
+    });
+
+    test('a disabled format is not requested but the others keep working', () {
+      final config = AdConfig.test().copyWithPolicy(
+        const AdMobPolicy(nativeEnabled: false),
+      );
+
+      expect(config.unitIdFor(AdFormat.native), isNull);
+      expect(
+        config.unitIdFor(AdFormat.banner, platform: TargetPlatform.android),
+        AdMobIds.testAndroid['banner'],
+      );
+      expect(config.hasAnyUnitId, isTrue);
     });
   });
 }

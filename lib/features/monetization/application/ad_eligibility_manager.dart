@@ -1,5 +1,7 @@
 import '../data/ad_frequency_store.dart';
-import '../domain/ad_config.dart';
+
+import 'package:flash_light_pro/core/config/admob/admob_config.dart';
+
 import '../domain/ad_frequency_policy.dart';
 import '../domain/ad_models.dart';
 import 'ad_click_frequency_manager.dart';

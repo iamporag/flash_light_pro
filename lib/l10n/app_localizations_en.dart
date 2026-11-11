@@ -389,6 +389,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customColor => 'Custom color';
 
   @override
+  String get screenColorWarm => 'Warm';
+
+  @override
+  String get screenColorNeutral => 'Neutral';
+
+  @override
+  String get screenColorCool => 'Cool';
+
+  @override
+  String screenColorSemantics(String color) {
+    return '$color screen color';
+  }
+
+  @override
   String get turnOffLight => 'Turn off light';
 
   @override
@@ -554,6 +568,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Flash Light Pro works on your device. The flashlight itself needs no account and no network. The free version shows ads from Google AdMob, and an optional one-time purchase removes them.';
 
   @override
+  String get privacyViewOnline => 'View full policy online';
+
+  @override
   String get privacyLocalTitle => 'Data stored on your device';
 
   @override
@@ -589,8 +606,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'The app includes no analytics SDK and no remote crash reporting. Google AdMob may collect device and ad-interaction data under Google\'s own privacy terms. The flashlight, SOS, strobe, Morse, and screen light keep working without a connection.';
 
   @override
-  String get privacyPolicyFooter =>
-      'This policy applies to Flash Light Pro version 0.1.0. On iOS the app requests motion access, and only when Shake to toggle is enabled. On Android 13 and later it asks for notification permission so the background flashlight and shake services can show their controls. Ads and purchases are provided by Google AdMob and the platform store under their own privacy terms.';
+  String privacyPolicyFooter(String version) {
+    return 'This policy applies to Flash Light Pro version $version. On iOS the app requests motion access, and only when Shake to toggle is enabled. On Android 13 and later it asks for notification permission so the background flashlight and shake services can show their controls. Ads and purchases are provided by Google AdMob and the platform store under their own privacy terms.';
+  }
 
   @override
   String get close => 'Close';
@@ -776,6 +794,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'The purchase could not be completed. Nothing was charged.';
 
   @override
+  String get removeAdsPurchaseCanceled =>
+      'Payment cancelled. You were not charged. You can try again any time.';
+
+  @override
   String get removeAdsRestoreFailed =>
       'Couldn\'t check previous purchases. Try again later.';
 
@@ -797,61 +819,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adLabel => 'Ad';
 
   @override
-  String get monetizationStatusTitle => 'Purchase and ad status';
-
-  @override
-  String get adsStatusLabel => 'Ads';
-
-  @override
-  String get adsStatusAvailable => 'Available';
-
-  @override
-  String get adsStatusDisabled => 'Disabled';
-
-  @override
-  String get adsStatusWaitingConsent => 'Waiting for consent';
-
-  @override
-  String get adsStatusConfigurationMissing => 'Configuration missing';
-
-  @override
-  String get adsStatusStarting => 'Starting';
-
-  @override
-  String get removeAdsStatusLabel => 'Remove ads';
-
-  @override
-  String get removeAdsStatusNotPurchased => 'Not purchased';
-
-  @override
-  String get removeAdsStatusOwned => 'Lifetime ad-free';
-
-  @override
-  String get removeAdsStatusStoreUnavailable => 'Store unavailable';
-
-  @override
-  String get purchaseStatusLabel => 'Purchase';
-
-  @override
-  String get purchaseStatusAvailable => 'Available';
-
-  @override
-  String get purchaseStatusPending => 'Pending';
-
-  @override
-  String get purchaseStatusFailed => 'Failed';
-
-  @override
-  String get purchaseStatusUnavailable => 'Unavailable';
-
-  @override
   String get privacyOptions => 'Privacy options';
 
   @override
   String get privacyOptionsBody => 'Review your ad consent choices.';
-
-  @override
-  String get openPrivacyOptions => 'Open privacy options';
 
   @override
   String get batterySection => 'Background reliability';
@@ -948,6 +919,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get termsIntro =>
       'These terms govern your use of Flash Light Pro. By installing or using the app, you agree to them. If you do not agree, please uninstall the app.';
+
+  @override
+  String get termsViewOnline => 'View full terms online';
 
   @override
   String get termsLicenceTitle => 'Licence to use the app';

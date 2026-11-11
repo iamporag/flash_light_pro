@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flash_light_pro/core/config/app_info.dart';
 import 'package:flutter/services.dart';
 
 enum TorchFailureKind {
@@ -47,7 +48,7 @@ class MethodChannelTorchService implements TorchService {
   const MethodChannelTorchService();
 
   static const MethodChannel _channel = MethodChannel(
-    'com.claudysoft.flashlightpro/device_controls',
+    AppInfo.deviceControlsChannel,
   );
 
   static const Duration _timeout = Duration(seconds: 5);
@@ -131,9 +132,7 @@ class MethodChannelTorchService implements TorchService {
 class EventChannelTorchStateSource implements TorchStateSource {
   EventChannelTorchStateSource();
 
-  static const EventChannel _channel = EventChannel(
-    'com.claudysoft.flashlightpro/torch_state',
-  );
+  static const EventChannel _channel = EventChannel(AppInfo.torchStateChannel);
 
   Stream<bool>? _stream;
 

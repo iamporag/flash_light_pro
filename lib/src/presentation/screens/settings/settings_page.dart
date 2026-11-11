@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:flash_light_pro/core/config/feature_config.dart';
 import 'package:flash_light_pro/features/lighting/domain/light_mode.dart';
 import 'package:flash_light_pro/features/monetization/domain/ad_models.dart';
 import 'package:flash_light_pro/features/monetization/presentation/monetization_native_ad.dart';
 import 'package:flash_light_pro/features/monetization/presentation/monetization_scope.dart';
+import 'package:flash_light_pro/features/monetization/presentation/privacy_options_tile.dart';
 import 'package:flash_light_pro/features/monetization/presentation/remove_ads_card.dart';
-import 'package:flash_light_pro/features/settings/domain/app_info.dart';
+import 'package:flash_light_pro/core/config/app_info.dart';
 import 'package:flash_light_pro/features/settings/domain/app_language.dart';
 import 'package:flash_light_pro/features/shake/domain/shake_sensitivity.dart';
 import 'package:flash_light_pro/features/updates/application/update_cubit.dart';
@@ -14,7 +16,7 @@ import 'package:flash_light_pro/src/bloc/flash_light/flash_light_bloc.dart';
 import 'package:flash_light_pro/src/presentation/screens/settings/battery_optimization_section.dart';
 import 'package:flash_light_pro/src/presentation/screens/settings/privacy_policy_page.dart';
 import 'package:flash_light_pro/src/presentation/screens/settings/terms_and_conditions_page.dart';
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
 import 'package:flash_light_pro/src/presentation/utils/light_mode_labels.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +63,6 @@ class SettingsPage extends StatelessWidget {
               key: const Key('settings-scroll'),
               padding: const EdgeInsets.fromLTRB(20, 4, 20, 32),
               children: [
-                const MonetizationStatusCard(),
                 const RemoveAdsCard(),
                 _SettingsSection(
                   title: l10n.language,
@@ -117,52 +118,55 @@ class SettingsPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                _SettingsSection(
-                  title: l10n.motionSection,
-                  children: [
-                    SwitchListTile.adaptive(
-                      key: const Key('settings-shake'),
-                      contentPadding: EdgeInsets.zero,
-                      value: state.shakeEnabled,
-                      onChanged: (value) => bloc.add(SetShakeEnabled(value)),
-                      title: Text(l10n.shakeToToggle),
-                      subtitle: Text(
-                        state.shakeEnabled
-                            ? l10n.shakeSubtitleOn
-                            : l10n.shakeSubtitleOff,
-                      ),
-                    ),
-                    if (state.shakeEnabled) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        l10n.shakeSensitivity,
-                        style: const TextStyle(
-                          color: AppColors.textMuted,
-                          fontSize: 13,
+                if (FeatureConfig.shakeToToggle)
+                  _SettingsSection(
+                    title: l10n.motionSection,
+                    children: [
+                      SwitchListTile.adaptive(
+                        key: const Key('settings-shake'),
+                        contentPadding: EdgeInsets.zero,
+                        value: state.shakeEnabled,
+                        onChanged: (value) => bloc.add(SetShakeEnabled(value)),
+                        title: Text(l10n.shakeToToggle),
+                        subtitle: Text(
+                          state.shakeEnabled
+                              ? l10n.shakeSubtitleOn
+                              : l10n.shakeSubtitleOff,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: [
-                          for (final sensitivity in ShakeSensitivity.values)
-                            ChoiceChip(
-                              key: Key(
-                                'settings-sensitivity-${sensitivity.name}',
+                      if (state.shakeEnabled) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          l10n.shakeSensitivity,
+                          style: const TextStyle(
+                            color: AppColors.textMuted,
+                            fontSize: 13,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            for (final sensitivity in ShakeSensitivity.values)
+                              ChoiceChip(
+                                key: Key(
+                                  'settings-sensitivity-${sensitivity.name}',
+                                ),
+                                label: Text(
+                                  _sensitivityName(l10n, sensitivity),
+                                ),
+                                selected: state.shakeSensitivity == sensitivity,
+                                onSelected: (_) =>
+                                    bloc.add(SetShakeSensitivity(sensitivity)),
                               ),
-                              label: Text(_sensitivityName(l10n, sensitivity)),
-                              selected: state.shakeSensitivity == sensitivity,
-                              onSelected: (_) =>
-                                  bloc.add(SetShakeSensitivity(sensitivity)),
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      _ShakeMonitoringNote(state: state),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        _ShakeMonitoringNote(state: state),
+                      ],
                     ],
-                  ],
-                ),
+                  ),
                 _SettingsSection(
                   title: l10n.defaultMode,
                   children: [
@@ -186,7 +190,7 @@ class SettingsPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(14),
                           dropdownColor: AppColors.surfaceHigh,
                           items: [
-                            for (final mode in LightMode.values)
+                            for (final mode in enabledLightModes)
                               DropdownMenuItem(
                                 value: mode,
                                 child: Text(
@@ -220,28 +224,29 @@ class SettingsPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                _SettingsSection(
-                  title: l10n.backgroundSection,
-                  children: [
-                    SwitchListTile.adaptive(
-                      key: const Key('settings-background-torch'),
-                      contentPadding: EdgeInsets.zero,
-                      value: state.backgroundTorchEnabled,
-                      onChanged: state.backgroundTorchSupported
-                          ? (value) => bloc.add(SetBackgroundTorch(value))
-                          : null,
-                      title: Text(l10n.keepFlashlightOnBackground),
-                      subtitle: Text(
-                        !state.backgroundTorchSupported
-                            ? l10n.keepFlashlightOnBackgroundUnsupported
-                            : state.backgroundTorchEnabled &&
-                                  !state.backgroundNotificationsEnabled
-                            ? l10n.backgroundNotificationsOff
-                            : l10n.keepFlashlightOnBackgroundSubtitle,
+                if (FeatureConfig.backgroundTorch)
+                  _SettingsSection(
+                    title: l10n.backgroundSection,
+                    children: [
+                      SwitchListTile.adaptive(
+                        key: const Key('settings-background-torch'),
+                        contentPadding: EdgeInsets.zero,
+                        value: state.backgroundTorchEnabled,
+                        onChanged: state.backgroundTorchSupported
+                            ? (value) => bloc.add(SetBackgroundTorch(value))
+                            : null,
+                        title: Text(l10n.keepFlashlightOnBackground),
+                        subtitle: Text(
+                          !state.backgroundTorchSupported
+                              ? l10n.keepFlashlightOnBackgroundUnsupported
+                              : state.backgroundTorchEnabled &&
+                                    !state.backgroundNotificationsEnabled
+                              ? l10n.backgroundNotificationsOff
+                              : l10n.keepFlashlightOnBackgroundSubtitle,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 const BatteryOptimizationSection(),
                 _SettingsSection(
                   title: l10n.aboutSection,
@@ -294,10 +299,11 @@ class SettingsPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                _SettingsSection(
-                  title: l10n.settingsUpdates,
-                  children: const [_UpdateSettingsTile()],
-                ),
+                if (FeatureConfig.appUpdates)
+                  _SettingsSection(
+                    title: l10n.settingsUpdates,
+                    children: const [_UpdateSettingsTile()],
+                  ),
                 const MonetizationNativeAd(
                   placement: AdPlacement.settingsNative,
                 ),
@@ -504,7 +510,7 @@ class _SettingsSection extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: Color(0x14FFFFFF)),
+          side: const BorderSide(color: AppColors.surfaceBorder),
         ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Privacy policy for Flash Light Pro by ClaudySoft.">
+  <meta name="robots" content="index, follow">
+  <title>Privacy Policy — Flash Light Pro</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a0f1e;
+      --surface: #161d31;
+      --border: #2a3350;
+      --text: #eef2ff;
+      --muted: #b3bcd4;
+      --accent: #ffc94d;
+      --link: #6fd3ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 22px 72px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+
+    .app-name {
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 6vw, 40px);
+      line-height: 1.15;
+      margin: 0 0 12px;
+    }
+
+    h2 {
+      font-size: 21px;
+      line-height: 1.3;
+      margin: 40px 0 12px;
+    }
+
+    p, li { color: var(--muted); }
+
+    p { margin: 0 0 16px; }
+
+    ul { margin: 0 0 16px; padding-left: 22px; }
+
+    li { margin-bottom: 8px; }
+
+    strong { color: var(--text); }
+
+    a { color: var(--link); text-decoration-thickness: 1px; }
+
+    a:hover, a:focus { color: var(--accent); }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    section { margin-bottom: 8px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin: 32px 0 0;
+    }
+
+    .card p:last-child { margin-bottom: 0; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+      padding-top: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    footer a { color: var(--link); }
+
+    @media print {
+      :root {
+        color-scheme: light;
+        --bg: #ffffff;
+        --surface: #ffffff;
+        --border: #d0d0d0;
+        --text: #000000;
+        --muted: #222222;
+        --accent: #000000;
+        --link: #0000ee;
+      }
+      main { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="app-name">Flash Light Pro</p>
+      <h1>Privacy Policy</h1>
+      <p class="meta">Effective date: 8 November 2026<br>
+        Applies to Flash Light Pro for Android and iOS
+        (Android package <strong>com.claudysoft.flashlightpro</strong>)</p>
+    </header>
+
+    <p>Flash Light Pro is published by ClaudySoft (“we”, “us”). This policy
+      explains what information the app handles and with whom it is shared.</p>
+
+    <p>Flash Light Pro works on your device. The flashlight, SOS, strobe, Morse,
+      and screen light need no account and no network. The free version shows
+      ads from Google AdMob after the consent required in your region, and an
+      optional one-time purchase removes them.</p>
+
+    <section>
+      <h2>Data stored on your device</h2>
+      <p>Preferences such as language, default mode, torch brightness, screen
+        brightness, timer preset, shake sensitivity, haptic feedback,
+        keep-screen-awake, and reduced-animation settings are stored locally by
+        the operating system. They are never transmitted by the app.</p>
+      <p>The app also stores ad-frequency limits, your ad consent choice, and
+        Remove ads purchase status locally so ads stay within limits and an
+        owned entitlement is recognized immediately at startup.</p>
+      <p>On Android, the Quick Settings tile and home screen widget also store
+        the last torch state locally so they can show the correct state after a
+        process restart.</p>
+    </section>
+
+    <section>
+      <h2>Hardware access</h2>
+      <p>The app uses:</p>
+      <ul>
+        <li>the camera flash (torch) through the platform torch API;</li>
+        <li>screen brightness while Screen Light is active;</li>
+        <li>haptics for optional feedback;</li>
+        <li>the accelerometer only while Shake to toggle is enabled: in the
+          foreground, and on Android through a <code>specialUse</code>
+          foreground service with a persistent notification when the app is in
+          the background.</li>
+      </ul>
+      <p>The app does not capture camera images, microphone audio, location,
+        contacts, photos, or files. It does not request camera permission,
+        microphone permission, or location permission. On Android 13 and later
+        it asks for notification permission so the background flashlight and
+        shake services can show their controls; denying it does not stop the
+        services.</p>
+    </section>
+
+    <section>
+      <h2>Advertising</h2>
+      <p>The free version may show banner, native, interstitial, and app-open ads
+        from Google AdMob on informational screens and in Settings. Ads are
+        requested only after the consent required in your region, and never
+        while a light is active, while an update is required, or during a
+        permission or initialization flow.</p>
+      <p>Google AdMob may collect device identifiers, approximate location
+        derived from the device, app interaction and advertising data, and
+        diagnostics under
+        <a href="https://policies.google.com/technologies/partner-sites"
+          rel="noopener noreferrer">Google's own privacy terms</a>. That
+        information is shared with Google and its advertising partners as
+        described in those terms. The developer does not receive or store your
+        personal data from AdMob. You can review or change your consent choices
+        at any time with <strong>Privacy options</strong> in Settings.</p>
+    </section>
+
+    <section>
+      <h2>Remove ads purchase</h2>
+      <p>Remove ads is a one-time, non-consumable purchase handled by Google Play
+        or the Apple App Store. The app never receives your payment details.
+        Purchase information is processed by the store under its own privacy
+        policy. The entitlement is cached on your device and reconciled with the
+        store; you can restore it at any time from Settings. The purchase
+        removes all ads and is not a subscription.</p>
+    </section>
+
+    <section>
+      <h2>No analytics or crash uploads</h2>
+      <p>The app includes no analytics SDK and no remote crash reporting. If the
+        app closes unexpectedly, no report is uploaded. The flashlight, SOS,
+        strobe, Morse, and screen light keep working without a connection, even
+        when ads cannot load, consent cannot be obtained, or the store is
+        unavailable.</p>
+    </section>
+
+    <section>
+      <h2>Retention and deletion</h2>
+      <p>Settings, ad-frequency limits, consent choices, and entitlement status
+        stay on your device until you clear the app's storage or uninstall the
+        app. You can delete this local data at any time:</p>
+      <ul>
+        <li>Android: Settings → Apps → Flash Light Pro → Storage → Clear
+          data.</li>
+        <li>iOS: delete the app; this removes its local data.</li>
+      </ul>
+      <p>Reinstalling lets the store restore an owned Remove ads purchase. You
+        can change ad consent at any time with <strong>Privacy options</strong>
+        in Settings. For data held by Google as an advertising provider, use the
+        controls described in Google's privacy terms linked above.</p>
+    </section>
+
+    <section>
+      <h2>System integrations</h2>
+      <ul>
+        <li>Android Quick Settings tile and home screen widget: toggle the torch
+          and show state without opening the app.</li>
+        <li>iOS Shortcuts: on, off, and toggle actions run through the system
+          intent while the system allows app intents to execute.</li>
+        <li>iOS does not provide Android-style Quick Settings tiles or home
+          screen widgets for unrestricted background flashlight control.</li>
+        <li>Volume buttons are not intercepted because that would require
+          accessibility or root access, which this app does not request.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Children</h2>
+      <p>The app is not directed to children under 13 (or the equivalent minimum
+        age in your country). It has no accounts, no user-generated content, and
+        no social features, and the developer collects no personal data. Ads are
+        provided by Google AdMob and are requested only after the consent
+        required in your region.</p>
+    </section>
+
+    <section>
+      <h2>Changes</h2>
+      <p>If this policy changes, the effective date above will be updated and the
+        new text will ship with the app and on this page.</p>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <div class="card">
+        <p><strong>ClaudySoft</strong><br>
+          Email: <a href="mailto:sakibporag24@gmail.com">sakibporag24@gmail.com</a></p>
+      </div>
+    </section>
+
+    <footer>
+      <p>This policy is also available inside the app under
+        Settings → Privacy policy.</p>
+      <p><a href="./">Open Flash Light Pro</a></p>
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flash_light_pro/core/config/app_info.dart';
 import 'package:flutter/services.dart';
 
 /// Native lifetime of the background flashlight foreground service.
@@ -53,11 +54,11 @@ class MethodChannelBackgroundTorchService implements BackgroundTorchService {
   MethodChannelBackgroundTorchService();
 
   static const MethodChannel _channel = MethodChannel(
-    'com.claudysoft.flashlightpro/device_controls',
+    AppInfo.deviceControlsChannel,
   );
 
   static const EventChannel _events = EventChannel(
-    'com.claudysoft.flashlightpro/background_torch_state',
+    AppInfo.backgroundTorchStateChannel,
   );
 
   static const Duration _timeout = Duration(seconds: 5);

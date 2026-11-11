@@ -109,6 +109,17 @@
   "exitScreenLight": "স্ক্রিন লাইট থেকে বের হন",
   "hideCustomColor": "কাস্টম রং লুকান",
   "customColor": "কাস্টম রং",
+  "screenColorWarm": "উষ্ণ",
+  "screenColorNeutral": "নিরপেক্ষ",
+  "screenColorCool": "শীতল",
+  "screenColorSemantics": "{color} স্ক্রিন রঙ",
+  "@screenColorSemantics": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
   "turnOffLight": "আলো বন্ধ করুন",
   "hue": "হিউ",
   "saturation": "স্যাচুরেশন",
@@ -158,6 +169,7 @@
   "madeOffline": "ফ্ল্যাশলাইট অফলাইনে কাজ করে। বিজ্ঞাপনের জন্য ইন্টারনেট প্রয়োজন।",
   "privacyPolicyTitle": "গোপনীয়তা নীতি",
   "privacyIntro": "Flash Light Pro আপনার ডিভাইসে কাজ করে। ফ্ল্যাশলাইটের জন্য কোনো অ্যাকাউন্ট বা নেটওয়ার্ক লাগে না। বিনামূল্যের সংস্করণে Google AdMob-এর বিজ্ঞাপন দেখা যায় এবং একবারের ঐচ্ছিক ক্রয়ে সেগুলো সরানো যায়।",
+  "privacyViewOnline": "সম্পূর্ণ নীতি অনলাইনে দেখুন",
   "privacyLocalTitle": "আপনার ডিভাইসে সংরক্ষিত তথ্য",
   "privacyLocalBody": "ভাষা, ডিফল্ট মোড, উজ্জ্বলতা ও ঝাঁকুনির সংবেদনশীলতার মতো পছন্দ অপারেটিং সিস্টেম আপনার ডিভাইসে সংরক্ষণ করে। বিজ্ঞাপনের ফ্রিকোয়েন্সি সীমা, বিজ্ঞাপন সম্মতি ও Remove ads ক্রয়ের অবস্থাও স্থানীয়ভাবে সংরক্ষিত হয়। Android Quick Settings টাইল ও হোম স্ক্রিন উইজেটও সঠিক অবস্থা দেখাতে সর্বশেষ টর্চ অবস্থা স্থানীয়ভাবে সংরক্ষণ করে।",
   "privacyHardwareTitle": "হার্ডওয়্যার অ্যাক্সেস",
@@ -168,7 +180,14 @@
   "privacyBillingBody": "Remove ads হলো Google Play বা App Store-এ সম্পন্ন একবারের অ-খরচযোগ্য ক্রয়। অ্যাপ আপনার পেমেন্ট তথ্য পায় না। ক্রয়ের অধিকার ডিভাইসে ক্যাশ করা হয় ও স্টোরের সাথে যাচাই করা হয়, এবং সেটিংস থেকে যেকোনো সময় পুনরুদ্ধার করা যায়।",
   "privacyNoAnalyticsTitle": "কোনো অ্যানালিটিক্স বা ক্র্যাশ আপলোড নেই",
   "privacyNoAnalyticsBody": "অ্যাপে কোনো অ্যানালিটিক্স SDK বা রিমোট ক্র্যাশ রিপোর্টিং নেই। Google AdMob তাদের নিজস্ব গোপনীয়তা শর্ত অনুযায়ী ডিভাইস ও বিজ্ঞাপন-মিথস্ক্রিয়া তথ্য সংগ্রহ করতে পারে। ইন্টারনেট ছাড়াই ফ্ল্যাশলাইট, SOS, স্ট্রোব, মোর্স ও স্ক্রিন লাইট কাজ করে।",
-  "privacyPolicyFooter": "এই নীতি Flash Light Pro সংস্করণ 0.1.0-এর জন্য প্রযোজ্য। iOS-এ অ্যাপ মোশন অ্যাক্সেস চায়, এবং তা কেবল ঝাঁকিয়ে চালু/বন্ধ সক্রিয় থাকলে। Android 13 ও পরের সংস্করণে এটি নোটিফিকেশন অনুমতি চায়, যাতে ব্যাকগ্রাউন্ড ফ্ল্যাশলাইট ও ঝাঁকুনি সার্ভিস তাদের নিয়ন্ত্রণ দেখাতে পারে। বিজ্ঞাপন ও ক্রয় Google AdMob ও প্ল্যাটফর্ম স্টোর তাদের নিজস্ব গোপনীয়তা শর্তে প্রদান করে।",
+  "privacyPolicyFooter": "এই নীতি Flash Light Pro সংস্করণ {version}-এর জন্য প্রযোজ্য। iOS-এ অ্যাপ মোশন অ্যাক্সেস চায়, এবং তা কেবল ঝাঁকিয়ে চালু/বন্ধ সক্রিয় থাকলে। Android 13 ও পরের সংস্করণে এটি নোটিফিকেশন অনুমতি চায়, যাতে ব্যাকগ্রাউন্ড ফ্ল্যাশলাইট ও ঝাঁকুনি সার্ভিস তাদের নিয়ন্ত্রণ দেখাতে পারে। বিজ্ঞাপন ও ক্রয় Google AdMob ও প্ল্যাটফর্ম স্টোর তাদের নিজস্ব গোপনীয়তা শর্তে প্রদান করে।",
+  "@privacyPolicyFooter": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "close": "বন্ধ করুন",
   "updateRequiredTitle": "আপডেট প্রয়োজন",
   "updateRequiredBody": "নিরাপদে অ্যাপটি চালু রাখতে Flash Light Pro-এর একটি নতুন সংস্করণ প্রয়োজন। চালিয়ে যেতে অনুগ্রহ করে আপডেট করুন।",
@@ -223,31 +242,15 @@
   "removeAdsRestoring": "আগের ক্রয় যাচাই করা হচ্ছে...",
   "removeAdsUnavailable": "এই মুহূর্তে স্টোর পাওয়া যাচ্ছে না। ফ্ল্যাশলাইটের সব ফিচার আগের মতোই কাজ করবে।",
   "removeAdsPurchaseFailed": "ক্রয়টি সম্পন্ন হয়নি। কোনো টাকা কাটা হয়নি।",
+  "removeAdsPurchaseCanceled": "পেমেন্ট বাতিল হয়েছে। আপনার কোনো টাকা কাটা হয়নি। আপনি আবার চেষ্টা করতে পারেন।",
   "removeAdsRestoreFailed": "আগের ক্রয় যাচাই করা যায়নি। পরে আবার চেষ্টা করুন।",
   "removeAdsNoPurchase": "এই অ্যাকাউন্টে আগের কোনো ক্রয় পাওয়া যায়নি।",
   "removeAdsProductNotFound": "স্টোরে এখনও বিজ্ঞাপন সরান পণ্যটি তালিকাভুক্ত হয়নি।",
   "removeAdsRestore": "ক্রয় পুনরুদ্ধার করুন",
   "removeAdsRetry": "আবার চেষ্টা করুন",
   "adLabel": "বিজ্ঞাপন",
-  "monetizationStatusTitle": "ক্রয় ও বিজ্ঞাপনের অবস্থা",
-  "adsStatusLabel": "বিজ্ঞাপন",
-  "adsStatusAvailable": "চালু আছে",
-  "adsStatusDisabled": "বন্ধ আছে",
-  "adsStatusWaitingConsent": "সম্মতির অপেক্ষায়",
-  "adsStatusConfigurationMissing": "কনফিগারেশন নেই",
-  "adsStatusStarting": "শুরু হচ্ছে",
-  "removeAdsStatusLabel": "বিজ্ঞাপন সরান",
-  "removeAdsStatusNotPurchased": "ক্রয় করা হয়নি",
-  "removeAdsStatusOwned": "আজীবন বিজ্ঞাপনমুক্ত",
-  "removeAdsStatusStoreUnavailable": "স্টোর পাওয়া যাচ্ছে না",
-  "purchaseStatusLabel": "ক্রয়",
-  "purchaseStatusAvailable": "উপলব্ধ",
-  "purchaseStatusPending": "অপেক্ষমাণ",
-  "purchaseStatusFailed": "ব্যর্থ",
-  "purchaseStatusUnavailable": "উপলব্ধ নয়",
   "privacyOptions": "গোপনীয়তা বিকল্প",
   "privacyOptionsBody": "বিজ্ঞাপন সম্মতি পছন্দগুলো পর্যালোচনা করুন।",
-  "openPrivacyOptions": "গোপনীয়তা বিকল্প খুলুন",
   "batterySection": "ব্যাকগ্রাউন্ড নির্ভরযোগ্যতা",
   "batteryOptimizationTitle": "ব্যাটারি অপ্টিমাইজেশন",
   "batteryStatusOptimized": "Android অপ্টিমাইজ করেছে",
@@ -278,6 +281,7 @@
   "termsAndConditions": "শর্তাবলি ও নিয়মাবলি",
   "termsEffectiveDate": "কার্যকর: ৮ নভেম্বর ২০২৬",
   "termsIntro": "এই শর্তাবলি Flash Light Pro ব্যবহারের নিয়ন্ত্রণ করে। অ্যাপটি ইনস্টল বা ব্যবহার করলে আপনি এগুলো মেনে নিচ্ছেন। সম্মত না হলে অনুগ্রহ করে অ্যাপটি আনইনস্টল করুন।",
+  "termsViewOnline": "সম্পূর্ণ শর্তাবলি অনলাইনে দেখুন",
   "termsLicenceTitle": "অ্যাপ ব্যবহারের লাইসেন্স",
   "termsLicenceBody": "ClaudySoft আপনাকে আপনার মালিকানাধীন বা নিয়ন্ত্রণাধীন ডিভাইসে Flash Light Pro ব্যবহারের জন্য ব্যক্তিগত, অ-একচেটিয়া, হস্তান্তরযোগ্য নয় এমন ও প্রত্যাহারযোগ্য লাইসেন্স দেয়। আইন স্পষ্টভাবে অনুমতি দিলে ছাড়া অ্যাপটি কপি, পুনঃবিক্রয়, পুনঃবিতরণ, পরিবর্তন, রিভার্স ইঞ্জিনিয়ার বা সোর্স কোড উদ্ধারের চেষ্টা করা যাবে না।",
   "termsAdsTitle": "বিজ্ঞাপন ও Remove ads",

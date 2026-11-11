@@ -5,16 +5,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'fakes.dart';
 
 class _Fixture {
-  _Fixture({bool owned = false, FakeBillingGateway? billing})
-    : store = FakeAdFreeStore(owned: owned),
-      gateway = billing ?? FakeBillingGateway();
+  _Fixture({
+    bool owned = false,
+    FakeBillingGateway? billing,
+    this.purchaseTimeout = const Duration(minutes: 10),
+  }) : store = FakeAdFreeStore(owned: owned),
+       gateway = billing ?? FakeBillingGateway();
 
   final FakeAdFreeStore store;
   final FakeBillingGateway gateway;
+  final Duration purchaseTimeout;
   late final AdFreeEntitlementService service = AdFreeEntitlementService(
     store: store,
     gateway: gateway,
     restoreGrace: Duration.zero,
+    purchaseTimeout: purchaseTimeout,
   );
 
   Future<void> load({bool reconcileSilently = false}) {
@@ -110,6 +115,53 @@ void main() {
 
     expect(fixture.service.isAdFree, isFalse);
     expect(fixture.service.phase, RemoveAdsPhase.ready);
+    expect(fixture.service.notice, RemoveAdsNotice.purchaseCanceled);
+    expect(fixture.service.canPurchase, isTrue);
+  });
+
+  test(
+    'a cancel reported without a product id still clears the purchase',
+    () async {
+      final fixture = _Fixture();
+      await fixture.load();
+      await fixture.service.purchase();
+
+      // Google Play reports a cancelled billing flow with an empty product ID.
+      fixture.gateway.emit(
+        status: BillingPurchaseStatus.canceled,
+        productId: '',
+      );
+      await pumpEventQueue();
+
+      expect(fixture.service.phase, RemoveAdsPhase.ready);
+      expect(fixture.service.notice, RemoveAdsNotice.purchaseCanceled);
+      expect(fixture.service.canPurchase, isTrue);
+    },
+  );
+
+  test('a product-less event outside a purchase is ignored', () async {
+    final fixture = _Fixture();
+    await fixture.load();
+
+    fixture.gateway.emit(status: BillingPurchaseStatus.canceled, productId: '');
+    fixture.gateway.emit(status: BillingPurchaseStatus.error, productId: '');
+    await pumpEventQueue();
+
+    expect(fixture.service.phase, RemoveAdsPhase.ready);
+    expect(fixture.service.notice, RemoveAdsNotice.none);
+  });
+
+  test('a billing flow that never answers stops waiting', () async {
+    final fixture = _Fixture(purchaseTimeout: const Duration(milliseconds: 5));
+    await fixture.load();
+
+    await fixture.service.purchase();
+    expect(fixture.service.phase, RemoveAdsPhase.purchasing);
+
+    await Future<void>.delayed(const Duration(milliseconds: 30));
+
+    expect(fixture.service.phase, RemoveAdsPhase.failed);
+    expect(fixture.service.notice, RemoveAdsNotice.purchaseFailed);
     expect(fixture.service.canPurchase, isTrue);
   });
 

@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import '../data/rewarded_ad_presenter.dart';
-import '../domain/ad_config.dart';
+
+import 'package:flash_light_pro/core/config/admob/admob_config.dart';
+
 import '../domain/ad_models.dart';
 import 'ad_eligibility_manager.dart';
 

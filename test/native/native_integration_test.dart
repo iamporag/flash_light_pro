@@ -225,10 +225,7 @@ void main() {
         activity,
         contains('com.claudysoft.flashlightpro/device_controls'),
       );
-      expect(
-        activity,
-        contains('com.claudysoft.flashlightpro/torch_state'),
-      );
+      expect(activity, contains('com.claudysoft.flashlightpro/torch_state'));
     });
 
     test(
@@ -298,10 +295,7 @@ void main() {
         delegate,
         contains('com.claudysoft.flashlightpro/device_controls'),
       );
-      expect(
-        delegate,
-        contains('com.claudysoft.flashlightpro/torch_state'),
-      );
+      expect(delegate, contains('com.claudysoft.flashlightpro/torch_state'));
       expect(delegate, contains('TorchController.shared'));
     });
 
@@ -328,7 +322,8 @@ void main() {
 
   group('Dependency boundary', () {
     final pubspec = read('pubspec.yaml');
-    final adConfig = read('lib/features/monetization/domain/ad_config.dart');
+    final adConfig = read('lib/core/config/admob/admob_config.dart');
+    final adMobIds = read('lib/core/config/admob/admob_ids.dart');
 
     test('monetization uses the official SDKs and no extra network stack', () {
       expect(pubspec, contains('sensors_plus:'));
@@ -343,14 +338,28 @@ void main() {
       expect(pubspec, isNot(contains('connectivity_plus')));
     });
 
-    test('production AdMob ids are build-time values, not baked-in ids', () {
-      expect(adConfig, contains('String.fromEnvironment'));
-      expect(adConfig, contains("'ADMOB_ANDROID_BANNER_ID'"));
-      expect(adConfig, contains('kDebugMode'));
-      expect(adConfig, contains('kReleaseMode'));
-      expect(adConfig, isNot(contains("defaultValue: 'ca-app-pub")));
-      expect(adConfig, contains('ca-app-pub-3940256099942544'));
-    });
+    test(
+      'AdMob unit ids live in one Dart source with build-time overrides',
+      () {
+        for (final id in [
+          'ca-app-pub-8125551545712066/8706742446',
+          'ca-app-pub-8125551545712066/8911802759',
+          'ca-app-pub-8125551545712066/2699562288',
+          'ca-app-pub-8125551545712066/3906888086',
+          'ca-app-pub-8125551545712066/9267025974',
+        ]) {
+          expect(adMobIds, contains(id));
+        }
+        expect(adMobIds, contains('ca-app-pub-3940256099942544'));
+        expect(adMobIds, isNot(contains('~2052695027')));
+        expect(adConfig, contains('String.fromEnvironment'));
+        expect(adConfig, contains("'ADMOB_ANDROID_BANNER_ID'"));
+        expect(adConfig, contains('kDebugMode'));
+        expect(adConfig, contains('kReleaseMode'));
+        expect(adConfig, isNot(contains('ca-app-pub-8125551545712066')));
+        expect(adConfig, isNot(contains('ca-app-pub-3940256099942544')));
+      },
+    );
 
     test('Play updates use the store API rather than an app network stack', () {
       expect(pubspec, contains('in_app_update:'));
@@ -359,6 +368,7 @@ void main() {
 
     test('the Play Store URL matches the installed application id', () {
       final buildGradle = read('android/app/build.gradle');
+      final appInfo = read('lib/core/config/app_info.dart');
       final config = read('lib/features/updates/domain/update_config.dart');
 
       final applicationId = RegExp(r'applicationId\s*=\s*"([^"]+)"')
@@ -366,7 +376,12 @@ void main() {
           ?.group(1);
 
       expect(applicationId, 'com.claudysoft.flashlightpro');
-      expect(config, contains("defaultValue: '$applicationId'"));
+      expect(appInfo, contains("defaultValue: '$applicationId'"));
+      expect(
+        appInfo,
+        contains('https://play.google.com/store/apps/details?id=\$packageName'),
+      );
+      expect(config, contains('defaultValue: AppInfo.packageName'));
     });
   });
 }

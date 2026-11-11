@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flash_light_pro/core/config/purchase_config.dart';
 import 'package:flutter/foundation.dart';
 
 import '../data/billing_gateway.dart';
@@ -16,17 +17,23 @@ class AdFreeEntitlementService extends ChangeNotifier {
   AdFreeEntitlementService({
     required this.store,
     required this.gateway,
-    this.restoreGrace = const Duration(seconds: 2),
+    this.restoreGrace = PurchaseConfig.restoreGrace,
+    this.purchaseTimeout = PurchaseConfig.purchaseTimeout,
   });
 
-  static const String productId = 'flash_light_pro_remove_ads';
+  static const String productId = PurchaseConfig.removeAdsProductId;
 
   final AdFreeStore store;
   final BillingGateway gateway;
   final Duration restoreGrace;
 
+  /// Safety net for a billing flow that never reports back. Without it an
+  /// unanswered flow would leave the purchase card spinning forever.
+  final Duration purchaseTimeout;
+
   StreamSubscription<BillingPurchase>? _subscription;
   Timer? _restoreTimer;
+  Timer? _purchaseTimer;
   Future<void>? _initializeFuture;
   bool _localLoaded = false;
   bool _disposed = false;
@@ -164,20 +171,35 @@ class AdFreeEntitlementService extends ChangeNotifier {
     AdDiagnostics.log('purchase requested', productId);
     _notify();
 
+    _purchaseTimer?.cancel();
+    _purchaseTimer = Timer(purchaseTimeout, _onPurchaseTimeout);
+
     try {
       await gateway.buy(productId);
       // The store confirms through `purchases`; success is never assumed here.
     } catch (error) {
       AdDiagnostics.log('purchase failed to start', error);
       if (_disposed) return;
+      _purchaseTimer?.cancel();
+      _purchaseTimer = null;
       _phase = RemoveAdsPhase.failed;
       _notice = RemoveAdsNotice.purchaseFailed;
       _notify();
     }
   }
 
+  void _onPurchaseTimeout() {
+    _purchaseTimer = null;
+    if (_disposed || _phase != RemoveAdsPhase.purchasing) return;
+    AdDiagnostics.log('purchase timed out without a store answer');
+    _phase = RemoveAdsPhase.failed;
+    _notice = RemoveAdsNotice.purchaseFailed;
+    _notify();
+  }
+
   Future<void> restore() async {
     if (_phase == RemoveAdsPhase.restoring) return;
+    _cancelPurchaseTimer();
     if (!gateway.isSupported) {
       _phase = RemoveAdsPhase.unavailable;
       _notice = RemoveAdsNotice.storeUnavailable;
@@ -224,16 +246,38 @@ class AdFreeEntitlementService extends ChangeNotifier {
   }
 
   void _handlePurchase(BillingPurchase purchase) {
-    if (_disposed || purchase.productId != productId) return;
+    if (_disposed) return;
 
-    AdDiagnostics.log('purchase event', purchase.status.name);
+    final purchasing =
+        _phase == RemoveAdsPhase.purchasing || _phase == RemoveAdsPhase.pending;
+    // Google Play reports a cancelled billing flow without any product ID.
+    // That event still belongs to the flow this screen started, so it must
+    // clear the spinner instead of being discarded as "another product".
+    final unlabelledFlowResult =
+        purchase.productId.isEmpty &&
+        (purchase.status == BillingPurchaseStatus.canceled ||
+            purchase.status == BillingPurchaseStatus.error);
+
+    if (purchase.productId != productId &&
+        !(unlabelledFlowResult && purchasing)) {
+      return;
+    }
+
+    AdDiagnostics.log(
+      'purchase event',
+      '${purchase.status.name}${purchase.productId.isEmpty ? ' (no product id)' : ''}',
+    );
 
     switch (purchase.status) {
       case BillingPurchaseStatus.pending:
+        // A pending transaction can stay open for days; only the initial
+        // billing flow needs a watchdog.
+        _cancelPurchaseTimer();
         _phase = RemoveAdsPhase.pending;
         _notice = RemoveAdsNotice.none;
       case BillingPurchaseStatus.purchased:
       case BillingPurchaseStatus.restored:
+        _cancelPurchaseTimer();
         if (!_isAdFree) {
           _isAdFree = true;
           unawaited(store.saveOwned(true));
@@ -241,12 +285,18 @@ class AdFreeEntitlementService extends ChangeNotifier {
         _phase = RemoveAdsPhase.purchased;
         _notice = RemoveAdsNotice.none;
       case BillingPurchaseStatus.canceled:
+        _cancelPurchaseTimer();
         if (_phase == RemoveAdsPhase.purchasing ||
-            _phase == RemoveAdsPhase.restoring) {
+            _phase == RemoveAdsPhase.pending) {
           _phase = _isAdFree ? RemoveAdsPhase.purchased : RemoveAdsPhase.ready;
+          _notice = _isAdFree
+              ? RemoveAdsNotice.none
+              : RemoveAdsNotice.purchaseCanceled;
         }
       case BillingPurchaseStatus.error:
-        if (_phase == RemoveAdsPhase.purchasing) {
+        _cancelPurchaseTimer();
+        if (_phase == RemoveAdsPhase.purchasing ||
+            _phase == RemoveAdsPhase.pending) {
           _phase = RemoveAdsPhase.failed;
           _notice = RemoveAdsNotice.purchaseFailed;
         } else if (_phase == RemoveAdsPhase.restoring) {
@@ -263,6 +313,11 @@ class AdFreeEntitlementService extends ChangeNotifier {
     _notify();
   }
 
+  void _cancelPurchaseTimer() {
+    _purchaseTimer?.cancel();
+    _purchaseTimer = null;
+  }
+
   Future<void> _complete(BillingPurchase purchase) async {
     try {
       await gateway.complete(purchase);
@@ -275,6 +330,7 @@ class AdFreeEntitlementService extends ChangeNotifier {
   void _handleStreamError(Object error) {
     AdDiagnostics.log('purchase stream error', error);
     if (_disposed) return;
+    _cancelPurchaseTimer();
     if (_phase == RemoveAdsPhase.purchasing) {
       _phase = RemoveAdsPhase.failed;
       _notice = RemoveAdsNotice.purchaseFailed;
@@ -296,6 +352,7 @@ class AdFreeEntitlementService extends ChangeNotifier {
     _disposed = true;
     _restoreTimer?.cancel();
     _restoreTimer = null;
+    _cancelPurchaseTimer();
     unawaited(_subscription?.cancel());
     _subscription = null;
     unawaited(gateway.dispose());

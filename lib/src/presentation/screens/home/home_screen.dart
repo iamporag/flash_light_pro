@@ -14,7 +14,7 @@ import 'package:flash_light_pro/src/presentation/screens/home/widgets/power_butt
 import 'package:flash_light_pro/src/presentation/screens/home/widgets/timer_sheet.dart';
 import 'package:flash_light_pro/src/presentation/screens/screen_light/screen_light_page.dart';
 import 'package:flash_light_pro/src/presentation/screens/settings/settings_page.dart';
-import 'package:flash_light_pro/src/presentation/theme/app_theme.dart';
+import 'package:flash_light_pro/core/config/app_theme_config.dart';
 import 'package:flash_light_pro/src/presentation/utils/light_mode_labels.dart';
 import 'package:flash_light_pro/src/presentation/utils/localization.dart';
 import 'package:flutter/material.dart';
